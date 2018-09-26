@@ -17,14 +17,14 @@ namespace SSKJ.RoadDesignCenter.API.Controllers
     {
         private readonly IUserProjectBusines userProjectBll;
         private readonly IBusines.Project.IUserBusines prjUserBll;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
         public LoginController(IBusines.Project.IUserBusines prjUserBll, IUserProjectBusines userProjectBll, IHttpContextAccessor httpContextAccessor)
         {
             this.prjUserBll = prjUserBll;
             this.userProjectBll = userProjectBll;
-            _httpContextAccessor = httpContextAccessor;
-            CurrentUser.Configure(_httpContextAccessor);
+            this.httpContextAccessor = httpContextAccessor;
+            CurrentUser.Configure(httpContextAccessor);
         }
         public IActionResult Index()
         {
@@ -32,14 +32,14 @@ namespace SSKJ.RoadDesignCenter.API.Controllers
         }
         [HttpPost]
         public async Task<IActionResult> GetUsers(LoginModel model)
-        {            
+        {
             var entity = await userProjectBll.GetEntityAsync(p => p.PrjDataBase == model.ProjectCode);
-            var list= await userProjectBll.GetListAsync(p => p.PrjDataBase == model.ProjectCode);
+            var list = await userProjectBll.GetListAsync(p => p.PrjDataBase == model.ProjectCode);
             if (entity != null)
             {
                 var str = "server=139.224.200.194;port=3306;database=" + model.ProjectCode + ";user id=root;password=SSKJ*147258369";
-                var user = await prjUserBll.GetEntityAsync(u=>u.Account==model.UserName&&u.Password==model.Password,str);
-                if (user!=null)
+                var user = await prjUserBll.GetEntityAsync(u => u.Account == model.UserName && u.Password == model.Password, str);
+                if (user != null)
                 {
                     CurrentUser.UserConnectionString = str;
 
@@ -65,7 +65,7 @@ namespace SSKJ.RoadDesignCenter.API.Controllers
         [HttpPost]
         public IActionResult Logout()
         {
-            _httpContextAccessor.HttpContext.Session.Clear();
+            httpContextAccessor.HttpContext.Session.Clear();
             return RedirectToAction("Index", "Login");
         }
 
