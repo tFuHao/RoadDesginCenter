@@ -1777,23 +1777,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\spzha\\.nuget\\packages\\": {},
+    "C:\\Users\\FuHao\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\project\\AspNetCore\\RoadDesginCenter\\SSKJ.RoadDesignCenter.Utility\\SSKJ.RoadDesignCenter.Utility.csproj",
+      "projectUniqueName": "D:\\Source\\Repos\\BIMCenter\\API\\SSKJ.RoadDesignCenter.Utility\\SSKJ.RoadDesignCenter.Utility.csproj",
       "projectName": "SSKJ.RoadDesignCenter.Utility",
-      "projectPath": "D:\\project\\AspNetCore\\RoadDesginCenter\\SSKJ.RoadDesignCenter.Utility\\SSKJ.RoadDesignCenter.Utility.csproj",
-      "packagesPath": "C:\\Users\\spzha\\.nuget\\packages\\",
-      "outputPath": "D:\\project\\AspNetCore\\RoadDesginCenter\\SSKJ.RoadDesignCenter.Utility\\obj\\",
+      "projectPath": "D:\\Source\\Repos\\BIMCenter\\API\\SSKJ.RoadDesignCenter.Utility\\SSKJ.RoadDesignCenter.Utility.csproj",
+      "packagesPath": "C:\\Users\\FuHao\\.nuget\\packages\\",
+      "outputPath": "D:\\Source\\Repos\\BIMCenter\\API\\SSKJ.RoadDesignCenter.Utility\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\spzha\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\FuHao\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
