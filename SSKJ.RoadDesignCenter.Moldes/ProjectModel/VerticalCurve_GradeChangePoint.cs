@@ -7,6 +7,7 @@ namespace SSKJ.RoadDesignCenter.Models.ProjectModel
     {
         public string GradeChangePointId { get; set; }
         public string VerticalCurveId { get; set; }
+        public int SerialNumber { get; set; }
         public string Stake { get; set; }
         public double? H { get; set; }
         public double? R { get; set; }

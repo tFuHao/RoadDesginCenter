@@ -7,6 +7,7 @@ namespace SSKJ.RoadDesignCenter.Models.ProjectModel
     {
         public string Id { get; set; }
         public string RouteId { get; set; }
+        public int SerialNumber { get; set; }
         public string Stake { get; set; }
         public double? H { get; set; }
     }
