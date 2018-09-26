@@ -7,6 +7,7 @@ namespace SSKJ.RoadDesignCenter.Models.ProjectModel
     {
         public string IntersectionPointId { get; set; }
         public string FlatCurveId { get; set; }
+        public int SerialNumber { get; set; }
         public string IntersectionName { get; set; }
         public string Stake { get; set; }
         public double? X { get; set; }
