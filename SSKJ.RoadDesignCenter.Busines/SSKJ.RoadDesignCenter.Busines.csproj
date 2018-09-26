@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Busines\**" />
+    <Compile Remove="IBusines\**" />
+    <EmbeddedResource Remove="Busines\**" />
+    <EmbeddedResource Remove="IBusines\**" />
+    <None Remove="Busines\**" />
+    <None Remove="IBusines\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="DIBllRegister.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SSKJ.RoadDesignCenter.IBusines\SSKJ.RoadDesignCenter.IBusines.csproj" />
+    <ProjectReference Include="..\SSKJ.RoadDesignCenter.IRepository\SSKJ.RoadDesignCenter.IRepository.csproj" />
+    <ProjectReference Include="..\SSKJ.RoadDesignCenter.Moldes\SSKJ.RoadDesignCenter.Models.csproj" />
+  </ItemGroup>
+
+</Project>

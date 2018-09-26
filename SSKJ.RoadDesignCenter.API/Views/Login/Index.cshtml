@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<form action="/Login/GetUsers" method="post">
+    <fieldset>
+        <legend>Log in</legend>
+
+        <div>
+            <label for="ProjectCode">Project code</label>
+            <select name="ProjectCode">
+                <option value="road_project_001">001</option>
+                <option value="road_project_002">002</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="UserName">User name</label>
+            <input type="text" name="UserName" />
+        </div>
+
+        <div>
+            <label for="Password">Password</label>
+            <input type="password" name="Password" />
+        </div>
+
+        <button type="submit">Log in</button>
+    </fieldset>
+</form>

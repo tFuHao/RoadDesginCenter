@@ -1,0 +1,20 @@
+﻿@model IEnumerable<SSKJ.RoadDesignCenter.Models.ProjectModel.User>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h1>Welcome!</h1>
+
+<table class="table">
+    <tr>
+        <th>Name</th>
+        <th>Desc</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Account</td>
+            <td>@item.RealName</td>
+        </tr>
+    }
+</table>

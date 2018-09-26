@@ -1,0 +1,12 @@
+D:\Source\Repos\BIMCenter\RoadDesignCenter\SSKJ.RoadDesignCenter.IRepository\bin\Release\netcoreapp2.1\SSKJ.RoadDesignCenter.IRepository.deps.json
+D:\Source\Repos\BIMCenter\RoadDesignCenter\SSKJ.RoadDesignCenter.IRepository\bin\Release\netcoreapp2.1\SSKJ.RoadDesignCenter.IRepository.dll
+D:\Source\Repos\BIMCenter\RoadDesignCenter\SSKJ.RoadDesignCenter.IRepository\bin\Release\netcoreapp2.1\SSKJ.RoadDesignCenter.IRepository.pdb
+D:\Source\Repos\BIMCenter\RoadDesignCenter\SSKJ.RoadDesignCenter.IRepository\bin\Release\netcoreapp2.1\SSKJ.RoadDesignCenter.Models.dll
+D:\Source\Repos\BIMCenter\RoadDesignCenter\SSKJ.RoadDesignCenter.IRepository\bin\Release\netcoreapp2.1\SSKJ.RoadDesignCenter.Models.pdb
+D:\Source\Repos\BIMCenter\RoadDesignCenter\SSKJ.RoadDesignCenter.IRepository\obj\Release\netcoreapp2.1\SSKJ.RoadDesignCenter.IRepository.csprojAssemblyReference.cache
+D:\Source\Repos\BIMCenter\RoadDesignCenter\SSKJ.RoadDesignCenter.IRepository\obj\Release\netcoreapp2.1\SSKJ.RoadDesignCenter.IRepository.csproj.CoreCompileInputs.cache
+D:\Source\Repos\BIMCenter\RoadDesignCenter\SSKJ.RoadDesignCenter.IRepository\obj\Release\netcoreapp2.1\SSKJ.RoadDesignCenter.IRepository.AssemblyInfoInputs.cache
+D:\Source\Repos\BIMCenter\RoadDesignCenter\SSKJ.RoadDesignCenter.IRepository\obj\Release\netcoreapp2.1\SSKJ.RoadDesignCenter.IRepository.AssemblyInfo.cs
+D:\Source\Repos\BIMCenter\RoadDesignCenter\SSKJ.RoadDesignCenter.IRepository\obj\Release\netcoreapp2.1\SSKJ.RoadDesignCenter.IRepository.csproj.CopyComplete
+D:\Source\Repos\BIMCenter\RoadDesignCenter\SSKJ.RoadDesignCenter.IRepository\obj\Release\netcoreapp2.1\SSKJ.RoadDesignCenter.IRepository.dll
+D:\Source\Repos\BIMCenter\RoadDesignCenter\SSKJ.RoadDesignCenter.IRepository\obj\Release\netcoreapp2.1\SSKJ.RoadDesignCenter.IRepository.pdb

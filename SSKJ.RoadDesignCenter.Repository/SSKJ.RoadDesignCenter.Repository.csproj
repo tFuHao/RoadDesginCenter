@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="IRepositories\**" />
+    <Compile Remove="Repositories\**" />
+    <EmbeddedResource Remove="IRepositories\**" />
+    <EmbeddedResource Remove="Repositories\**" />
+    <None Remove="IRepositories\**" />
+    <None Remove="Repositories\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Database.cs" />
+    <Compile Remove="IDatabase.cs" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.3" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.4" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\SSKJ.RoadDesignCenter.IRepository\SSKJ.RoadDesignCenter.IRepository.csproj" />
+    <ProjectReference Include="..\SSKJ.RoadDesignCenter.Moldes\SSKJ.RoadDesignCenter.Models.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Reference Include="SSKJ.Util">
+      <HintPath>..\DLL\SSKJ.Util.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

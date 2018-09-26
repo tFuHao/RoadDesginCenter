@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h1>Welcome!</h1>
+
+<table class="table">
+    <tr>
+        <th>Account</th>
+        <th>Name</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Account</td>
+            <td>@item.RealName</td>
+        </tr>
+    }
+</table>

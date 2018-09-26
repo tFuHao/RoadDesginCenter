@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\VerificationProjectCodeController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="2.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SSKJ.RoadDesignCenter.Busines\SSKJ.RoadDesignCenter.Busines.csproj" />
+    <ProjectReference Include="..\SSKJ.RoadDesignCenter.DependencyInjection\SSKJ.RoadDesignCenter.DependencyInjection.csproj" />
+    <ProjectReference Include="..\SSKJ.RoadDesignCenter.Moldes\SSKJ.RoadDesignCenter.Models.csproj" />
+    <ProjectReference Include="..\SSKJ.RoadDesignCenter.Utility\SSKJ.RoadDesignCenter.Utility.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\Login\GetUsers.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+</Project>

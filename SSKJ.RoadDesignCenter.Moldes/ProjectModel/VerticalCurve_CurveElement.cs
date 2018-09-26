@@ -1,0 +1,16 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace SSKJ.RoadDesignCenter.Models.ProjectModel
+{
+    public partial class VerticalCurve_CurveElement
+    {
+        public string CurveElementId { get; set; }
+        public string VerticalCurveId { get; set; }
+        public string Stake { get; set; }
+        public double? H { get; set; }
+        public double? I { get; set; }
+        public double? R { get; set; }
+        public double? Length { get; set; }
+    }
+}
