@@ -11,8 +11,8 @@ namespace SSKJ.RoadDesignCenter.Models.ProjectModel
         public int? IntersectionNumber { get; set; }
         public int? CurveNumber { get; set; }
         public double? FlatCurveLength { get; set; }
-        public string BeginStake { get; set; }
-        public string EndStake { get; set; }
+        public double? BeginStake { get; set; }
+        public double? EndStake { get; set; }
         public string Description { get; set; }
     }
 }

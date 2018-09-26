@@ -10,8 +10,8 @@ namespace SSKJ.RoadDesignCenter.Models.ProjectModel
         public string ProjectId { get; set; }
         public string RouteName { get; set; }
         public double? RouteLength { get; set; }
-        public string StartStake { get; set; }
-        public string EndStake { get; set; }
+        public double? StartStake { get; set; }
+        public double? EndStake { get; set; }
         public int? RouteType { get; set; }
         public string Description { get; set; }
         public string DesignSpeed { get; set; }
