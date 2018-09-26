@@ -20,6 +20,7 @@ namespace SSKJ.RoadDesignCenter.DependencyInjection
 
             //project
             services.AddSingleton<ibProject.IUserBusines, bProject.UserBusines>();
+            services.AddSingleton<ibProject.RouteElement.IBrokenChainageBusines, bProject.RouteElement.BrokenChainageBusines>();
         }
     }
 }

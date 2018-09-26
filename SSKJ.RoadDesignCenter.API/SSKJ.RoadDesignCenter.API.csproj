@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\RouteManageInfo\**" />
+    <Content Remove="Areas\RouteManageInfo\**" />
+    <EmbeddedResource Remove="Areas\RouteManageInfo\**" />
+    <None Remove="Areas\RouteManageInfo\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Controllers\VerificationProjectCodeController.cs" />
   </ItemGroup>
 
@@ -30,10 +37,13 @@
     <Folder Include="Areas\ProjectManage\Data\" />
     <Folder Include="Areas\ProjectManage\Models\" />
     <Folder Include="Areas\ProjectManage\Views\" />
-    <Folder Include="Areas\RouteManage\Controllers\" />
-    <Folder Include="Areas\RouteManage\Data\" />
-    <Folder Include="Areas\RouteManage\Models\" />
-    <Folder Include="Areas\RouteManage\Views\" />
+    <Folder Include="Areas\RouteManage_RouteElement\Data\" />
+    <Folder Include="Areas\RouteManage_RouteElement\Models\" />
+    <Folder Include="Areas\RouteManage_RouteElement\Views\" />
+    <Folder Include="Areas\RouteManage_RoutInfo\Controllers\" />
+    <Folder Include="Areas\RouteManage_RoutInfo\Data\" />
+    <Folder Include="Areas\RouteManage_RoutInfo\Models\" />
+    <Folder Include="Areas\RouteManage_RoutInfo\Views\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
