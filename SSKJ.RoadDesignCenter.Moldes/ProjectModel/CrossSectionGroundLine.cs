@@ -7,6 +7,6 @@ namespace SSKJ.RoadDesignCenter.Models.ProjectModel
     {
         public string CrossSectionGroundLineId { get; set; }
         public string RouteId { get; set; }
-        public string Stake { get; set; }
+        public double? Stake { get; set; }
     }
 }

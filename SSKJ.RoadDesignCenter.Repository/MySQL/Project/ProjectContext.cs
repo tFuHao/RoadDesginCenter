@@ -44,7 +44,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
                 entity.Property(e => e.RouteId).HasColumnType("varchar(50)");
 
-                entity.Property(e => e.Stake).HasColumnType("varchar(50)");
+                entity.Property(e => e.Stake).HasColumnType("double(18,4)");
             });
 
             modelBuilder.Entity<Authorize>(entity =>
@@ -109,11 +109,11 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
                 entity.Property(e => e.BrokenType).HasColumnType("int(11)");
 
-                entity.Property(e => e.AfterStake).HasColumnType("varchar(50)");
+                entity.Property(e => e.AfterStake).HasColumnType("double(18,4)");
 
                 entity.Property(e => e.Description).HasColumnType("varchar(200)");
 
-                entity.Property(e => e.FrontStake).HasColumnType("varchar(50)");
+                entity.Property(e => e.FrontStake).HasColumnType("double(18,4)");
 
                 entity.Property(e => e.RawStakeBack).HasColumnType("varchar(50)");
 
@@ -128,7 +128,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
                 entity.Property(e => e.RouteId).HasColumnType("varchar(50)");
 
-                entity.Property(e => e.Stake).HasColumnType("varchar(50)");
+                entity.Property(e => e.Stake).HasColumnType("double(18,4)");
             });
 
             modelBuilder.Entity<CrossSectionGroundLineData>(entity =>
@@ -152,13 +152,13 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
                 entity.Property(e => e.FlatCurveId).HasColumnType("varchar(50)");
 
-                entity.Property(e => e.BeginStake).HasColumnType("varchar(50)");
+                entity.Property(e => e.BeginStake).HasColumnType("double(18,4)");
 
                 entity.Property(e => e.CurveNumber).HasColumnType("int(11)");
 
                 entity.Property(e => e.Description).HasColumnType("varchar(200)");
 
-                entity.Property(e => e.EndStake).HasColumnType("varchar(50)");
+                entity.Property(e => e.EndStake).HasColumnType("double(18,4)");
 
                 entity.Property(e => e.FlatCurveLength).HasColumnType("double(18,4)");
 
@@ -187,7 +187,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
                 entity.Property(e => e.R).HasColumnType("double(18,4)");
 
-                entity.Property(e => e.Stake).HasColumnType("varchar(50)");
+                entity.Property(e => e.Stake).HasColumnType("double(18,4)");
 
                 entity.Property(e => e.TurnTo).HasColumnType("int(11)");
 
@@ -220,7 +220,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
                 entity.Property(e => e.R).HasColumnType("double(18,4)");
 
-                entity.Property(e => e.Stake).HasColumnType("varchar(50)");
+                entity.Property(e => e.Stake).HasColumnType("double(18,4)");
 
                 entity.Property(e => e.X).HasColumnType("double(18,4)");
 
@@ -332,7 +332,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
                 entity.Property(e => e.DesignSpeed).HasColumnType("varchar(50)");
 
-                entity.Property(e => e.EndStake).HasColumnType("varchar(50)");
+                entity.Property(e => e.EndStake).HasColumnType("double(18,4)");
 
                 entity.Property(e => e.ParentId).HasColumnType("varchar(50)");
 
@@ -344,7 +344,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
                 entity.Property(e => e.RouteType).HasColumnType("int(11)");
 
-                entity.Property(e => e.StartStake).HasColumnType("varchar(50)");
+                entity.Property(e => e.StartStake).HasColumnType("double(18,4)");
             });
 
             modelBuilder.Entity<SampleLine>(entity =>
@@ -359,7 +359,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
                 entity.Property(e => e.RightOffset).HasColumnType("double(18,4)");
 
-                entity.Property(e => e.Stake).HasColumnType("varchar(50)");
+                entity.Property(e => e.Stake).HasColumnType("double(18,4)");
             });
 
             modelBuilder.Entity<Stake>(entity =>
@@ -459,13 +459,13 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
                 entity.Property(e => e.VerticalCurveId).HasColumnType("varchar(50)");
 
-                entity.Property(e => e.BeginStake).HasColumnType("varchar(50)");
+                entity.Property(e => e.BeginStake).HasColumnType("double(18,4)");
 
                 entity.Property(e => e.CurveNumber).HasColumnType("int(11)");
 
                 entity.Property(e => e.Description).HasColumnType("varchar(50)");
 
-                entity.Property(e => e.EndStake).HasColumnType("varchar(50)");
+                entity.Property(e => e.EndStake).HasColumnType("double(18,4)");
 
                 entity.Property(e => e.GradeChangePointNumber).HasColumnType("int(11)");
 
@@ -488,15 +488,13 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
                 entity.Property(e => e.H).HasColumnType("double(18,4)");
 
-                entity.Property(e => e.I)
-                    .HasColumnName("i")
-                    .HasColumnType("double(18,4)");
+                entity.Property(e => e.I).HasColumnType("double(18,4)");
 
                 entity.Property(e => e.Length).HasColumnType("double(18,4)");
 
                 entity.Property(e => e.R).HasColumnType("double(18,4)");
 
-                entity.Property(e => e.Stake).HasColumnType("varchar(50)");
+                entity.Property(e => e.Stake).HasColumnType("double(18,4)");
 
                 entity.Property(e => e.VerticalCurveId).HasColumnType("varchar(50)");
             });
@@ -515,7 +513,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
                 entity.Property(e => e.R).HasColumnType("double(18,4)");
 
-                entity.Property(e => e.Stake).HasColumnType("varchar(50)");
+                entity.Property(e => e.Stake).HasColumnType("double(18,4)");
 
                 entity.Property(e => e.VerticalCurveId).HasColumnType("varchar(50)");
             });
@@ -532,7 +530,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
                 entity.Property(e => e.RouteId).HasColumnType("varchar(50)");
 
-                entity.Property(e => e.Stake).HasColumnType("varchar(50)");
+                entity.Property(e => e.Stake).HasColumnType("double(18,4)");
             });
 
             base.OnModelCreating(modelBuilder);
