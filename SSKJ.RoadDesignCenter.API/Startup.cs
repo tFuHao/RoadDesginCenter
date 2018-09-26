@@ -62,12 +62,7 @@ namespace SSKJ.RoadDesignCenter.API
 
             app.UseCors("CorsPolicy");
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "api/Login/Index/{id?}");
-            });
+            app.UseMvc();
         }
     }
 }

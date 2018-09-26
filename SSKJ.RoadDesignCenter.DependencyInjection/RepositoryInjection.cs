@@ -20,6 +20,7 @@ namespace SSKJ.RoadDesignCenter.DependencyInjection
 
             //project
             services.AddSingleton<irProject.IUserRepository, rProject.UserRepository>();
+            services.AddSingleton<irProject.RouteElement.IBrokenChainRepository, rProject.RouteElement.BrokenChainRepository>();
         }
     }
 }
