@@ -45,6 +45,7 @@
     <Folder Include="Areas\RouteManage_RoutInfo\Models\" />
     <Folder Include="Areas\RouteManage_RoutInfo\Views\" />
     <Folder Include="wwwroot\" />
+    <Folder Include="wwwroot\upload\import\" />
   </ItemGroup>
 
 </Project>
