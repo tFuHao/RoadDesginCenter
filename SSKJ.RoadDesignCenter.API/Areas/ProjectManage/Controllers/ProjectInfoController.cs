@@ -8,9 +8,6 @@ namespace SSKJ.RoadDesignCenter.API.Areas.ProjectManage.Controllers
 {
     public class ProjectInfoController : Controller
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+        
     }
 }
