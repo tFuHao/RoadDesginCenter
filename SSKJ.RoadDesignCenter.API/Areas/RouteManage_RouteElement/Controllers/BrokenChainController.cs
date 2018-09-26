@@ -31,52 +31,51 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
             });
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Insert(BrokenChainage input, int serialNumber)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        if (input.BrokenId == null)
-        //        {
-        //            var count = await BrokenBus.GetListAsync(ConStr);
-                    
-        //            input.BrokenId = Guid.NewGuid().ToString();
-        //            input.SerialNumber = count + 1;
-        //            if (serialNumber != 0)
-        //            {
-        //                var list = BrokenRepo.FindList(e => e.SerialNumber >= serialNumber).ToList();
-        //                list.ForEach(i =>
-        //                {
-        //                    i.SerialNumber++;
-        //                    BrokenRepo.Update(i);
-        //                });
-        //                input.SerialNumber = serialNumber;
-        //            }
-        //            var result = await BrokenBus.CreateAsync(input);
-        //            return Json(result);
-        //        }
-        //        else
-        //        {
-        //            var entity = BrokenRepo.FindEntity(e => e.Id == input.Id);
-        //            if (entity == null)
-        //                return null;
-        //            entity.FrontStake = input.FrontStake;
-        //            entity.AfterStake = input.AfterStake;
-        //            entity.SerialNumber = input.SerialNumber;
-        //            BrokenRepo.Update(entity);
-        //            return Json(BrokenRepo.Commit() > 0);
-        //        }
-        //    }
+        [HttpPost]
+        public async Task<IActionResult> Insert(BrokenChainage input, int serialNumber)
+        {
+            if (ModelState.IsValid)
+            {
+                if (input.BrokenId == null)
+                {
+                    var allList = await BrokenBus.GetListAsync(ConStr);
+                    var count = allList.Count();
+                    input.BrokenId = Guid.NewGuid().ToString();
+                    input.SerialNumber = count + 1;
+                    if (serialNumber != 0)
+                    {
+                        var temp = await BrokenBus.GetListAsync(ConStr);
+                        var list = temp.ToList();
+                        list.ForEach(i =>
+                        {
+                            i.SerialNumber++;
+                            BrokenBus.UpdateAsync(i);
+                        });
+                        input.SerialNumber = serialNumber;
+                    }
+                    return Json(await BrokenBus.CreateAsync(input));
+                }
+                else
+                {
+                    var entity = await BrokenBus.GetEntityAsync(e => e.BrokenId == input.BrokenId);
+                    if (entity == null)
+                        return null;
+                    entity.FrontStake = input.FrontStake;
+                    entity.AfterStake = input.AfterStake;
+                    entity.SerialNumber = input.SerialNumber;
+                    return Json(await BrokenBus.UpdateAsync(entity));
+                }
+            }
 
-        //    foreach (var data in ModelState.Values)
-        //    {
-        //        if (data.Errors.Count > 0)
-        //        {
-        //            return Json(data.Errors[0].ErrorMessage);
-        //        }
-        //    }
+            foreach (var data in ModelState.Values)
+            {
+                if (data.Errors.Count > 0)
+                {
+                    return Json(data.Errors[0].ErrorMessage);
+                }
+            }
 
-        //    return null;
-        //}
+            return null;
+        }
     }
 }
