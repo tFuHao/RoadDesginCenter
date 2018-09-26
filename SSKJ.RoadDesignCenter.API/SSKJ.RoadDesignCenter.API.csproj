@@ -27,6 +27,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\ProjectManage\Controllers\" />
+    <Folder Include="Areas\ProjectManage\Data\" />
+    <Folder Include="Areas\ProjectManage\Models\" />
+    <Folder Include="Areas\ProjectManage\Views\" />
+    <Folder Include="Areas\RouteManage\Controllers\" />
+    <Folder Include="Areas\RouteManage\Data\" />
+    <Folder Include="Areas\RouteManage\Models\" />
+    <Folder Include="Areas\RouteManage\Views\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
