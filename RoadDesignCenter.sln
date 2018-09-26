@@ -17,8 +17,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SSKJ.RoadDesignCenter.Utili
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SSKJ.RoadDesignCenter.IBusines", "SSKJ.RoadDesignCenter.IBusines\SSKJ.RoadDesignCenter.IBusines.csproj", "{2E6A1071-2748-4C07-8BA2-26BE948620E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSKJ.RoadDesignCenter.WebAPI", "SSKJ.RoadDesignCenter.WebAPI\SSKJ.RoadDesignCenter.WebAPI.csproj", "{BEB564C1-5BCA-4A0C-8FF6-337AC5EA036A}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SSKJ.RoadDesignCenter.API", "SSKJ.RoadDesignCenter.API\SSKJ.RoadDesignCenter.API.csproj", "{BACEB688-F79A-4067-A334-42B5E51A590E}"
 EndProject
 Global
@@ -55,10 +53,6 @@ Global
 		{2E6A1071-2748-4C07-8BA2-26BE948620E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E6A1071-2748-4C07-8BA2-26BE948620E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E6A1071-2748-4C07-8BA2-26BE948620E7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BEB564C1-5BCA-4A0C-8FF6-337AC5EA036A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BEB564C1-5BCA-4A0C-8FF6-337AC5EA036A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BEB564C1-5BCA-4A0C-8FF6-337AC5EA036A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BEB564C1-5BCA-4A0C-8FF6-337AC5EA036A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BACEB688-F79A-4067-A334-42B5E51A590E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BACEB688-F79A-4067-A334-42B5E51A590E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BACEB688-F79A-4067-A334-42B5E51A590E}.Release|Any CPU.ActiveCfg = Release|Any CPU
