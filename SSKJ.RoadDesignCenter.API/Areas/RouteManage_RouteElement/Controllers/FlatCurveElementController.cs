@@ -207,7 +207,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                 }
                 reader.Close();
                 FileUtils.DeleteFile(path);
-                return Content($"断链要素表导入数据成功{success}条，失败{error}条");
+                return Content($"平曲线表曲线要素法导入数据成功{success}条，失败{error}条");
             }
             else
             {
