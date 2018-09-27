@@ -7,10 +7,10 @@ namespace SSKJ.RoadDesignCenter.API.Models
 {
     public class LoginModel
     {
-        public String ProjectCode { get; set; }
+        public string ProjectCode { get; set; }
 
-        public String UserName { get; set; }
+        public string UserName { get; set; }
 
-        public String Password { get; set; }
+        public string Password { get; set; }
     }
 }
