@@ -16,7 +16,6 @@ using SSKJ.RoadDesignCenter.Utility;
 
 namespace SSKJ.RoadDesignCenter.API.Controllers
 {
-    [ApiController]
     [Route("api/Login/[action]")]    
     public class LoginController : ControllerBase
     {
