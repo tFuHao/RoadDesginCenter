@@ -26,6 +26,7 @@ namespace SSKJ.RoadDesignCenter.DependencyInjection
             services.AddSingleton<ibProject.RouteElement.IVerticalCurve_GradeChangePointBusines, bProject.RouteElement.VerticalCurve_GradeChangePointBusines>();
             services.AddSingleton<ibProject.RouteElement.IVerticalSectionGroundLineBusines, bProject.RouteElement.VerticalSectionGroundLineBusines>();
             services.AddSingleton<ibProject.RouteElement.ICrossSectionGroundLineBusines, bProject.RouteElement.CrossSectionGroundLineBusines>();
+            services.AddSingleton<ibProject.RouteElement.IAddStakeBusines, bProject.RouteElement.AddStakeBusines>();
         }
     }
 }
