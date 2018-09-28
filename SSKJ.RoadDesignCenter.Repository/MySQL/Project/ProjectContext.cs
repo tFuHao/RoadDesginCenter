@@ -17,7 +17,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
         public virtual DbSet<FlatCurve> FlatCurve { get; set; }
         public virtual DbSet<FlatCurve_CurveElement> FlatCurve_CurveElement { get; set; }
         public virtual DbSet<FlatCurve_Intersection> FlatCurve_Intersection { get; set; }
-        public virtual DbSet<ProjectInfo> ProjectInfo { get; set; }
+        public virtual DbSet<Models.ProjectModel.ProjectInfo> ProjectInfo { get; set; }
         public virtual DbSet<ProjectLog> ProjectLog { get; set; }
         public virtual DbSet<Role> Role { get; set; }
         public virtual DbSet<Route> Route { get; set; }
@@ -227,7 +227,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
                 entity.Property(e => e.Y).HasColumnType("double(18,4)");
             });
 
-            modelBuilder.Entity<ProjectInfo>(entity =>
+            modelBuilder.Entity<Models.ProjectModel.ProjectInfo>(entity =>
             {
                 entity.HasKey(e => e.ProjectId);
 
@@ -248,6 +248,8 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
                 entity.Property(e => e.OwnerUnit).HasColumnType("varchar(50)");
 
                 entity.Property(e => e.SupervisoryUnit).HasColumnType("varchar(50)");
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<ProjectLog>(entity =>

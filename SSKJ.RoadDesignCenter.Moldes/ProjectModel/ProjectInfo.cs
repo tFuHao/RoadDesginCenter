@@ -13,5 +13,6 @@ namespace SSKJ.RoadDesignCenter.Models.ProjectModel
         public string DesignUnit { get; set; }
         public string SupervisoryUnit { get; set; }
         public string ConstructionUnit { get; set; }
+        public DateTime? ModifyDate { get; set; }
     }
 }
