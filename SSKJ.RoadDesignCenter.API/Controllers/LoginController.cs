@@ -2,109 +2,106 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
+using Jose;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 using SSKJ.RoadDesignCenter.API.Models;
 using SSKJ.RoadDesignCenter.IBusines.System;
+using SSKJ.RoadDesignCenter.Models.ProjectModel;
 using SSKJ.RoadDesignCenter.Utility;
 
 namespace SSKJ.RoadDesignCenter.API.Controllers
 {
-    [ApiController]
-    [Route("api/Login/[action]")]    
-    public class LoginController : ControllerBase
+    [Route("api/Login/[action]")]
+    public class LoginController : Controller
     {
         private readonly IUserProjectBusines userProjectBll;
         private readonly IBusines.Project.IUserBusines prjUserBll;
-        private readonly IHttpContextAccessor httpContextAccessor;
-        private readonly AppSettings appSettings;
 
-        public LoginController(IBusines.Project.IUserBusines prjUserBll, IUserProjectBusines userProjectBll, IHttpContextAccessor httpContextAccessor, IOptions<AppSettings> appSettings)
+        public LoginController(IBusines.Project.IUserBusines prjUserBll, IUserProjectBusines userProjectBll)
         {
             this.prjUserBll = prjUserBll;
             this.userProjectBll = userProjectBll;
-            this.httpContextAccessor = httpContextAccessor;
-            this.appSettings = appSettings.Value;
-            CurrentUser.Configure(httpContextAccessor);
         }
         //public IActionResult Index()
         //{
         //    return View();
         //}
 
-        //[AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> LoginIn(LoginModel model)
         {
-            if (!string.IsNullOrEmpty(model.ProjectCode))
+            try
             {
+                if (string.IsNullOrEmpty(model.ProjectCode))
+                    return BadRequest(new { message = "项目代码不能为空，请输入后再试!" });
+
                 var entity = await userProjectBll.GetEntityAsync(p => p.PrjIdentification == model.ProjectCode);
-                if (entity != null)
-                {
-                    var str = "server=139.224.200.194;port=3306;database=" + entity.PrjDataBase + ";user id=root;password=SSKJ*147258369";
-                    var user = await prjUserBll.GetEntityAsync(u => u.Account == model.UserName && u.Password == model.Password, str);
-                    if (user != null)
-                    {
-                        CurrentUser.UserConnectionString = str;
-                        CurrentUser.UserAccount = user.Account;
-                        CurrentUser.UserOID = user.UserId;
 
-                        var tokenHandler = new JwtSecurityTokenHandler();
-                        var key = Encoding.ASCII.GetBytes(appSettings.Secret);
-                        var tokenDescriptor = new SecurityTokenDescriptor
-                        {
-                            Subject = new ClaimsIdentity(new Claim[]
-                            {
-                                new Claim(ClaimTypes.Name, user.Account)
-                            }),
-                            Expires = DateTime.UtcNow.AddDays(7),
-                            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-                        };
-                        var token = tokenHandler.CreateToken(tokenDescriptor);
-
-                        return Ok(token);
-                    }
-                    else
-                    {
-                        return BadRequest(new { message = "用户名或密码错误，请重新输入!" });
-                    }
-                }
-                else
-                {
+                if (entity == null)
                     return BadRequest(new { message = "项目代码有误或不存在，请重新输入!" });
-                }
+
+                if (string.IsNullOrEmpty(entity.PrjDataBase))
+                    return BadRequest(new { message = "出错了，请稍后重试!" });
+
+                var str = "server=139.224.200.194;port=3306;database=" + entity.PrjDataBase + ";user id=root;password=SSKJ*147258369";
+                var user = await prjUserBll.GetEntityAsync(u => u.Account == model.UserName && u.Password == model.Password, str);
+
+                if (user == null)
+                    return BadRequest(new { message = "用户名或密码错误，请重新输入!" });
+
+                var _user = Utility.Tools.MapperUtils.MapTo<User, UserInfoModel>(user);
+                _user.ConnectionString = str;
+                _user.TokenExpiration = DateTime.Now.AddDays(1);
+
+                string token = Utility.Tools.TokenUtils.ToToken(_user);
+
+                return Ok(new { code = 1, token });
             }
-            else
+            catch (Exception)
             {
-                return BadRequest(new { message = "项目代码不能为空，请输入后再试!" });
+                return BadRequest(new { message = "出错了，请稍后重试!" });
             }
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetUserInfo()
+        public IActionResult GetUserInfo()
         {
-            var userId = CurrentUser.UserOID;
-            if (string.IsNullOrEmpty(userId))
+            try
             {
-                return BadRequest(new { message = "登录超时，请重新登录!" });
+                string strToken = "";
+                if (Request.Headers.TryGetValue("x-access-token", out StringValues token))
+                    strToken = token.ToString();
+
+                if (string.IsNullOrEmpty(strToken))
+                    return BadRequest(new { message = "登录超时，请重新登录!" });
+
+                var userInfo = Utility.Tools.TokenUtils.ToObject<UserInfoModel>(strToken);
+
+                if (userInfo.TokenExpiration <= DateTime.Now)
+                    return BadRequest(new { message = "登录超时，请重新登录!" });
+
+                return Ok(userInfo);
             }
-            else
+            catch (Exception)
             {
-                var user = await userProjectBll.GetEntityAsync(userId);
-                return Ok(user);
+                return BadRequest(new { message = "出错了，请稍后重试!" });
             }
         }
 
         [HttpPost]
         public IActionResult LoginOut()
         {
-            httpContextAccessor.HttpContext.Session.Clear();
+            HttpContext.Session.Clear();
             return Ok();
         }
 
