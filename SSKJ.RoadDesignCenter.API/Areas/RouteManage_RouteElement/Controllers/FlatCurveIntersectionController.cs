@@ -14,7 +14,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
 {
     [Route("api/FlatCurveIntersection/[action]")]
     [Area("RouteManage_RouteElement")]
-    public class FlatCurveIntersectionController : Controller
+    public class FlatCurveInterSectionController : Controller
     {
         public IFlatCurve_IntersectionBusines FlatCurveBus;
 
@@ -22,7 +22,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
 
         public string ConStr = "server=139.224.200.194;port=3306;database=road_project_001;user id=root;password=SSKJ*147258369";
 
-        public FlatCurveIntersectionController(IFlatCurve_IntersectionBusines flatCurveBus, HostingEnvironment hosting)
+        public FlatCurveInterSectionController(IFlatCurve_IntersectionBusines flatCurveBus, HostingEnvironment hosting)
         {
             FlatCurveBus = flatCurveBus;
             Hosting = hosting;
@@ -211,7 +211,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                 }
                 reader.Close();
                 FileUtils.DeleteFile(path);
-                return Content($"断链要素表导入数据成功{success}条，失败{error}条");
+                return Content($"平曲线表交点法导入数据成功{success}条，失败{error}条");
             }
             else
             {
