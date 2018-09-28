@@ -15,3 +15,4 @@ D:\project\AspNetCore\RoadDesginCenter\SSKJ.RoadDesignCenter.Utility\obj\Debug\n
 D:\project\AspNetCore\RoadDesginCenter\SSKJ.RoadDesignCenter.Utility\obj\Debug\netcoreapp2.1\SSKJ.RoadDesignCenter.Utility.AssemblyInfo.cs
 D:\project\AspNetCore\RoadDesginCenter\SSKJ.RoadDesignCenter.Utility\obj\Debug\netcoreapp2.1\SSKJ.RoadDesignCenter.Utility.dll
 D:\project\AspNetCore\RoadDesginCenter\SSKJ.RoadDesignCenter.Utility\obj\Debug\netcoreapp2.1\SSKJ.RoadDesignCenter.Utility.pdb
+D:\project\AspNetCore\RoadDesginCenter\SSKJ.RoadDesignCenter.Utility\obj\Debug\netcoreapp2.1\SSKJ.RoadDesignCenter.Utility.csprojAssemblyReference.cache
