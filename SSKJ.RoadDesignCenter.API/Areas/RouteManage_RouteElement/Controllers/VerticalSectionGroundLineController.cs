@@ -14,13 +14,11 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
 {
     [Route("api/VerticalSectionGroundLine/[action]")]
     [Area("RouteManage_RouteElement")]
-    public class VerticalSectionGroundLineController : Controller
+    public class VerticalSectionGroundLineController : BaseController
     {
         public IVerticalSectionGroundLineBusines SectionBus;
 
         public HostingEnvironment Hosting;
-
-        public string ConStr = "server=139.224.200.194;port=3306;database=road_project_001;user id=root;password=SSKJ*147258369";
 
         public VerticalSectionGroundLineController(IVerticalSectionGroundLineBusines sectionBus, HostingEnvironment hosting)
         {
@@ -30,7 +28,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
 
         public async Task<IActionResult> Get(int pageSize, int pageIndex)
         {
-            var result = await SectionBus.GetListAsync(e => true, e => e.SerialNumber, true, pageSize, pageIndex, ConStr);
+            var result = await SectionBus.GetListAsync(e => true, e => e.SerialNumber, true, pageSize, pageIndex, GetConStr());
             return Json(new
             {
                 data = result.Item1,
@@ -51,34 +49,34 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
             {
                 if (input.Id == null)
                 {
-                    var allList = await SectionBus.GetListAsync(ConStr);
+                    var allList = await SectionBus.GetListAsync(GetConStr());
                     var count = allList.Count();
                     input.Id = Guid.NewGuid().ToString();
                     input.SerialNumber = count + 1;
                     if (serialNumber != 0)
                     {
-                        var temp = await SectionBus.GetListAsync(e => e.SerialNumber >= serialNumber, ConStr);
+                        var temp = await SectionBus.GetListAsync(e => e.SerialNumber >= serialNumber, GetConStr());
                         var list = temp.ToList();
                         list.ForEach(async i =>
                         {
                             i.SerialNumber++;
-                            await SectionBus.UpdateAsync(i, ConStr);
+                            await SectionBus.UpdateAsync(i, GetConStr());
                         });
                         input.SerialNumber = serialNumber;
                     }
-                    var result = await SectionBus.CreateAsync(input, ConStr);
+                    var result = await SectionBus.CreateAsync(input, GetConStr());
                     return Json(result);
                 }
                 else
                 {
-                    var entity = await SectionBus.GetEntityAsync(e => e.Id == input.Id, ConStr);
+                    var entity = await SectionBus.GetEntityAsync(e => e.Id == input.Id, GetConStr());
                     if (entity == null)
                         return null;
                     entity.RouteId = input.RouteId;
                     entity.SerialNumber = input.SerialNumber;
                     entity.Stake = input.Stake;
                     entity.H = input.H;
-                    var result = await SectionBus.UpdateAsync(entity, ConStr);
+                    var result = await SectionBus.UpdateAsync(entity, GetConStr());
                     return Json(result);
                 }
             }
@@ -104,15 +102,15 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
         {
             if (list.Any())
             {
-                var result = await SectionBus.DeleteAsync(list, ConStr);
-                var temp = await SectionBus.GetListAsync(ConStr);
+                var result = await SectionBus.DeleteAsync(list, GetConStr());
+                var temp = await SectionBus.GetListAsync(GetConStr());
                 var allItem = temp.OrderBy(e => e.SerialNumber).ToList();
                 if (allItem.Any())
                 {
                     for (var i = 0; i < allItem.Count; i++)
                     {
                         allItem[i].SerialNumber = i + 1;
-                        await SectionBus.UpdateAsync(allItem[i], ConStr);
+                        await SectionBus.UpdateAsync(allItem[i], GetConStr());
                     }
 
                     return Json(true);
@@ -145,15 +143,15 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
             }
             else
             {
-                var data = await SectionBus.GetListAsync(ConStr);
+                var data = await SectionBus.GetListAsync(GetConStr());
                 if (serialNumber == data.Count())
                     return Json(new { code = 0, errorMsg = "选项不能再下移" });
                 topNumber = serialNumber;
                 bottomNumber = serialNumber + 1;
             }
 
-            var top = await SectionBus.GetEntityAsync(e => e.SerialNumber == topNumber, ConStr);
-            var bottom = await SectionBus.GetEntityAsync(e => e.SerialNumber == bottomNumber, ConStr);
+            var top = await SectionBus.GetEntityAsync(e => e.SerialNumber == topNumber, GetConStr());
+            var bottom = await SectionBus.GetEntityAsync(e => e.SerialNumber == bottomNumber, GetConStr());
             var temp = top.SerialNumber;
             top.SerialNumber = bottom.SerialNumber;
             bottom.SerialNumber = temp;
@@ -161,7 +159,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
             {
                 top, bottom
             };
-            var result = await SectionBus.UpdateAsync(update, ConStr);
+            var result = await SectionBus.UpdateAsync(update, GetConStr());
 
             return Json(new { code = result });
         }
@@ -183,7 +181,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                 while ((line = reader.ReadLine()) != null)
                 {
                     var tempList = line.Split(",");
-                    var list = await SectionBus.GetListAsync(ConStr);
+                    var list = await SectionBus.GetListAsync(GetConStr());
                     var temp = new VerticalSectionGroundLine()
                     {
                         Id = Guid.NewGuid().ToString(),
@@ -191,7 +189,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                         Stake = Convert.ToDouble(tempList[0]),
                         H = Convert.ToDouble(tempList[1]),
                     };
-                    var result = await SectionBus.CreateAsync(temp, ConStr);
+                    var result = await SectionBus.CreateAsync(temp, GetConStr());
                     if (result)
                         success++;
                     else error++;
@@ -213,7 +211,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
         public async Task<IActionResult> Export()
         {
             var content = "";
-            var data = await SectionBus.GetListAsync(ConStr);
+            var data = await SectionBus.GetListAsync(GetConStr());
             var tableData = data.OrderBy(e => e.SerialNumber).ToList();
             tableData.ForEach(i =>
             {

@@ -14,13 +14,11 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
 {
     [Route("api/GradeChangePoint/[action]")]
     [Area("RouteManage_RouteElement")]
-    public class GradeChangePointController : Controller
+    public class GradeChangePointController : BaseController
     {
         public IVerticalCurve_GradeChangePointBusines GradeBus;
 
         public HostingEnvironment Hosting;
-
-        public string ConStr = "server=139.224.200.194;port=3306;database=road_project_001;user id=root;password=SSKJ*147258369";
 
         public GradeChangePointController(IVerticalCurve_GradeChangePointBusines gradeBus, HostingEnvironment hosting)
         {
@@ -30,7 +28,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
 
         public async Task<IActionResult> Get(int pageSize, int pageIndex)
         {
-            var result = await GradeBus.GetListAsync(e => true, e => e.SerialNumber, true, pageSize, pageIndex, ConStr);
+            var result = await GradeBus.GetListAsync(e => true, e => e.SerialNumber, true, pageSize, pageIndex, GetConStr());
             return Json(new
             {
                 data = result.Item1,
@@ -51,27 +49,27 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
             {
                 if (input.GradeChangePointId == null)
                 {
-                    var allList = await GradeBus.GetListAsync(ConStr);
+                    var allList = await GradeBus.GetListAsync(GetConStr());
                     var count = allList.Count();
                     input.GradeChangePointId = Guid.NewGuid().ToString();
                     input.SerialNumber = count + 1;
                     if (serialNumber != 0)
                     {
-                        var temp = await GradeBus.GetListAsync(e => e.SerialNumber >= serialNumber, ConStr);
+                        var temp = await GradeBus.GetListAsync(e => e.SerialNumber >= serialNumber, GetConStr());
                         var list = temp.ToList();
                         list.ForEach(async i =>
                         {
                             i.SerialNumber++;
-                            await GradeBus.UpdateAsync(i, ConStr);
+                            await GradeBus.UpdateAsync(i, GetConStr());
                         });
                         input.SerialNumber = serialNumber;
                     }
-                    var result = await GradeBus.CreateAsync(input, ConStr);
+                    var result = await GradeBus.CreateAsync(input, GetConStr());
                     return Json(result);
                 }
                 else
                 {
-                    var entity = await GradeBus.GetEntityAsync(e => e.GradeChangePointId == input.GradeChangePointId, ConStr);
+                    var entity = await GradeBus.GetEntityAsync(e => e.GradeChangePointId == input.GradeChangePointId, GetConStr());
                     if (entity == null)
                         return null;
                     entity.VerticalCurveId = input.VerticalCurveId;
@@ -79,7 +77,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                     entity.Stake = input.Stake;
                     entity.H = input.H;
                     entity.R = input.R;
-                    var result = await GradeBus.UpdateAsync(entity, ConStr);
+                    var result = await GradeBus.UpdateAsync(entity, GetConStr());
                     return Json(result);
                 }
             }
@@ -105,15 +103,15 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
         {
             if (list.Any())
             {
-                var result = await GradeBus.DeleteAsync(list, ConStr);
-                var temp = await GradeBus.GetListAsync(ConStr);
+                var result = await GradeBus.DeleteAsync(list, GetConStr());
+                var temp = await GradeBus.GetListAsync(GetConStr());
                 var allItem = temp.OrderBy(e => e.SerialNumber).ToList();
                 if (allItem.Any())
                 {
                     for (var i = 0; i < allItem.Count; i++)
                     {
                         allItem[i].SerialNumber = i + 1;
-                        await GradeBus.UpdateAsync(allItem[i], ConStr);
+                        await GradeBus.UpdateAsync(allItem[i], GetConStr());
                     }
 
                     return Json(true);
@@ -146,15 +144,15 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
             }
             else
             {
-                var data = await GradeBus.GetListAsync(ConStr);
+                var data = await GradeBus.GetListAsync(GetConStr());
                 if (serialNumber == data.Count())
                     return Json(new { code = 0, errorMsg = "选项不能再下移" });
                 topNumber = serialNumber;
                 bottomNumber = serialNumber + 1;
             }
 
-            var top = await GradeBus.GetEntityAsync(e => e.SerialNumber == topNumber, ConStr);
-            var bottom = await GradeBus.GetEntityAsync(e => e.SerialNumber == bottomNumber, ConStr);
+            var top = await GradeBus.GetEntityAsync(e => e.SerialNumber == topNumber, GetConStr());
+            var bottom = await GradeBus.GetEntityAsync(e => e.SerialNumber == bottomNumber, GetConStr());
             var temp = top.SerialNumber;
             top.SerialNumber = bottom.SerialNumber;
             bottom.SerialNumber = temp;
@@ -162,7 +160,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
             {
                 top, bottom
             };
-            var result = await GradeBus.UpdateAsync(update, ConStr);
+            var result = await GradeBus.UpdateAsync(update, GetConStr());
 
             return Json(new { code = result });
         }
@@ -184,7 +182,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                 while ((line = reader.ReadLine()) != null)
                 {
                     var tempList = line.Split(",");
-                    var list = await GradeBus.GetListAsync(ConStr);
+                    var list = await GradeBus.GetListAsync(GetConStr());
                     var temp = new VerticalCurve_GradeChangePoint()
                     {
                         GradeChangePointId = Guid.NewGuid().ToString(),
@@ -193,7 +191,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                         H = Convert.ToDouble(tempList[1]),
                         R = Convert.ToDouble(tempList[2])
                     };
-                    var result = await GradeBus.CreateAsync(temp, ConStr);
+                    var result = await GradeBus.CreateAsync(temp, GetConStr());
                     if (result)
                         success++;
                     else error++;
@@ -215,7 +213,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
         public async Task<IActionResult> Export()
         {
             var content = "";
-            var data = await GradeBus.GetListAsync(ConStr);
+            var data = await GradeBus.GetListAsync(GetConStr());
             var tableData = data.OrderBy(e => e.SerialNumber).ToList();
             tableData.ForEach(i =>
             {

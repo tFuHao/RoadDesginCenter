@@ -14,13 +14,11 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
 {
     [Route("api/CrossSectionGroundLine/[action]")]
     [Area("RouteManage_RouteElement")]
-    public class CrossSectionGroundLineController : Controller
+    public class CrossSectionGroundLineController : BaseController
     {
         public ICrossSectionGroundLineBusines SectionBus;
 
         public HostingEnvironment Hosting;
-
-        public string ConStr = "server=139.224.200.194;port=3306;database=road_project_001;user id=root;password=SSKJ*147258369";
 
         public CrossSectionGroundLineController(ICrossSectionGroundLineBusines sectionBus, HostingEnvironment hosting)
         {
@@ -30,7 +28,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
 
         public async Task<IActionResult> Get(int pageSize, int pageIndex)
         {
-            var result = await SectionBus.GetListAsync(e => true, e => e.CrossSectionGroundLineId, true, pageSize, pageIndex, ConStr);
+            var result = await SectionBus.GetListAsync(e => true, e => e.CrossSectionGroundLineId, true, pageSize, pageIndex, GetConStr());
             return Json(new
             {
                 data = result.Item1,
@@ -52,17 +50,17 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                 if (input.CrossSectionGroundLineId == null)
                 {
                     input.CrossSectionGroundLineId = Guid.NewGuid().ToString();
-                    var result = await SectionBus.CreateAsync(input, ConStr);
+                    var result = await SectionBus.CreateAsync(input, GetConStr());
                     return Json(result);
                 }
                 else
                 {
-                    var entity = await SectionBus.GetEntityAsync(e => e.CrossSectionGroundLineId == input.CrossSectionGroundLineId, ConStr);
+                    var entity = await SectionBus.GetEntityAsync(e => e.CrossSectionGroundLineId == input.CrossSectionGroundLineId, GetConStr());
                     if (entity == null)
                         return null;
                     entity.RouteId = input.RouteId;
                     entity.Stake = input.Stake;
-                    var result = await SectionBus.UpdateAsync(entity, ConStr);
+                    var result = await SectionBus.UpdateAsync(entity, GetConStr());
                     return Json(result);
                 }
             }
@@ -88,7 +86,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
         {
             if (list.Any())
             {
-                var result = await SectionBus.DeleteAsync(list, ConStr);
+                var result = await SectionBus.DeleteAsync(list, GetConStr());
                 return Json(result);
             }
             return Json(false);
@@ -116,7 +114,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                         CrossSectionGroundLineId = Guid.NewGuid().ToString(),
                         Stake = Convert.ToDouble(tempList[0]),
                     };
-                    var result = await SectionBus.CreateAsync(temp, ConStr);
+                    var result = await SectionBus.CreateAsync(temp, GetConStr());
                     if (result)
                         success++;
                     else error++;
@@ -138,7 +136,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
         public async Task<IActionResult> Export()
         {
             var content = "";
-            var data = await SectionBus.GetListAsync(ConStr);
+            var data = await SectionBus.GetListAsync(GetConStr());
             data.ToList().ForEach(i =>
             {
                 content += $"{i.Stake},\n";

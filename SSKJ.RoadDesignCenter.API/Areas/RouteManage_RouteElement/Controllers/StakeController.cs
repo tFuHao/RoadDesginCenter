@@ -14,13 +14,11 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
 {
     [Route("api/Stake/[action]")]
     [Area("RouteManage_RouteElement")]
-    public class StakeController : Controller
+    public class StakeController : BaseController
     {
         public IStakeBusines StakeBus;
 
         public HostingEnvironment HostingEnvironmentost;
-
-        public string ConStr = "server=139.224.200.194;port=3306;database=road_project_001;user id=root;password=SSKJ*147258369";
 
         public StakeController(IStakeBusines stakeBus, HostingEnvironment hostingEnvironmentost)
         {
@@ -30,7 +28,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
 
         public async Task<IActionResult> Get(int pageSize, int pageIndex)
         {
-            var result = await StakeBus.GetListAsync(e => true, e => e.SerialNumber, true, pageSize, pageIndex, ConStr);
+            var result = await StakeBus.GetListAsync(e => true, e => e.SerialNumber, true, pageSize, pageIndex, GetConStr());
             return Json(new
             {
                 data = result.Item1,
@@ -51,33 +49,33 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
             {
                 if (input.StakeId == null)
                 {
-                    var allList = await StakeBus.GetListAsync(ConStr);
+                    var allList = await StakeBus.GetListAsync(GetConStr());
                     var count = allList.Count();
                     input.StakeId = Guid.NewGuid().ToString();
                     input.SerialNumber = count + 1;
                     if (serialNumber != 0)
                     {
-                        var temp = await StakeBus.GetListAsync(e => e.SerialNumber >= serialNumber, ConStr);
+                        var temp = await StakeBus.GetListAsync(e => e.SerialNumber >= serialNumber, GetConStr());
                         var list = temp.ToList();
                         list.ForEach(async i =>
                         {
                             i.SerialNumber++;
-                            await StakeBus.UpdateAsync(i, ConStr);
+                            await StakeBus.UpdateAsync(i, GetConStr());
                         });
                         input.SerialNumber = serialNumber;
                     }
 
-                    var result = await StakeBus.CreateAsync(input, ConStr);
+                    var result = await StakeBus.CreateAsync(input, GetConStr());
                     return Json(result);
                 }
                 else
                 {
-                    var entity = await StakeBus.GetEntityAsync(e => e.StakeId == input.StakeId, ConStr);
+                    var entity = await StakeBus.GetEntityAsync(e => e.StakeId == input.StakeId, GetConStr());
                     if (entity == null)
                         return null;
                     entity.Offset = input.Offset;
                     entity.RightCorner = input.RightCorner;
-                    var result = await StakeBus.UpdateAsync(entity, ConStr);
+                    var result = await StakeBus.UpdateAsync(entity, GetConStr());
                     return Json(result);
                 }
             }
@@ -103,15 +101,15 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
         {
             if (list.Any())
             {
-                var result = await StakeBus.DeleteAsync(list, ConStr);
-                var temp = await StakeBus.GetListAsync(ConStr);
+                var result = await StakeBus.DeleteAsync(list, GetConStr());
+                var temp = await StakeBus.GetListAsync(GetConStr());
                 var allItem = temp.OrderBy(e => e.SerialNumber).ToList();
                 if (allItem.Any())
                 {
                     for (var i = 0; i < allItem.Count; i++)
                     {
                         allItem[i].SerialNumber = i + 1;
-                        await StakeBus.UpdateAsync(allItem[i], ConStr);
+                        await StakeBus.UpdateAsync(allItem[i], GetConStr());
                     }
 
                     return Json(true);
@@ -144,15 +142,15 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
             }
             else
             {
-                var data = await StakeBus.GetListAsync(ConStr);
+                var data = await StakeBus.GetListAsync(GetConStr());
                 if (serialNumber == data.Count())
                     return Json(new { code = 0, errorMsg = "选项不能再下移" });
                 topNumber = serialNumber;
                 bottomNumber = serialNumber + 1;
             }
 
-            var top = await StakeBus.GetEntityAsync(e => e.SerialNumber == topNumber, ConStr);
-            var bottom = await StakeBus.GetEntityAsync(e => e.SerialNumber == bottomNumber, ConStr);
+            var top = await StakeBus.GetEntityAsync(e => e.SerialNumber == topNumber, GetConStr());
+            var bottom = await StakeBus.GetEntityAsync(e => e.SerialNumber == bottomNumber, GetConStr());
             var temp = top.SerialNumber;
             top.SerialNumber = bottom.SerialNumber;
             bottom.SerialNumber = temp;
@@ -160,7 +158,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
             {
                 top, bottom
             };
-            var result = await StakeBus.UpdateAsync(update, ConStr);
+            var result = await StakeBus.UpdateAsync(update, GetConStr());
 
             return Json(new { code = result });
         }
@@ -182,7 +180,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                 while ((line = reader.ReadLine()) != null)
                 {
                     var tempList = line.Split(",");
-                    var list = await StakeBus.GetListAsync(ConStr);
+                    var list = await StakeBus.GetListAsync(GetConStr());
                     var temp = new Stake()
                     {
                         StakeId = Guid.NewGuid().ToString(),
@@ -190,7 +188,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                         Offset = Convert.ToDouble(tempList[0]),
                         RightCorner = Convert.ToDouble(tempList[1])
                     };
-                    var result = await StakeBus.CreateAsync(temp, ConStr);
+                    var result = await StakeBus.CreateAsync(temp, GetConStr());
                     if (result)
                         success++;
                     else error++;
@@ -212,7 +210,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
         public async Task<IActionResult> Export()
         {
             var content = "";
-            var data = await StakeBus.GetListAsync(ConStr);
+            var data = await StakeBus.GetListAsync(GetConStr());
             var tableData = data.OrderBy(e => e.SerialNumber).ToList();
             tableData.ForEach(i =>
             {

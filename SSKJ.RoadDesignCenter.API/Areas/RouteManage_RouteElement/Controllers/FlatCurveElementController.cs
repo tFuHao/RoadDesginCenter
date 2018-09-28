@@ -14,13 +14,11 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
 {
     [Route("api/FlatCurveElement/[action]")]
     [Area("RouteManage_RouteElement")]
-    public class FlatCurveElementController : Controller
+    public class FlatCurveElementController : BaseController
     {
         public IFlatCurve_CurveElementBusines FlatCurveBus;
 
         public HostingEnvironment Hosting;
-
-        public string ConStr = "server=139.224.200.194;port=3306;database=road_project_001;user id=root;password=SSKJ*147258369";
 
         public FlatCurveElementController(IFlatCurve_CurveElementBusines flatCurveBus, HostingEnvironment hosting)
         {
@@ -30,7 +28,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
 
         public async Task<IActionResult> Get(int pageSize, int pageIndex)
         {
-            var result = await FlatCurveBus.GetListAsync(e => true, e => e.SerialNumber, true, pageSize, pageIndex, ConStr);
+            var result = await FlatCurveBus.GetListAsync(e => true, e => e.SerialNumber, true, pageSize, pageIndex, GetConStr());
             return Json(new
             {
                 data = result.Item1,
@@ -51,28 +49,28 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
             {
                 if (input.CurveElementId == null)
                 {
-                    var allList = await FlatCurveBus.GetListAsync(ConStr);
+                    var allList = await FlatCurveBus.GetListAsync(GetConStr());
                     var count = allList.Count();
                     input.CurveElementId = Guid.NewGuid().ToString();
                     input.SerialNumber = count + 1;
                     if (serialNumber != 0)
                     {
-                        var temp = await FlatCurveBus.GetListAsync(e => e.SerialNumber >= serialNumber, ConStr);
+                        var temp = await FlatCurveBus.GetListAsync(e => e.SerialNumber >= serialNumber, GetConStr());
                         var list = temp.ToList();
                         list.ForEach(async i =>
                         {
                             i.SerialNumber++;
-                            await FlatCurveBus.UpdateAsync(i, ConStr);
+                            await FlatCurveBus.UpdateAsync(i, GetConStr());
                         });
                         input.SerialNumber = serialNumber;
                     }
 
-                    var result = await FlatCurveBus.CreateAsync(input, ConStr);
+                    var result = await FlatCurveBus.CreateAsync(input, GetConStr());
                     return Json(result);
                 }
                 else
                 {
-                    var entity = await FlatCurveBus.GetEntityAsync(e => e.CurveElementId == input.CurveElementId, ConStr);
+                    var entity = await FlatCurveBus.GetEntityAsync(e => e.CurveElementId == input.CurveElementId, GetConStr());
                     if (entity == null)
                         return null;
                     entity.Stake = input.Stake;
@@ -82,7 +80,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                     entity.TurnTo = input.TurnTo;
                     entity.R = input.R;
                     entity.Description = input.Description;
-                    var result = await FlatCurveBus.UpdateAsync(entity, ConStr);
+                    var result = await FlatCurveBus.UpdateAsync(entity, GetConStr());
                     return Json(result);
                 }
             }
@@ -108,15 +106,15 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
         {
             if (list.Any())
             {
-                var result = await FlatCurveBus.DeleteAsync(list, ConStr);
-                var temp = await FlatCurveBus.GetListAsync(ConStr);
+                var result = await FlatCurveBus.DeleteAsync(list, GetConStr());
+                var temp = await FlatCurveBus.GetListAsync(GetConStr());
                 var allItem = temp.OrderBy(e => e.SerialNumber).ToList();
                 if (allItem.Any())
                 {
                     for (var i = 0; i < allItem.Count; i++)
                     {
                         allItem[i].SerialNumber = i + 1;
-                        await FlatCurveBus.UpdateAsync(allItem[i], ConStr);
+                        await FlatCurveBus.UpdateAsync(allItem[i], GetConStr());
                     }
 
                     return Json(true);
@@ -149,15 +147,15 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
             }
             else
             {
-                var data = await FlatCurveBus.GetListAsync(ConStr);
+                var data = await FlatCurveBus.GetListAsync(GetConStr());
                 if (serialNumber == data.Count())
                     return Json(new { code = 0, errorMsg = "选项不能再下移" });
                 topNumber = serialNumber;
                 bottomNumber = serialNumber + 1;
             }
 
-            var top = await FlatCurveBus.GetEntityAsync(e => e.SerialNumber == topNumber, ConStr);
-            var bottom = await FlatCurveBus.GetEntityAsync(e => e.SerialNumber == bottomNumber, ConStr);
+            var top = await FlatCurveBus.GetEntityAsync(e => e.SerialNumber == topNumber, GetConStr());
+            var bottom = await FlatCurveBus.GetEntityAsync(e => e.SerialNumber == bottomNumber, GetConStr());
             var temp = top.SerialNumber;
             top.SerialNumber = bottom.SerialNumber;
             bottom.SerialNumber = temp;
@@ -165,7 +163,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
             {
                 top, bottom
             };
-            var result = await FlatCurveBus.UpdateAsync(update, ConStr);
+            var result = await FlatCurveBus.UpdateAsync(update, GetConStr());
 
             return Json(new { code = result });
         }
@@ -187,7 +185,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                 while ((line = reader.ReadLine()) != null)
                 {
                     var tempList = line.Split(",");
-                    var list = await FlatCurveBus.GetListAsync(ConStr);
+                    var list = await FlatCurveBus.GetListAsync(GetConStr());
                     var temp = new FlatCurve_CurveElement()
                     {
                         CurveElementId = Guid.NewGuid().ToString(),
@@ -200,7 +198,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                         R = Convert.ToDouble(tempList[5]),
                         Description = tempList[6]
                     };
-                    var result = await FlatCurveBus.CreateAsync(temp, ConStr);
+                    var result = await FlatCurveBus.CreateAsync(temp, GetConStr());
                     if (result)
                         success++;
                     else error++;
@@ -222,7 +220,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
         public async Task<IActionResult> Export()
         {
             var content = "";
-            var data = await FlatCurveBus.GetListAsync(ConStr);
+            var data = await FlatCurveBus.GetListAsync(GetConStr());
             var tableData = data.OrderBy(e => e.SerialNumber).ToList();
             tableData.ForEach(i =>
             {

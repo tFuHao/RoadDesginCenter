@@ -14,13 +14,11 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
 {
     [Route("api/SamplingLine/[action]")]
     [Area("RouteManage_RouteElement")]
-    public class SamplingLineController : Controller
+    public class SamplingLineController : BaseController
     {
         public ISampleLineBusines SampleBus;
 
         public HostingEnvironment HostingEnvironmentost;
-
-        public string ConStr = "server=139.224.200.194;port=3306;database=road_project_001;user id=root;password=SSKJ*147258369";
 
         public SamplingLineController(ISampleLineBusines sampleBus, HostingEnvironment hostingEnvironmentost)
         {
@@ -30,7 +28,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
 
         public async Task<IActionResult> Get(int pageSize, int pageIndex)
         {
-            var result = await SampleBus.GetListAsync(e => true, e => e.SerialNumber, true, pageSize, pageIndex, ConStr);
+            var result = await SampleBus.GetListAsync(e => true, e => e.SerialNumber, true, pageSize, pageIndex, GetConStr());
             return Json(new
             {
                 data = result.Item1,
@@ -51,34 +49,34 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
             {
                 if (input.SampleLineId == null)
                 {
-                    var allList = await SampleBus.GetListAsync(ConStr);
+                    var allList = await SampleBus.GetListAsync(GetConStr());
                     var count = allList.Count();
                     input.SampleLineId = Guid.NewGuid().ToString();
                     input.SerialNumber = count + 1;
                     if (serialNumber != 0)
                     {
-                        var temp = await SampleBus.GetListAsync(e => e.SerialNumber >= serialNumber, ConStr);
+                        var temp = await SampleBus.GetListAsync(e => e.SerialNumber >= serialNumber, GetConStr());
                         var list = temp.ToList();
                         list.ForEach(async i =>
                         {
                             i.SerialNumber++;
-                            await SampleBus.UpdateAsync(i, ConStr);
+                            await SampleBus.UpdateAsync(i, GetConStr());
                         });
                         input.SerialNumber = serialNumber;
                     }
 
-                    var result = await SampleBus.CreateAsync(input, ConStr);
+                    var result = await SampleBus.CreateAsync(input, GetConStr());
                     return Json(result);
                 }
                 else
                 {
-                    var entity = await SampleBus.GetEntityAsync(e => e.SampleLineId == input.SampleLineId, ConStr);
+                    var entity = await SampleBus.GetEntityAsync(e => e.SampleLineId == input.SampleLineId, GetConStr());
                     if (entity == null)
                         return null;
                     entity.Stake = input.Stake;
                     entity.LeftOffset = input.LeftOffset;
                     entity.RightOffset = input.RightOffset;
-                    var result = await SampleBus.UpdateAsync(entity, ConStr);
+                    var result = await SampleBus.UpdateAsync(entity, GetConStr());
                     return Json(result);
                 }
             }
@@ -104,15 +102,15 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
         {
             if (list.Any())
             {
-                var result = await SampleBus.DeleteAsync(list, ConStr);
-                var temp = await SampleBus.GetListAsync(ConStr);
+                var result = await SampleBus.DeleteAsync(list, GetConStr());
+                var temp = await SampleBus.GetListAsync(GetConStr());
                 var allItem = temp.OrderBy(e => e.SerialNumber).ToList();
                 if (allItem.Any())
                 {
                     for (var i = 0; i < allItem.Count; i++)
                     {
                         allItem[i].SerialNumber = i + 1;
-                        await SampleBus.UpdateAsync(allItem[i], ConStr);
+                        await SampleBus.UpdateAsync(allItem[i], GetConStr());
                     }
 
                     return Json(true);
@@ -145,15 +143,15 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
             }
             else
             {
-                var data = await SampleBus.GetListAsync(ConStr);
+                var data = await SampleBus.GetListAsync(GetConStr());
                 if (serialNumber == data.Count())
                     return Json(new { code = 0, errorMsg = "选项不能再下移" });
                 topNumber = serialNumber;
                 bottomNumber = serialNumber + 1;
             }
 
-            var top = await SampleBus.GetEntityAsync(e => e.SerialNumber == topNumber, ConStr);
-            var bottom = await SampleBus.GetEntityAsync(e => e.SerialNumber == bottomNumber, ConStr);
+            var top = await SampleBus.GetEntityAsync(e => e.SerialNumber == topNumber, GetConStr());
+            var bottom = await SampleBus.GetEntityAsync(e => e.SerialNumber == bottomNumber, GetConStr());
             var temp = top.SerialNumber;
             top.SerialNumber = bottom.SerialNumber;
             bottom.SerialNumber = temp;
@@ -161,7 +159,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
             {
                 top, bottom
             };
-            var result = await SampleBus.UpdateAsync(update, ConStr);
+            var result = await SampleBus.UpdateAsync(update, GetConStr());
 
             return Json(new { code = result });
         }
@@ -183,7 +181,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                 while ((line = reader.ReadLine()) != null)
                 {
                     var tempList = line.Split(",");
-                    var list = await SampleBus.GetListAsync(ConStr);
+                    var list = await SampleBus.GetListAsync(GetConStr());
                     var temp = new SampleLine()
                     {
                         SampleLineId = Guid.NewGuid().ToString(),
@@ -192,7 +190,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                         LeftOffset = Convert.ToDouble(tempList[1]),
                         RightOffset = Convert.ToDouble(tempList[2])
                     };
-                    var result = await SampleBus.CreateAsync(temp, ConStr);
+                    var result = await SampleBus.CreateAsync(temp, GetConStr());
                     if (result)
                         success++;
                     else error++;
@@ -214,7 +212,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
         public async Task<IActionResult> Export()
         {
             var content = "";
-            var data = await SampleBus.GetListAsync(ConStr);
+            var data = await SampleBus.GetListAsync(GetConStr());
             var tableData = data.OrderBy(e => e.SerialNumber).ToList();
             tableData.ForEach(i =>
             {
