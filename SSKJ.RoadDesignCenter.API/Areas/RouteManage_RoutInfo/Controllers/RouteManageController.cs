@@ -34,35 +34,12 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RoutInfo
 
         public async Task<IActionResult> Get(int pageSize, int pageIndex)
         {
-            var list = await RouteBus.GetListAsync(e => e.ParentId == null, e => e.RouteId, true, pageSize, pageIndex, ConStr);
-            var result = new List<RouteDto>();
-            var test = new RouteDto()
-            {
-                RouteId = "test",
-                ParentId = list.Item1.ToList()[0].RouteId,
-                RouteName = "Test"
-            };
-            list.Item1.ToList().ForEach(i =>
-            {
-                var temp = Mapper.Map<Route, RouteDto>(i);
-                temp.Children = new List<RouteDto>(){test};
-                result.Add(temp);
-            });
+            var data = await RouteBus.GetListAsync(e => e.ParentId == null, e => e.RouteId, true, pageSize, pageIndex, ConStr);
             return Json(new
             {
-                data = result,
-                count = list.Item2
+                data = data.Item1,
+                count = data.Item2
             });
-        }
-
-        public async Task<IActionResult> GetChildren(string parentId)
-        {
-            if (!string.IsNullOrEmpty(parentId))
-            {
-                var result = await RouteBus.GetListAsync(e => e.ParentId == parentId, ConStr);
-                return Json(result);
-            }
-            return null;
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 
 namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Models
@@ -15,6 +16,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Models
         public int? RouteType { get; set; }
         public string Description { get; set; }
         public string DesignSpeed { get; set; }
-        public IEnumerable<RouteDto> Children { get; set; }
+        public Task<List<RouteDto>> Children { get; set; }
+        public int ChildNum { get; set; }
     }
 }
