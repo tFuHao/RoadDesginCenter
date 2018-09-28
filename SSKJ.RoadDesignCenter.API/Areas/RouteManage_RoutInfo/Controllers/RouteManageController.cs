@@ -132,5 +132,32 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RoutInfo
             }
             return Json(false);
         }
+
+        /// <summary>
+        /// 路线信息页面获取路线信息
+        /// </summary>
+        /// <param name="routeId">路线Id</param>
+        /// <returns></returns>
+        public async Task<IActionResult> GetRouteInfo(string routeId)
+        {
+            if (!string.IsNullOrEmpty(routeId))
+            {
+                var result = await RouteBus.GetEntityAsync(e => e.RouteId == routeId, GetConStr());
+                return Json(result);
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// 路线信息更改路线列表
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> GetRouteList()
+        {
+            var list = await RouteBus.GetListAsync(e => true, GetConStr());
+            var result = list.ToList().RouteTreeGridJson(null);
+            return Json(result);
+        }
     }
 }
