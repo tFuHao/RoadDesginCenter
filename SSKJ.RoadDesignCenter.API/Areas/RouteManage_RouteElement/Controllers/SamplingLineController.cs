@@ -28,6 +28,16 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
             HostingEnvironmentost = hostingEnvironmentost;
         }
 
+        public async Task<IActionResult> Get(int pageSize, int pageIndex)
+        {
+            var result = await SampleBus.GetListAsync(e => true, e => e.SerialNumber, true, pageSize, pageIndex, ConStr);
+            return Json(new
+            {
+                data = result.Item1,
+                count = result.Item2
+            });
+        }
+
         /// <summary>
         /// 添加 或 插入 断链数据方法
         /// </summary>
