@@ -16,9 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="jose-jwt" Version="2.4.0" />
+    <PackageReference Include="AutoMapper" Version="7.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.1.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="2.4.0" />
   </ItemGroup>
 
@@ -42,9 +41,7 @@
     <Folder Include="Areas\RouteManage_RouteElement\Data\" />
     <Folder Include="Areas\RouteManage_RouteElement\Models\" />
     <Folder Include="Areas\RouteManage_RouteElement\Views\" />
-    <Folder Include="Areas\RouteManage_RoutInfo\Controllers\" />
     <Folder Include="Areas\RouteManage_RoutInfo\Data\" />
-    <Folder Include="Areas\RouteManage_RoutInfo\Models\" />
     <Folder Include="Areas\RouteManage_RoutInfo\Views\" />
     <Folder Include="wwwroot\" />
     <Folder Include="wwwroot\upload\import\" />

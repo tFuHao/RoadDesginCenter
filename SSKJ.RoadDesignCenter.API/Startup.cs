@@ -14,6 +14,9 @@ using SSKJ.RoadDesignCenter.API.Models;
 using SSKJ.RoadDesignCenter.DependencyInjection;
 using System;
 using System.Text;
+using AutoMapper;
+using SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Models;
+using SSKJ.RoadDesignCenter.Models.ProjectModel;
 
 namespace SSKJ.RoadDesignCenter.API
 {
@@ -121,6 +124,9 @@ namespace SSKJ.RoadDesignCenter.API
 
 
 
+
+            //自动映射初始化
+            Mapper.Initialize(cfg => { cfg.CreateMap<Route, RouteDto>(); });
 
         }
 

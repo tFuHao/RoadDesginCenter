@@ -14,13 +14,11 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
 {
     [Route("api/BrokenChain/[action]")]
     [Area("RouteManage_RouteElement")]
-    public class BrokenChainController : Controller
+    public class BrokenChainController : BaseController
     {
         public IBrokenChainageBusines BrokenBus;
 
         public HostingEnvironment HostingEnvironmentost;
-
-        public string ConStr = "server=139.224.200.194;port=3306;database=road_project_001;user id=root;password=SSKJ*147258369";
 
         public BrokenChainController(IBrokenChainageBusines brokenBus, HostingEnvironment hostingEnvironmentost)
         {
@@ -30,7 +28,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
 
         public async Task<IActionResult> Get(int pageSize, int pageIndex)
         {
-            var result = await BrokenBus.GetListAsync(e => true, e => e.SerialNumber, true, pageSize, pageIndex, ConStr);
+            var result = await BrokenBus.GetListAsync(e => true, e => e.SerialNumber, true, pageSize, pageIndex, GetConStr());
             return Json(new
             {
                 data = result.Item1,
@@ -51,34 +49,34 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
             {
                 if (input.BrokenId == null)
                 {
-                    var allList = await BrokenBus.GetListAsync(ConStr);
+                    var allList = await BrokenBus.GetListAsync(GetConStr());
                     var count = allList.Count();
                     input.BrokenId = Guid.NewGuid().ToString();
                     input.SerialNumber = count + 1;
                     if (serialNumber != 0)
                     {
-                        var temp = await BrokenBus.GetListAsync(e => e.SerialNumber >= serialNumber, ConStr);
+                        var temp = await BrokenBus.GetListAsync(e => e.SerialNumber >= serialNumber, GetConStr());
                         var list = temp.ToList();
                         list.ForEach(async i =>
                         {
                             i.SerialNumber++;
-                            await BrokenBus.UpdateAsync(i, ConStr);
+                            await BrokenBus.UpdateAsync(i, GetConStr());
                         });
                         input.SerialNumber = serialNumber;
                     }
 
-                    var result = await BrokenBus.CreateAsync(input, ConStr);
+                    var result = await BrokenBus.CreateAsync(input, GetConStr());
                     return Json(result);
                 }
                 else
                 {
-                    var entity = await BrokenBus.GetEntityAsync(e => e.BrokenId == input.BrokenId, ConStr);
+                    var entity = await BrokenBus.GetEntityAsync(e => e.BrokenId == input.BrokenId, GetConStr());
                     if (entity == null)
                         return null;
                     entity.FrontStake = input.FrontStake;
                     entity.AfterStake = input.AfterStake;
                     entity.SerialNumber = input.SerialNumber;
-                    var result = await BrokenBus.UpdateAsync(entity, ConStr);
+                    var result = await BrokenBus.UpdateAsync(entity, GetConStr());
                     return Json(result);
                 }
             }
@@ -104,15 +102,15 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
         {
             if (list.Any())
             {
-                var result = await BrokenBus.DeleteAsync(list, ConStr);
-                var temp = await BrokenBus.GetListAsync(ConStr);
+                var result = await BrokenBus.DeleteAsync(list, GetConStr());
+                var temp = await BrokenBus.GetListAsync(GetConStr());
                 var allItem = temp.OrderBy(e => e.SerialNumber).ToList();
                 if (allItem.Any())
                 {
                     for (var i = 0; i < allItem.Count; i++)
                     {
                         allItem[i].SerialNumber = i + 1;
-                        await BrokenBus.UpdateAsync(allItem[i], ConStr);
+                        await BrokenBus.UpdateAsync(allItem[i], GetConStr());
                     }
 
                     return Json(true);
@@ -145,15 +143,15 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
             }
             else
             {
-                var data = await BrokenBus.GetListAsync(ConStr);
+                var data = await BrokenBus.GetListAsync(GetConStr());
                 if (serialNumber == data.Count())
                     return Json(new { code = 0, errorMsg = "选项不能再下移" });
                 topNumber = serialNumber;
                 bottomNumber = serialNumber + 1;
             }
 
-            var top = await BrokenBus.GetEntityAsync(e => e.SerialNumber == topNumber, ConStr);
-            var bottom = await BrokenBus.GetEntityAsync(e => e.SerialNumber == bottomNumber, ConStr);
+            var top = await BrokenBus.GetEntityAsync(e => e.SerialNumber == topNumber, GetConStr());
+            var bottom = await BrokenBus.GetEntityAsync(e => e.SerialNumber == bottomNumber, GetConStr());
             var temp = top.SerialNumber;
             top.SerialNumber = bottom.SerialNumber;
             bottom.SerialNumber = temp;
@@ -161,7 +159,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
             {
                 top, bottom
             };
-            var result = await BrokenBus.UpdateAsync(update, ConStr);
+            var result = await BrokenBus.UpdateAsync(update, GetConStr());
             
             return Json(new { code = result });
         }
@@ -183,7 +181,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                 while ((line = reader.ReadLine()) != null)
                 {
                     var tempList = line.Split(",");
-                    var list = await BrokenBus.GetListAsync(ConStr);
+                    var list = await BrokenBus.GetListAsync(GetConStr());
                     var temp = new BrokenChainage()
                     {
                         BrokenId = Guid.NewGuid().ToString(),
@@ -191,7 +189,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                         FrontStake = Convert.ToDouble(tempList[0]),
                         AfterStake = Convert.ToDouble(tempList[1])
                     };
-                    var result = await BrokenBus.CreateAsync(temp, ConStr);
+                    var result = await BrokenBus.CreateAsync(temp, GetConStr());
                     if (result)
                         success++;
                     else error++;
@@ -213,7 +211,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
         public async Task<IActionResult> Export()
         {
             var content = "";
-            var data = await BrokenBus.GetListAsync(ConStr);
+            var data = await BrokenBus.GetListAsync(GetConStr());
             var tableData = data.OrderBy(e => e.SerialNumber).ToList();
             tableData.ForEach(i =>
             {

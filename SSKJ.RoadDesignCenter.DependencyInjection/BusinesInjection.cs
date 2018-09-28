@@ -29,6 +29,8 @@ namespace SSKJ.RoadDesignCenter.DependencyInjection
             services.AddSingleton<ibProject.RouteElement.ICrossSectionGroundLineBusines, bProject.RouteElement.CrossSectionGroundLineBusines>();
             services.AddSingleton<ibProject.RouteElement.IAddStakeBusines, bProject.RouteElement.AddStakeBusines>();
             services.AddSingleton<ibProject.RouteElement.ISampleLineBusines, bProject.RouteElement.SampleLineBusines>();
+            services.AddSingleton<ibProject.RouteElement.IStakeBusines, bProject.RouteElement.StakeBusines>();
+            services.AddSingleton<ibProject.RouteElement.IRouteBusines, bProject.RouteElement.RouteBusines>();
         }
     }
 }

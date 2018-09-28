@@ -28,6 +28,9 @@ namespace SSKJ.RoadDesignCenter.DependencyInjection
             services.AddSingleton<irProject.RouteElement.ICrossSectionGroundLineRepository, rProject.RouteElement.CrossSectionGroundLineRepository>();
             services.AddSingleton<irProject.RouteElement.IAddStakeRepository, rProject.RouteElement.AddStakeRepository>();
             services.AddSingleton<irProject.RouteElement.ISampleLineRepository, rProject.RouteElement.SampleLineRepository>();
+            services.AddSingleton<irProject.RouteElement.IVerticalSectionGroundLineRepository, rProject.RouteElement.VerticalSectionGroundLineRepository>();
+            services.AddSingleton<irProject.RouteElement.IStakeRepository, rProject.RouteElement.StakeRepository>();
+            services.AddSingleton<irProject.RouteElement.IRouteRepository, rProject.RouteElement.RouteRepository>();
         }
     }
 }
