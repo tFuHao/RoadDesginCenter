@@ -146,5 +146,10 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
             content = content.Substring(0, content.Length - 2);
             return Content(content);
         }
+
+        public IActionResult Test()
+        {
+            return Content("success");
+        }
     }
 }
