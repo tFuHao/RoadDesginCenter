@@ -288,11 +288,15 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.System
 
                 entity.Property(e => e.UserPrjId).HasColumnType("varchar(50)");
 
+                entity.Property(e => e.ProjectId).HasColumnType("varchar(50)");
+
                 entity.Property(e => e.PrjDataBase).HasColumnType("varchar(50)");
 
                 entity.Property(e => e.PrjIdentification).HasColumnType("varchar(50)");
 
                 entity.Property(e => e.UserId).HasColumnType("varchar(50)");
+
+                entity.Property(e => e.SerialNumber).HasColumnType("int(11)");
             });
         }
 

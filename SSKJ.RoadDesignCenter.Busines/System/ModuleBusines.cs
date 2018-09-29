@@ -21,69 +21,69 @@ namespace SSKJ.RoadDesignCenter.Busines.System
             this.moduleRepository = moduleRepository;
         }
 
-        public async Task<bool> CreateAsync(Module entity, string connectionString = null)
+        public async Task<bool> CreateAsync(Module entity, string dataBaseName = null)
         {
-            return await moduleRepository.CreateAsync(entity, connectionString);
+            return await moduleRepository.CreateAsync(entity, dataBaseName);
         }
 
-        public async Task<bool> CreateAsync(IEnumerable<Module> entityList, string connectionString = null)
+        public async Task<bool> CreateAsync(IEnumerable<Module> entityList, string dataBaseName = null)
         {
-            return await moduleRepository.CreateAsync(entityList, connectionString);
+            return await moduleRepository.CreateAsync(entityList, dataBaseName);
         }
 
-        public async Task<bool> DeleteAsync(string keyValue, string connectionString = null)
+        public async Task<bool> DeleteAsync(string keyValue, string dataBaseName = null)
         {
-            return await moduleRepository.DeleteAsync(keyValue, connectionString);
+            return await moduleRepository.DeleteAsync(keyValue, dataBaseName);
         }
 
-        public async Task<bool> DeleteAsync(string[] keyValues, string connectionString = null)
+        public async Task<bool> DeleteAsync(string[] keyValues, string dataBaseName = null)
         {
-            return await moduleRepository.DeleteAsync(keyValues, connectionString);
+            return await moduleRepository.DeleteAsync(keyValues, dataBaseName);
         }
 
-        public async Task<bool> DeleteAsync(Module entity, string connectionString = null)
+        public async Task<bool> DeleteAsync(Module entity, string dataBaseName = null)
         {
-            return await moduleRepository.DeleteAsync(entity, connectionString);
+            return await moduleRepository.DeleteAsync(entity, dataBaseName);
         }
 
-        public async Task<bool> DeleteAsync(IEnumerable<Module> entityList, string connectionString = null)
+        public async Task<bool> DeleteAsync(IEnumerable<Module> entityList, string dataBaseName = null)
         {
-            return await moduleRepository.DeleteAsync(entityList, connectionString);
+            return await moduleRepository.DeleteAsync(entityList, dataBaseName);
         }
 
-        public async Task<Module> GetEntityAsync(Expression<Func<Module, bool>> where, string connectionString = null)
+        public async Task<Module> GetEntityAsync(Expression<Func<Module, bool>> where, string dataBaseName = null)
         {
-            return await moduleRepository.GetEntityAsync(where, connectionString);
+            return await moduleRepository.GetEntityAsync(where, dataBaseName);
         }
 
-        public async Task<Module> GetEntityAsync(string keyValue, string connectionString = null)
+        public async Task<Module> GetEntityAsync(string keyValue, string dataBaseName = null)
         {
-            return await moduleRepository.GetEntityAsync(keyValue, connectionString);
+            return await moduleRepository.GetEntityAsync(keyValue, dataBaseName);
         }
 
-        public async Task<IEnumerable<Module>> GetListAsync(Expression<Func<Module, bool>> where, string connectionString = null)
+        public async Task<IEnumerable<Module>> GetListAsync(Expression<Func<Module, bool>> where, string dataBaseName = null)
         {
-            return await moduleRepository.GetListAsync(where, connectionString);
+            return await moduleRepository.GetListAsync(where, dataBaseName);
         }
 
-        public async Task<Tuple<IEnumerable<Module>,int>> GetListAsync<Tkey>(Expression<Func<Module, bool>> where, Func<Module, Tkey> orderbyLambda, bool isAsc, int pageSize, int pageIndex, string connectionString = null)
+        public async Task<Tuple<IEnumerable<Module>,int>> GetListAsync<Tkey>(Expression<Func<Module, bool>> where, Func<Module, Tkey> orderbyLambda, bool isAsc, int pageSize, int pageIndex, string dataBaseName = null)
         {
-            return await moduleRepository.GetListAsync(where, orderbyLambda, isAsc, pageSize, pageIndex, connectionString);
+            return await moduleRepository.GetListAsync(where, orderbyLambda, isAsc, pageSize, pageIndex, dataBaseName);
         }
 
-        public async Task<IEnumerable<Module>> GetListAsync(string connectionString = null)
+        public async Task<IEnumerable<Module>> GetListAsync(string dataBaseName = null)
         {
-            return await moduleRepository.GetListAsync(connectionString);
+            return await moduleRepository.GetListAsync(dataBaseName);
         }
 
-        public async Task<bool> UpdateAsync(IEnumerable<Module> entityList, string connectionString = null)
+        public async Task<bool> UpdateAsync(IEnumerable<Module> entityList, string dataBaseName = null)
         {
-            return await moduleRepository.UpdateAsync(entityList, connectionString);
+            return await moduleRepository.UpdateAsync(entityList, dataBaseName);
         }
 
-        public async Task<bool> UpdateAsync(Module entity, string connectionString = null)
+        public async Task<bool> UpdateAsync(Module entity, string dataBaseName = null)
         {
-            return await moduleRepository.UpdateAsync(entity, connectionString);
+            return await moduleRepository.UpdateAsync(entity, dataBaseName);
         }
     }
 }

@@ -17,69 +17,69 @@ namespace SSKJ.RoadDesignCenter.Busines.System
             userProjectRepository = userRepository;
         }
 
-        public async Task<bool> CreateAsync(UserProject entity, string connectionString = null)
+        public async Task<bool> CreateAsync(UserProject entity, string dataBaseName = null)
         {
-            return await userProjectRepository.CreateAsync(entity, connectionString);
+            return await userProjectRepository.CreateAsync(entity, dataBaseName);
         }
 
-        public async Task<bool> CreateAsync(IEnumerable<UserProject> entityList, string connectionString = null)
+        public async Task<bool> CreateAsync(IEnumerable<UserProject> entityList, string dataBaseName = null)
         {
-            return await userProjectRepository.CreateAsync(entityList, connectionString);
+            return await userProjectRepository.CreateAsync(entityList, dataBaseName);
         }
 
-        public async Task<bool> DeleteAsync(string keyValue, string connectionString = null)
+        public async Task<bool> DeleteAsync(string keyValue, string dataBaseName = null)
         {
-            return await userProjectRepository.DeleteAsync(keyValue, connectionString);
+            return await userProjectRepository.DeleteAsync(keyValue, dataBaseName);
         }
 
-        public async Task<bool> DeleteAsync(string[] keyValues, string connectionString = null)
+        public async Task<bool> DeleteAsync(string[] keyValues, string dataBaseName = null)
         {
-            return await userProjectRepository.DeleteAsync(keyValues, connectionString);
+            return await userProjectRepository.DeleteAsync(keyValues, dataBaseName);
         }
 
-        public async Task<bool> DeleteAsync(UserProject entity, string connectionString = null)
+        public async Task<bool> DeleteAsync(UserProject entity, string dataBaseName = null)
         {
-            return await userProjectRepository.DeleteAsync(entity, connectionString);
+            return await userProjectRepository.DeleteAsync(entity, dataBaseName);
         }
 
-        public async Task<bool> DeleteAsync(IEnumerable<UserProject> entityList, string connectionString = null)
+        public async Task<bool> DeleteAsync(IEnumerable<UserProject> entityList, string dataBaseName = null)
         {
-            return await userProjectRepository.DeleteAsync(entityList, connectionString);
+            return await userProjectRepository.DeleteAsync(entityList, dataBaseName);
         }
 
-        public async Task<UserProject> GetEntityAsync(Expression<Func<UserProject, bool>> where, string connectionString = null)
+        public async Task<UserProject> GetEntityAsync(Expression<Func<UserProject, bool>> where, string dataBaseName = null)
         {
-            return await userProjectRepository.GetEntityAsync(where, connectionString);
+            return await userProjectRepository.GetEntityAsync(where, dataBaseName);
         }
 
-        public async Task<UserProject> GetEntityAsync(string keyValue, string connectionString = null)
+        public async Task<UserProject> GetEntityAsync(string keyValue, string dataBaseName = null)
         {
-            return await userProjectRepository.GetEntityAsync(keyValue, connectionString);
+            return await userProjectRepository.GetEntityAsync(keyValue, dataBaseName);
         }
 
-        public async Task<IEnumerable<UserProject>> GetListAsync(Expression<Func<UserProject, bool>> where, string connectionString = null)
+        public async Task<IEnumerable<UserProject>> GetListAsync(Expression<Func<UserProject, bool>> where, string dataBaseName = null)
         {
-            return await userProjectRepository.GetListAsync(where, connectionString);
+            return await userProjectRepository.GetListAsync(where, dataBaseName);
         }
 
-        public async Task<Tuple<IEnumerable<UserProject>, int>> GetListAsync<Tkey>(Expression<Func<UserProject, bool>> where, Func<UserProject, Tkey> orderbyLambda, bool isAsc, int pageSize, int pageIndex, string connectionString = null)
+        public async Task<Tuple<IEnumerable<UserProject>, int>> GetListAsync<Tkey>(Expression<Func<UserProject, bool>> where, Func<UserProject, Tkey> orderbyLambda, bool isAsc, int pageSize, int pageIndex, string dataBaseName = null)
         {
-            return await userProjectRepository.GetListAsync(where, orderbyLambda, isAsc, pageSize, pageIndex, connectionString);
+            return await userProjectRepository.GetListAsync(where, orderbyLambda, isAsc, pageSize, pageIndex, dataBaseName);
         }
 
-        public async Task<IEnumerable<UserProject>> GetListAsync(string connectionString = null)
+        public async Task<IEnumerable<UserProject>> GetListAsync(string dataBaseName = null)
         {
-            return await userProjectRepository.GetListAsync(connectionString);
+            return await userProjectRepository.GetListAsync(dataBaseName);
         }
 
-        public async Task<bool> UpdateAsync(UserProject entity, string connectionString = null)
+        public async Task<bool> UpdateAsync(UserProject entity, string dataBaseName = null)
         {
-            return await userProjectRepository.UpdateAsync(entity, connectionString);
+            return await userProjectRepository.UpdateAsync(entity, dataBaseName);
         }
 
-        public async Task<bool> UpdateAsync(IEnumerable<UserProject> entityList, string connectionString = null)
+        public async Task<bool> UpdateAsync(IEnumerable<UserProject> entityList, string dataBaseName = null)
         {
-            return await userProjectRepository.UpdateAsync(entityList, connectionString);
+            return await userProjectRepository.UpdateAsync(entityList, dataBaseName);
         }
     }
 }

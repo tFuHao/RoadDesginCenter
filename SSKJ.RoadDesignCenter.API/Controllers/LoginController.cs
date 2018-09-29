@@ -53,19 +53,18 @@ namespace SSKJ.RoadDesignCenter.API.Controllers
                 if (string.IsNullOrEmpty(entity.PrjDataBase))
                     return BadRequest(new { message = "出错了，请稍后重试!" });
 
-                var str = "server=139.224.200.194;port=3306;database=" + entity.PrjDataBase + ";user id=root;password=SSKJ*147258369";
-                var user = await prjUserBll.GetEntityAsync(u => u.Account == model.UserName && u.Password == model.Password, str);
+                var user = await prjUserBll.GetEntityAsync(u => u.Account == model.UserName && u.Password == model.Password, entity.PrjDataBase);
 
                 if (user == null)
                     return BadRequest(new { message = "用户名或密码错误，请重新输入!" });
 
                 var _user = Utility.Tools.MapperUtils.MapTo<User, UserInfoModel>(user);
-                _user.ConnectionString = str;
+                _user.dataBaseName = entity.PrjDataBase;
                 _user.TokenExpiration = DateTime.Now.AddDays(1);
 
                 string token = Utility.Tools.TokenUtils.ToToken(_user);
 
-                return Ok(new { code = 1, token = token });
+                return Ok(new { code = 1, token });
             }
             catch (Exception)
             {

@@ -20,7 +20,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
 
                 var userInfo = Utility.Tools.TokenUtils.ToObject<UserInfoModel>(strToken);
 
-                conStr = userInfo.ConnectionString;
+                conStr = userInfo.dataBaseName;
             }
             catch (Exception)
             {

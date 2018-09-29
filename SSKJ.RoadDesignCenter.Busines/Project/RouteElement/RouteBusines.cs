@@ -17,69 +17,69 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.RouteElement
             RouteRepo = routeRepo;
         }
 
-        public async Task<bool> CreateAsync(Route entity, string connectionString = null)
+        public async Task<bool> CreateAsync(Route entity, string dataBaseName = null)
         {
-            return await RouteRepo.CreateAsync(entity, connectionString);
+            return await RouteRepo.CreateAsync(entity, dataBaseName);
         }
 
-        public async Task<bool> CreateAsync(IEnumerable<Route> entityList, string connectionString = null)
+        public async Task<bool> CreateAsync(IEnumerable<Route> entityList, string dataBaseName = null)
         {
-            return await RouteRepo.CreateAsync(entityList, connectionString);
+            return await RouteRepo.CreateAsync(entityList, dataBaseName);
         }
 
-        public async Task<bool> DeleteAsync(string keyValue, string connectionString = null)
+        public async Task<bool> DeleteAsync(string keyValue, string dataBaseName = null)
         {
-            return await RouteRepo.DeleteAsync(keyValue, connectionString);
+            return await RouteRepo.DeleteAsync(keyValue, dataBaseName);
         }
 
-        public async Task<bool> DeleteAsync(string[] keyValues, string connectionString = null)
+        public async Task<bool> DeleteAsync(string[] keyValues, string dataBaseName = null)
         {
-            return await RouteRepo.DeleteAsync(keyValues, connectionString);
+            return await RouteRepo.DeleteAsync(keyValues, dataBaseName);
         }
 
-        public async Task<bool> DeleteAsync(Route entity, string connectionString = null)
+        public async Task<bool> DeleteAsync(Route entity, string dataBaseName = null)
         {
-            return await RouteRepo.DeleteAsync(entity, connectionString);
+            return await RouteRepo.DeleteAsync(entity, dataBaseName);
         }
 
-        public async Task<bool> DeleteAsync(IEnumerable<Route> entityList, string connectionString = null)
+        public async Task<bool> DeleteAsync(IEnumerable<Route> entityList, string dataBaseName = null)
         {
-            return await RouteRepo.DeleteAsync(entityList, connectionString);
+            return await RouteRepo.DeleteAsync(entityList, dataBaseName);
         }
 
-        public async Task<Route> GetEntityAsync(Expression<Func<Route, bool>> where, string connectionString = null)
+        public async Task<Route> GetEntityAsync(Expression<Func<Route, bool>> where, string dataBaseName = null)
         {
-            return await RouteRepo.GetEntityAsync(where, connectionString);
+            return await RouteRepo.GetEntityAsync(where, dataBaseName);
         }
 
-        public async Task<Route> GetEntityAsync(string keyValue, string connectionString = null)
+        public async Task<Route> GetEntityAsync(string keyValue, string dataBaseName = null)
         {
-            return await RouteRepo.GetEntityAsync(keyValue, connectionString);
+            return await RouteRepo.GetEntityAsync(keyValue, dataBaseName);
         }
 
-        public async Task<IEnumerable<Route>> GetListAsync(Expression<Func<Route, bool>> where, string connectionString = null)
+        public async Task<IEnumerable<Route>> GetListAsync(Expression<Func<Route, bool>> where, string dataBaseName = null)
         {
-            return await RouteRepo.GetListAsync(where, connectionString);
+            return await RouteRepo.GetListAsync(where, dataBaseName);
         }
 
-        public async Task<Tuple<IEnumerable<Route>, int>> GetListAsync<Tkey>(Expression<Func<Route, bool>> where, Func<Route, Tkey> orderbyLambda, bool isAsc, int pageSize, int pageIndex, string connectionString = null)
+        public async Task<Tuple<IEnumerable<Route>, int>> GetListAsync<Tkey>(Expression<Func<Route, bool>> where, Func<Route, Tkey> orderbyLambda, bool isAsc, int pageSize, int pageIndex, string dataBaseName = null)
         {
-            return await RouteRepo.GetListAsync(where, orderbyLambda, isAsc, pageSize, pageIndex, connectionString);
+            return await RouteRepo.GetListAsync(where, orderbyLambda, isAsc, pageSize, pageIndex, dataBaseName);
         }
 
-        public async Task<IEnumerable<Route>> GetListAsync(string connectionString = null)
+        public async Task<IEnumerable<Route>> GetListAsync(string dataBaseName = null)
         {
-            return await RouteRepo.GetListAsync(connectionString);
+            return await RouteRepo.GetListAsync(dataBaseName);
         }
 
-        public async Task<bool> UpdateAsync(Route entity, string connectionString = null)
+        public async Task<bool> UpdateAsync(Route entity, string dataBaseName = null)
         {
-            return await RouteRepo.UpdateAsync(entity, connectionString);
+            return await RouteRepo.UpdateAsync(entity, dataBaseName);
         }
 
-        public async Task<bool> UpdateAsync(IEnumerable<Route> entityList, string connectionString = null)
+        public async Task<bool> UpdateAsync(IEnumerable<Route> entityList, string dataBaseName = null)
         {
-            return await RouteRepo.UpdateAsync(entityList, connectionString);
+            return await RouteRepo.UpdateAsync(entityList, dataBaseName);
         }
     }
 }

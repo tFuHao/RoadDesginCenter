@@ -15,41 +15,41 @@ namespace SSKJ.RoadDesignCenter.IRepository
         /// 添加一个实体
         /// </summary>
         /// <param name="entity">要创建的实体</param>
-        /// <param name="connectionString">链接字符串</param>
+        /// <param name="dataBaseName">数据库名称</param>
         /// <returns></returns>
-        Task<bool> CreateAsync(T entity, string connectionString = null);
+        Task<bool> CreateAsync(T entity, string dataBaseName = null);
 
         /// <summary>
         /// 批量添加实体
         /// </summary>
         /// <param name="entityList">要创建的实体</param>
-        /// <param name="connectionString">链接字符串</param>
+        /// <param name="dataBaseName">数据库名称</param>
         /// <returns></returns>
-        Task<bool> CreateAsync(IEnumerable<T> entityList, string connectionString = null);
+        Task<bool> CreateAsync(IEnumerable<T> entityList, string dataBaseName = null);
 
         /// <summary>
         /// 根据主键获取一个实体
         /// </summary>
         /// <param name="keyValue">主键</param>
-        /// <param name="connectionString">链接字符串</param>
+        /// <param name="dataBaseName">数据库名称</param>
         /// <returns></returns>
-        Task<T> GetEntityAsync(string keyValue, string connectionString = null);
+        Task<T> GetEntityAsync(string keyValue, string dataBaseName = null);
 
         /// <summary>
         /// 根据条件获取一个实体
         /// </summary>
         /// <param name="where">条件</param>
-        /// <param name="connectionString">链接字符串</param>
+        /// <param name="dataBaseName">数据库名称</param>
         /// <returns></returns>
-        Task<T> GetEntityAsync(Expression<Func<T, bool>> where, string connectionString = null);
+        Task<T> GetEntityAsync(Expression<Func<T, bool>> where, string dataBaseName = null);
 
         /// <summary>
         /// 根据条件where获取数据
         /// </summary>
         /// <param name="where">条件where</param>
-        /// <param name="connectionString">链接字符串</param>
+        /// <param name="dataBaseName">数据库名称</param>
         /// <returns></returns>
-        Task<IEnumerable<T>> GetListAsync(Expression<Func<T, bool>> where, string connectionString = null);
+        Task<IEnumerable<T>> GetListAsync(Expression<Func<T, bool>> where, string dataBaseName = null);
 
         /// <summary>
         /// 根据条件where获取分页数据
@@ -60,63 +60,63 @@ namespace SSKJ.RoadDesignCenter.IRepository
         /// <param name="pageSize">分页大小</param>
         /// <param name="pageIndex">当前页</param>
         /// <param name="total">数据总数</param>
-        /// <param name="connectionString">链接字符串</param>
+        /// <param name="dataBaseName">数据库名称</param>
         /// <returns></returns>
-        Task<Tuple<IEnumerable<T>, int>> GetListAsync<Tkey>(Expression<Func<T, bool>> where, Func<T, Tkey> orderbyLambda, bool isAsc, int pageSize, int pageIndex, string connectionString = null);
+        Task<Tuple<IEnumerable<T>, int>> GetListAsync<Tkey>(Expression<Func<T, bool>> where, Func<T, Tkey> orderbyLambda, bool isAsc, int pageSize, int pageIndex, string dataBaseName = null);
 
         /// <summary>
         /// 获取所有数据
         /// </summary>
-        /// <param name="connectionString">链接字符串</param>
+        /// <param name="dataBaseName">数据库名称</param>
         /// <returns></returns>
-        Task<IEnumerable<T>> GetListAsync(string connectionString = null);
+        Task<IEnumerable<T>> GetListAsync(string dataBaseName = null);
 
         /// <summary>
         /// 修改一个实体
         /// </summary>
         /// <param name="entity">要修改的实体</param>
-        /// <param name="connectionString">链接字符串</param>
+        /// <param name="dataBaseName">数据库名称</param>
         /// <returns></returns>
-        Task<bool> UpdateAsync(T entity, string connectionString = null);
+        Task<bool> UpdateAsync(T entity, string dataBaseName = null);
 
         /// <summary>
         /// 批量修改数据
         /// </summary>
         /// <param name="entityList">要修改的实体</param>
-        /// <param name="connectionString">链接字符串</param>
+        /// <param name="dataBaseName">数据库名称</param>
         /// <returns></returns>
-        Task<bool> UpdateAsync(IEnumerable<T> entityList, string connectionString = null);
+        Task<bool> UpdateAsync(IEnumerable<T> entityList, string dataBaseName = null);
 
         /// <summary>
         /// 根据主键删除一个实体
         /// </summary>
         /// <param name="keyValue">主键</param>
-        /// <param name="connectionString">链接字符串</param>
+        /// <param name="dataBaseName">数据库名称</param>
         /// <returns></returns>
-        Task<bool> DeleteAsync(string keyValue, string connectionString = null);
+        Task<bool> DeleteAsync(string keyValue, string dataBaseName = null);
 
         /// <summary>
         /// 批量删除数据
         /// </summary>
         /// <param name="keyValues">要删除的实体的主键</param>
-        /// <param name="connectionString">链接字符串</param>
+        /// <param name="dataBaseName">数据库名称</param>
         /// <returns></returns>
-        Task<bool> DeleteAsync(string[] keyValues, string connectionString = null);
+        Task<bool> DeleteAsync(string[] keyValues, string dataBaseName = null);
 
         /// <summary>
         /// 删除一个实体
         /// </summary>
         /// <param name="entity">要删除的实体</param>
-        /// <param name="connectionString">链接字符串</param>
+        /// <param name="dataBaseName">数据库名称</param>
         /// <returns></returns>
-        Task<bool> DeleteAsync(T entity, string connectionString = null);
+        Task<bool> DeleteAsync(T entity, string dataBaseName = null);
 
         /// <summary>
         /// 批量删除数据
         /// </summary>
         /// <param name="entityList">要删除的实体</param>
-        /// <param name="connectionString">链接字符串</param>
+        /// <param name="dataBaseName">数据库名称</param>
         /// <returns></returns>
-        Task<bool> DeleteAsync(IEnumerable<T> entityList, string connectionString = null);
+        Task<bool> DeleteAsync(IEnumerable<T> entityList, string dataBaseName = null);
     }
 }

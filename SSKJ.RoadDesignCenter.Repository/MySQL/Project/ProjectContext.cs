@@ -250,6 +250,8 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
                 entity.Property(e => e.SupervisoryUnit).HasColumnType("varchar(50)");
 
                 entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+
+                entity.Property(e => e.SerialNumber).HasColumnType("int(11)");
             });
 
             modelBuilder.Entity<ProjectLog>(entity =>

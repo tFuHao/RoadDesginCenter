@@ -18,69 +18,69 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.RouteElement
             CrossRepo = crossRepo;
         }
 
-        public async Task<bool> CreateAsync(CrossSectionGroundLine entity, string connectionString = null)
+        public async Task<bool> CreateAsync(CrossSectionGroundLine entity, string dataBaseName = null)
         {
-            return await CrossRepo.CreateAsync(entity, connectionString);
+            return await CrossRepo.CreateAsync(entity, dataBaseName);
         }
 
-        public async Task<bool> CreateAsync(IEnumerable<CrossSectionGroundLine> entityList, string connectionString = null)
+        public async Task<bool> CreateAsync(IEnumerable<CrossSectionGroundLine> entityList, string dataBaseName = null)
         {
-            return await CrossRepo.CreateAsync(entityList, connectionString);
+            return await CrossRepo.CreateAsync(entityList, dataBaseName);
         }
 
-        public async Task<bool> DeleteAsync(string keyValue, string connectionString = null)
+        public async Task<bool> DeleteAsync(string keyValue, string dataBaseName = null)
         {
-            return await CrossRepo.DeleteAsync(keyValue, connectionString);
+            return await CrossRepo.DeleteAsync(keyValue, dataBaseName);
         }
 
-        public async Task<bool> DeleteAsync(string[] keyValues, string connectionString = null)
+        public async Task<bool> DeleteAsync(string[] keyValues, string dataBaseName = null)
         {
-            return await CrossRepo.DeleteAsync(keyValues, connectionString);
+            return await CrossRepo.DeleteAsync(keyValues, dataBaseName);
         }
 
-        public async Task<bool> DeleteAsync(CrossSectionGroundLine entity, string connectionString = null)
+        public async Task<bool> DeleteAsync(CrossSectionGroundLine entity, string dataBaseName = null)
         {
-            return await CrossRepo.DeleteAsync(entity, connectionString);
+            return await CrossRepo.DeleteAsync(entity, dataBaseName);
         }
 
-        public async Task<bool> DeleteAsync(IEnumerable<CrossSectionGroundLine> entityList, string connectionString = null)
+        public async Task<bool> DeleteAsync(IEnumerable<CrossSectionGroundLine> entityList, string dataBaseName = null)
         {
-            return await CrossRepo.DeleteAsync(entityList, connectionString);
+            return await CrossRepo.DeleteAsync(entityList, dataBaseName);
         }
 
-        public async Task<CrossSectionGroundLine> GetEntityAsync(Expression<Func<CrossSectionGroundLine, bool>> where, string connectionString = null)
+        public async Task<CrossSectionGroundLine> GetEntityAsync(Expression<Func<CrossSectionGroundLine, bool>> where, string dataBaseName = null)
         {
-            return await CrossRepo.GetEntityAsync(where, connectionString);
+            return await CrossRepo.GetEntityAsync(where, dataBaseName);
         }
 
-        public async Task<CrossSectionGroundLine> GetEntityAsync(string keyValue, string connectionString = null)
+        public async Task<CrossSectionGroundLine> GetEntityAsync(string keyValue, string dataBaseName = null)
         {
-            return await CrossRepo.GetEntityAsync(keyValue, connectionString);
+            return await CrossRepo.GetEntityAsync(keyValue, dataBaseName);
         }
 
-        public async Task<IEnumerable<CrossSectionGroundLine>> GetListAsync(Expression<Func<CrossSectionGroundLine, bool>> where, string connectionString = null)
+        public async Task<IEnumerable<CrossSectionGroundLine>> GetListAsync(Expression<Func<CrossSectionGroundLine, bool>> where, string dataBaseName = null)
         {
-            return await CrossRepo.GetListAsync(where, connectionString);
+            return await CrossRepo.GetListAsync(where, dataBaseName);
         }
 
-        public async Task<Tuple<IEnumerable<CrossSectionGroundLine>, int>> GetListAsync<Tkey>(Expression<Func<CrossSectionGroundLine, bool>> where, Func<CrossSectionGroundLine, Tkey> orderbyLambda, bool isAsc, int pageSize, int pageIndex, string connectionString = null)
+        public async Task<Tuple<IEnumerable<CrossSectionGroundLine>, int>> GetListAsync<Tkey>(Expression<Func<CrossSectionGroundLine, bool>> where, Func<CrossSectionGroundLine, Tkey> orderbyLambda, bool isAsc, int pageSize, int pageIndex, string dataBaseName = null)
         {
-            return await CrossRepo.GetListAsync(where, orderbyLambda, isAsc, pageSize, pageIndex, connectionString);
+            return await CrossRepo.GetListAsync(where, orderbyLambda, isAsc, pageSize, pageIndex, dataBaseName);
         }
 
-        public async Task<IEnumerable<CrossSectionGroundLine>> GetListAsync(string connectionString = null)
+        public async Task<IEnumerable<CrossSectionGroundLine>> GetListAsync(string dataBaseName = null)
         {
-            return await CrossRepo.GetListAsync(connectionString);
+            return await CrossRepo.GetListAsync(dataBaseName);
         }
 
-        public async Task<bool> UpdateAsync(CrossSectionGroundLine entity, string connectionString = null)
+        public async Task<bool> UpdateAsync(CrossSectionGroundLine entity, string dataBaseName = null)
         {
-            return await CrossRepo.UpdateAsync(entity, connectionString);
+            return await CrossRepo.UpdateAsync(entity, dataBaseName);
         }
 
-        public async Task<bool> UpdateAsync(IEnumerable<CrossSectionGroundLine> entityList, string connectionString = null)
+        public async Task<bool> UpdateAsync(IEnumerable<CrossSectionGroundLine> entityList, string dataBaseName = null)
         {
-            return await CrossRepo.UpdateAsync(entityList, connectionString);
+            return await CrossRepo.UpdateAsync(entityList, dataBaseName);
         }
     }
 }
