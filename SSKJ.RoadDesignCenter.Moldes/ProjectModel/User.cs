@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SSKJ.RoadDesignCenter.Models.ProjectModel
 {
     public partial class User
     {
         public string UserId { get; set; }
+        [Required(ErrorMessage = "账户不能为空")]
         public string Account { get; set; }
+        [Required(ErrorMessage = "密码不能为空")]
         public string Password { get; set; }
         public string Secretkey { get; set; }
         public string RealName { get; set; }
