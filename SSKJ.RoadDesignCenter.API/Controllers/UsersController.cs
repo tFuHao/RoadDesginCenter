@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SSKJ.RoadDesignCenter.IBusines.Project;
+using SSKJ.RoadDesignCenter.Models.ProjectModel;
 using SSKJ.RoadDesignCenter.Utility;
 
 namespace SSKJ.RoadDesignCenter.API.Controllers
@@ -31,5 +32,10 @@ namespace SSKJ.RoadDesignCenter.API.Controllers
 
             return View(users.Item1);
         }
+
+        //public async Task<IActionResult> CreateProUser(User input)
+        //{
+
+        //}
     }
 }
