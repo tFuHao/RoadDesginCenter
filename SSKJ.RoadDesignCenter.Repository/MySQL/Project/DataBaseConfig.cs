@@ -10,14 +10,16 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
         /// <summary>
         /// 默认的MYSQL的链接字符串
         /// </summary>
-        private const string DefaultProjectConnectionString = "server=139.224.200.194;port=3306;database=road;user id=root;password=SSKJ*147258369";
+        private const string DefaultProjectConnectionString = "server=139.224.200.194;port=3306;database={database};user id=root;password=SSKJ*147258369";
 
-        public static ProjectContext CreateContext(string connectionString = null)
+        public static ProjectContext CreateContext(string dataBaseName = null)
         {
-            if (string.IsNullOrWhiteSpace(connectionString))
-            {
-                connectionString = DefaultProjectConnectionString;
-            }
+            var connectionString = "";
+            if (string.IsNullOrWhiteSpace(dataBaseName))
+                connectionString = DefaultProjectConnectionString.Replace("{database}", "road");
+            else
+                connectionString = DefaultProjectConnectionString.Replace("{database}", dataBaseName);
+
             var optionBuilder = new DbContextOptionsBuilder<ProjectContext>();
 
             optionBuilder.UseMySql(connectionString, m => { });

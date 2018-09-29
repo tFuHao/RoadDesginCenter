@@ -17,69 +17,69 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.RouteElement
             VerticalCurveRepo = verticalCurveRepo;
         }
 
-        public async Task<bool> CreateAsync(VerticalCurve_GradeChangePoint entity, string connectionString = null)
+        public async Task<bool> CreateAsync(VerticalCurve_GradeChangePoint entity, string dataBaseName = null)
         {
-            return await VerticalCurveRepo.CreateAsync(entity, connectionString);
+            return await VerticalCurveRepo.CreateAsync(entity, dataBaseName);
         }
 
-        public async Task<bool> CreateAsync(IEnumerable<VerticalCurve_GradeChangePoint> entityList, string connectionString = null)
+        public async Task<bool> CreateAsync(IEnumerable<VerticalCurve_GradeChangePoint> entityList, string dataBaseName = null)
         {
-            return await VerticalCurveRepo.CreateAsync(entityList, connectionString);
+            return await VerticalCurveRepo.CreateAsync(entityList, dataBaseName);
         }
 
-        public async Task<bool> DeleteAsync(string keyValue, string connectionString = null)
+        public async Task<bool> DeleteAsync(string keyValue, string dataBaseName = null)
         {
-            return await VerticalCurveRepo.DeleteAsync(keyValue, connectionString);
+            return await VerticalCurveRepo.DeleteAsync(keyValue, dataBaseName);
         }
 
-        public async Task<bool> DeleteAsync(string[] keyValues, string connectionString = null)
+        public async Task<bool> DeleteAsync(string[] keyValues, string dataBaseName = null)
         {
-            return await VerticalCurveRepo.DeleteAsync(keyValues, connectionString);
+            return await VerticalCurveRepo.DeleteAsync(keyValues, dataBaseName);
         }
 
-        public async Task<bool> DeleteAsync(VerticalCurve_GradeChangePoint entity, string connectionString = null)
+        public async Task<bool> DeleteAsync(VerticalCurve_GradeChangePoint entity, string dataBaseName = null)
         {
-            return await VerticalCurveRepo.DeleteAsync(entity, connectionString);
+            return await VerticalCurveRepo.DeleteAsync(entity, dataBaseName);
         }
 
-        public async Task<bool> DeleteAsync(IEnumerable<VerticalCurve_GradeChangePoint> entityList, string connectionString = null)
+        public async Task<bool> DeleteAsync(IEnumerable<VerticalCurve_GradeChangePoint> entityList, string dataBaseName = null)
         {
-            return await VerticalCurveRepo.DeleteAsync(entityList, connectionString);
+            return await VerticalCurveRepo.DeleteAsync(entityList, dataBaseName);
         }
 
-        public async Task<VerticalCurve_GradeChangePoint> GetEntityAsync(Expression<Func<VerticalCurve_GradeChangePoint, bool>> where, string connectionString = null)
+        public async Task<VerticalCurve_GradeChangePoint> GetEntityAsync(Expression<Func<VerticalCurve_GradeChangePoint, bool>> where, string dataBaseName = null)
         {
-            return await VerticalCurveRepo.GetEntityAsync(where, connectionString);
+            return await VerticalCurveRepo.GetEntityAsync(where, dataBaseName);
         }
 
-        public async Task<VerticalCurve_GradeChangePoint> GetEntityAsync(string keyValue, string connectionString = null)
+        public async Task<VerticalCurve_GradeChangePoint> GetEntityAsync(string keyValue, string dataBaseName = null)
         {
-            return await VerticalCurveRepo.GetEntityAsync(keyValue, connectionString);
+            return await VerticalCurveRepo.GetEntityAsync(keyValue, dataBaseName);
         }
 
-        public async Task<IEnumerable<VerticalCurve_GradeChangePoint>> GetListAsync(Expression<Func<VerticalCurve_GradeChangePoint, bool>> where, string connectionString = null)
+        public async Task<IEnumerable<VerticalCurve_GradeChangePoint>> GetListAsync(Expression<Func<VerticalCurve_GradeChangePoint, bool>> where, string dataBaseName = null)
         {
-            return await VerticalCurveRepo.GetListAsync(where, connectionString);
+            return await VerticalCurveRepo.GetListAsync(where, dataBaseName);
         }
 
-        public async Task<Tuple<IEnumerable<VerticalCurve_GradeChangePoint>, int>> GetListAsync<Tkey>(Expression<Func<VerticalCurve_GradeChangePoint, bool>> where, Func<VerticalCurve_GradeChangePoint, Tkey> orderbyLambda, bool isAsc, int pageSize, int pageIndex, string connectionString = null)
+        public async Task<Tuple<IEnumerable<VerticalCurve_GradeChangePoint>, int>> GetListAsync<Tkey>(Expression<Func<VerticalCurve_GradeChangePoint, bool>> where, Func<VerticalCurve_GradeChangePoint, Tkey> orderbyLambda, bool isAsc, int pageSize, int pageIndex, string dataBaseName = null)
         {
-            return await VerticalCurveRepo.GetListAsync(where, orderbyLambda, isAsc, pageSize, pageIndex, connectionString);
+            return await VerticalCurveRepo.GetListAsync(where, orderbyLambda, isAsc, pageSize, pageIndex, dataBaseName);
         }
 
-        public async Task<IEnumerable<VerticalCurve_GradeChangePoint>> GetListAsync(string connectionString = null)
+        public async Task<IEnumerable<VerticalCurve_GradeChangePoint>> GetListAsync(string dataBaseName = null)
         {
-            return await VerticalCurveRepo.GetListAsync(connectionString);
+            return await VerticalCurveRepo.GetListAsync(dataBaseName);
         }
 
-        public async Task<bool> UpdateAsync(VerticalCurve_GradeChangePoint entity, string connectionString = null)
+        public async Task<bool> UpdateAsync(VerticalCurve_GradeChangePoint entity, string dataBaseName = null)
         {
-            return await VerticalCurveRepo.UpdateAsync(entity, connectionString);
+            return await VerticalCurveRepo.UpdateAsync(entity, dataBaseName);
         }
 
-        public async Task<bool> UpdateAsync(IEnumerable<VerticalCurve_GradeChangePoint> entityList, string connectionString = null)
+        public async Task<bool> UpdateAsync(IEnumerable<VerticalCurve_GradeChangePoint> entityList, string dataBaseName = null)
         {
-            return await VerticalCurveRepo.UpdateAsync(entityList, connectionString);
+            return await VerticalCurveRepo.UpdateAsync(entityList, dataBaseName);
         }
     }
 }

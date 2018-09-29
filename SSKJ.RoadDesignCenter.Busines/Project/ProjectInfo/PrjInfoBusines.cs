@@ -16,69 +16,69 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.ProjectInfo
         {
             this.prjInfoRepository = prjInfoRepository;
         }
-        public async Task<bool> CreateAsync(Models.ProjectModel.ProjectInfo entity, string connectionString = null)
+        public async Task<bool> CreateAsync(Models.ProjectModel.ProjectInfo entity, string dataBaseName = null)
         {
-            return await prjInfoRepository.CreateAsync(entity, connectionString);
+            return await prjInfoRepository.CreateAsync(entity, dataBaseName);
         }
 
-        public async Task<bool> CreateAsync(IEnumerable<Models.ProjectModel.ProjectInfo> entityList, string connectionString = null)
+        public async Task<bool> CreateAsync(IEnumerable<Models.ProjectModel.ProjectInfo> entityList, string dataBaseName = null)
         {
-            return await prjInfoRepository.CreateAsync(entityList, connectionString);
+            return await prjInfoRepository.CreateAsync(entityList, dataBaseName);
         }
 
-        public async Task<bool> DeleteAsync(string keyValue, string connectionString = null)
+        public async Task<bool> DeleteAsync(string keyValue, string dataBaseName = null)
         {
-            return await prjInfoRepository.DeleteAsync(keyValue, connectionString);
+            return await prjInfoRepository.DeleteAsync(keyValue, dataBaseName);
         }
 
-        public async Task<bool> DeleteAsync(string[] keyValues, string connectionString = null)
+        public async Task<bool> DeleteAsync(string[] keyValues, string dataBaseName = null)
         {
-            return await prjInfoRepository.DeleteAsync(keyValues, connectionString);
+            return await prjInfoRepository.DeleteAsync(keyValues, dataBaseName);
         }
 
-        public async Task<bool> DeleteAsync(Models.ProjectModel.ProjectInfo entity, string connectionString = null)
+        public async Task<bool> DeleteAsync(Models.ProjectModel.ProjectInfo entity, string dataBaseName = null)
         {
-            return await prjInfoRepository.DeleteAsync(entity, connectionString);
+            return await prjInfoRepository.DeleteAsync(entity, dataBaseName);
         }
 
-        public async Task<bool> DeleteAsync(IEnumerable<Models.ProjectModel.ProjectInfo> entityList, string connectionString = null)
+        public async Task<bool> DeleteAsync(IEnumerable<Models.ProjectModel.ProjectInfo> entityList, string dataBaseName = null)
         {
-            return await prjInfoRepository.DeleteAsync(entityList, connectionString);
+            return await prjInfoRepository.DeleteAsync(entityList, dataBaseName);
         }
 
-        public async Task<Models.ProjectModel.ProjectInfo> GetEntityAsync(Expression<Func<Models.ProjectModel.ProjectInfo, bool>> where, string connectionString = null)
+        public async Task<Models.ProjectModel.ProjectInfo> GetEntityAsync(Expression<Func<Models.ProjectModel.ProjectInfo, bool>> where, string dataBaseName = null)
         {
-            return await prjInfoRepository.GetEntityAsync(where, connectionString);
+            return await prjInfoRepository.GetEntityAsync(where, dataBaseName);
         }
 
-        public async Task<Models.ProjectModel.ProjectInfo> GetEntityAsync(string keyValue, string connectionString = null)
+        public async Task<Models.ProjectModel.ProjectInfo> GetEntityAsync(string keyValue, string dataBaseName = null)
         {
-            return await prjInfoRepository.GetEntityAsync(keyValue, connectionString);
+            return await prjInfoRepository.GetEntityAsync(keyValue, dataBaseName);
         }
 
-        public async Task<IEnumerable<Models.ProjectModel.ProjectInfo>> GetListAsync(Expression<Func<Models.ProjectModel.ProjectInfo, bool>> where, string connectionString = null)
+        public async Task<IEnumerable<Models.ProjectModel.ProjectInfo>> GetListAsync(Expression<Func<Models.ProjectModel.ProjectInfo, bool>> where, string dataBaseName = null)
         {
-            return await prjInfoRepository.GetListAsync(where, connectionString);
+            return await prjInfoRepository.GetListAsync(where, dataBaseName);
         }
 
-        public async Task<Tuple<IEnumerable<Models.ProjectModel.ProjectInfo>, int>> GetListAsync<Tkey>(Expression<Func<Models.ProjectModel.ProjectInfo, bool>> where, Func<Models.ProjectModel.ProjectInfo, Tkey> orderbyLambda, bool isAsc, int pageSize, int pageIndex, string connectionString = null)
+        public async Task<Tuple<IEnumerable<Models.ProjectModel.ProjectInfo>, int>> GetListAsync<Tkey>(Expression<Func<Models.ProjectModel.ProjectInfo, bool>> where, Func<Models.ProjectModel.ProjectInfo, Tkey> orderbyLambda, bool isAsc, int pageSize, int pageIndex, string dataBaseName = null)
         {
-            return await prjInfoRepository.GetListAsync(where, orderbyLambda, isAsc, pageSize, pageIndex, connectionString);
+            return await prjInfoRepository.GetListAsync(where, orderbyLambda, isAsc, pageSize, pageIndex, dataBaseName);
         }
 
-        public async Task<IEnumerable<Models.ProjectModel.ProjectInfo>> GetListAsync(string connectionString = null)
+        public async Task<IEnumerable<Models.ProjectModel.ProjectInfo>> GetListAsync(string dataBaseName = null)
         {
-            return await prjInfoRepository.GetListAsync(connectionString);
+            return await prjInfoRepository.GetListAsync(dataBaseName);
         }
 
-        public async Task<bool> UpdateAsync(Models.ProjectModel.ProjectInfo entity, string connectionString = null)
+        public async Task<bool> UpdateAsync(Models.ProjectModel.ProjectInfo entity, string dataBaseName = null)
         {
-            return await prjInfoRepository.UpdateAsync(entity, connectionString);
+            return await prjInfoRepository.UpdateAsync(entity, dataBaseName);
         }
 
-        public async Task<bool> UpdateAsync(IEnumerable<Models.ProjectModel.ProjectInfo> entityList, string connectionString = null)
+        public async Task<bool> UpdateAsync(IEnumerable<Models.ProjectModel.ProjectInfo> entityList, string dataBaseName = null)
         {
-            return await prjInfoRepository.UpdateAsync(entityList, connectionString);
+            return await prjInfoRepository.UpdateAsync(entityList, dataBaseName);
         }
     }
 }

@@ -18,69 +18,69 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.RouteElement
             SectionRepo = sectionRepo;
         }
 
-        public async Task<bool> CreateAsync(VerticalSectionGroundLine entity, string connectionString = null)
+        public async Task<bool> CreateAsync(VerticalSectionGroundLine entity, string dataBaseName = null)
         {
-            return await SectionRepo.CreateAsync(entity, connectionString);
+            return await SectionRepo.CreateAsync(entity, dataBaseName);
         }
 
-        public async Task<bool> CreateAsync(IEnumerable<VerticalSectionGroundLine> entityList, string connectionString = null)
+        public async Task<bool> CreateAsync(IEnumerable<VerticalSectionGroundLine> entityList, string dataBaseName = null)
         {
-            return await SectionRepo.CreateAsync(entityList, connectionString);
+            return await SectionRepo.CreateAsync(entityList, dataBaseName);
         }
 
-        public async Task<bool> DeleteAsync(string keyValue, string connectionString = null)
+        public async Task<bool> DeleteAsync(string keyValue, string dataBaseName = null)
         {
-            return await SectionRepo.DeleteAsync(keyValue, connectionString);
+            return await SectionRepo.DeleteAsync(keyValue, dataBaseName);
         }
 
-        public async Task<bool> DeleteAsync(string[] keyValues, string connectionString = null)
+        public async Task<bool> DeleteAsync(string[] keyValues, string dataBaseName = null)
         {
-            return await SectionRepo.DeleteAsync(keyValues, connectionString);
+            return await SectionRepo.DeleteAsync(keyValues, dataBaseName);
         }
 
-        public async Task<bool> DeleteAsync(VerticalSectionGroundLine entity, string connectionString = null)
+        public async Task<bool> DeleteAsync(VerticalSectionGroundLine entity, string dataBaseName = null)
         {
-            return await SectionRepo.DeleteAsync(entity, connectionString);
+            return await SectionRepo.DeleteAsync(entity, dataBaseName);
         }
 
-        public async Task<bool> DeleteAsync(IEnumerable<VerticalSectionGroundLine> entityList, string connectionString = null)
+        public async Task<bool> DeleteAsync(IEnumerable<VerticalSectionGroundLine> entityList, string dataBaseName = null)
         {
-            return await SectionRepo.DeleteAsync(entityList, connectionString);
+            return await SectionRepo.DeleteAsync(entityList, dataBaseName);
         }
 
-        public async Task<VerticalSectionGroundLine> GetEntityAsync(Expression<Func<VerticalSectionGroundLine, bool>> where, string connectionString = null)
+        public async Task<VerticalSectionGroundLine> GetEntityAsync(Expression<Func<VerticalSectionGroundLine, bool>> where, string dataBaseName = null)
         {
-            return await SectionRepo.GetEntityAsync(where, connectionString);
+            return await SectionRepo.GetEntityAsync(where, dataBaseName);
         }
 
-        public async Task<VerticalSectionGroundLine> GetEntityAsync(string keyValue, string connectionString = null)
+        public async Task<VerticalSectionGroundLine> GetEntityAsync(string keyValue, string dataBaseName = null)
         {
-            return await SectionRepo.GetEntityAsync(keyValue, connectionString);
+            return await SectionRepo.GetEntityAsync(keyValue, dataBaseName);
         }
 
-        public async Task<IEnumerable<VerticalSectionGroundLine>> GetListAsync(Expression<Func<VerticalSectionGroundLine, bool>> where, string connectionString = null)
+        public async Task<IEnumerable<VerticalSectionGroundLine>> GetListAsync(Expression<Func<VerticalSectionGroundLine, bool>> where, string dataBaseName = null)
         {
-            return await SectionRepo.GetListAsync(where, connectionString);
+            return await SectionRepo.GetListAsync(where, dataBaseName);
         }
 
-        public async Task<Tuple<IEnumerable<VerticalSectionGroundLine>, int>> GetListAsync<Tkey>(Expression<Func<VerticalSectionGroundLine, bool>> where, Func<VerticalSectionGroundLine, Tkey> orderbyLambda, bool isAsc, int pageSize, int pageIndex, string connectionString = null)
+        public async Task<Tuple<IEnumerable<VerticalSectionGroundLine>, int>> GetListAsync<Tkey>(Expression<Func<VerticalSectionGroundLine, bool>> where, Func<VerticalSectionGroundLine, Tkey> orderbyLambda, bool isAsc, int pageSize, int pageIndex, string dataBaseName = null)
         {
-            return await SectionRepo.GetListAsync(where, orderbyLambda, isAsc, pageSize, pageIndex, connectionString);
+            return await SectionRepo.GetListAsync(where, orderbyLambda, isAsc, pageSize, pageIndex, dataBaseName);
         }
 
-        public async Task<IEnumerable<VerticalSectionGroundLine>> GetListAsync(string connectionString = null)
+        public async Task<IEnumerable<VerticalSectionGroundLine>> GetListAsync(string dataBaseName = null)
         {
-            return await SectionRepo.GetListAsync(connectionString);
+            return await SectionRepo.GetListAsync(dataBaseName);
         }
 
-        public async Task<bool> UpdateAsync(VerticalSectionGroundLine entity, string connectionString = null)
+        public async Task<bool> UpdateAsync(VerticalSectionGroundLine entity, string dataBaseName = null)
         {
-            return await SectionRepo.UpdateAsync(entity, connectionString);
+            return await SectionRepo.UpdateAsync(entity, dataBaseName);
         }
 
-        public async Task<bool> UpdateAsync(IEnumerable<VerticalSectionGroundLine> entityList, string connectionString = null)
+        public async Task<bool> UpdateAsync(IEnumerable<VerticalSectionGroundLine> entityList, string dataBaseName = null)
         {
-            return await SectionRepo.UpdateAsync(entityList, connectionString);
+            return await SectionRepo.UpdateAsync(entityList, dataBaseName);
         }
     }
 }

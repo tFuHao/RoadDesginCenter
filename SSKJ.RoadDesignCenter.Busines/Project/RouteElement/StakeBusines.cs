@@ -18,69 +18,69 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.RouteElement
             StakeRepo = stakeRepo;
         }
 
-        public async Task<bool> CreateAsync(Stake entity, string connectionString = null)
+        public async Task<bool> CreateAsync(Stake entity, string dataBaseName = null)
         {
-            return await StakeRepo.CreateAsync(entity, connectionString);
+            return await StakeRepo.CreateAsync(entity, dataBaseName);
         }
 
-        public async Task<bool> CreateAsync(IEnumerable<Stake> entityList, string connectionString = null)
+        public async Task<bool> CreateAsync(IEnumerable<Stake> entityList, string dataBaseName = null)
         {
-            return await StakeRepo.CreateAsync(entityList, connectionString);
+            return await StakeRepo.CreateAsync(entityList, dataBaseName);
         }
 
-        public async Task<bool> DeleteAsync(string keyValue, string connectionString = null)
+        public async Task<bool> DeleteAsync(string keyValue, string dataBaseName = null)
         {
-            return await StakeRepo.DeleteAsync(keyValue, connectionString);
+            return await StakeRepo.DeleteAsync(keyValue, dataBaseName);
         }
 
-        public async Task<bool> DeleteAsync(string[] keyValues, string connectionString = null)
+        public async Task<bool> DeleteAsync(string[] keyValues, string dataBaseName = null)
         {
-            return await StakeRepo.DeleteAsync(keyValues, connectionString);
+            return await StakeRepo.DeleteAsync(keyValues, dataBaseName);
         }
 
-        public async Task<bool> DeleteAsync(Stake entity, string connectionString = null)
+        public async Task<bool> DeleteAsync(Stake entity, string dataBaseName = null)
         {
-            return await StakeRepo.DeleteAsync(entity, connectionString);
+            return await StakeRepo.DeleteAsync(entity, dataBaseName);
         }
 
-        public async Task<bool> DeleteAsync(IEnumerable<Stake> entityList, string connectionString = null)
+        public async Task<bool> DeleteAsync(IEnumerable<Stake> entityList, string dataBaseName = null)
         {
-            return await StakeRepo.DeleteAsync(entityList, connectionString);
+            return await StakeRepo.DeleteAsync(entityList, dataBaseName);
         }
 
-        public async Task<Stake> GetEntityAsync(Expression<Func<Stake, bool>> where, string connectionString = null)
+        public async Task<Stake> GetEntityAsync(Expression<Func<Stake, bool>> where, string dataBaseName = null)
         {
-            return await StakeRepo.GetEntityAsync(where, connectionString);
+            return await StakeRepo.GetEntityAsync(where, dataBaseName);
         }
 
-        public async Task<Stake> GetEntityAsync(string keyValue, string connectionString = null)
+        public async Task<Stake> GetEntityAsync(string keyValue, string dataBaseName = null)
         {
-            return await StakeRepo.GetEntityAsync(keyValue, connectionString);
+            return await StakeRepo.GetEntityAsync(keyValue, dataBaseName);
         }
 
-        public async Task<IEnumerable<Stake>> GetListAsync(Expression<Func<Stake, bool>> where, string connectionString = null)
+        public async Task<IEnumerable<Stake>> GetListAsync(Expression<Func<Stake, bool>> where, string dataBaseName = null)
         {
-            return await StakeRepo.GetListAsync(where, connectionString);
+            return await StakeRepo.GetListAsync(where, dataBaseName);
         }
 
-        public async Task<Tuple<IEnumerable<Stake>, int>> GetListAsync<Tkey>(Expression<Func<Stake, bool>> where, Func<Stake, Tkey> orderbyLambda, bool isAsc, int pageSize, int pageIndex, string connectionString = null)
+        public async Task<Tuple<IEnumerable<Stake>, int>> GetListAsync<Tkey>(Expression<Func<Stake, bool>> where, Func<Stake, Tkey> orderbyLambda, bool isAsc, int pageSize, int pageIndex, string dataBaseName = null)
         {
-            return await StakeRepo.GetListAsync(where, orderbyLambda, isAsc, pageSize, pageIndex, connectionString);
+            return await StakeRepo.GetListAsync(where, orderbyLambda, isAsc, pageSize, pageIndex, dataBaseName);
         }
 
-        public async Task<IEnumerable<Stake>> GetListAsync(string connectionString = null)
+        public async Task<IEnumerable<Stake>> GetListAsync(string dataBaseName = null)
         {
-            return await StakeRepo.GetListAsync(connectionString);
+            return await StakeRepo.GetListAsync(dataBaseName);
         }
 
-        public async Task<bool> UpdateAsync(Stake entity, string connectionString = null)
+        public async Task<bool> UpdateAsync(Stake entity, string dataBaseName = null)
         {
-            return await StakeRepo.UpdateAsync(entity, connectionString);
+            return await StakeRepo.UpdateAsync(entity, dataBaseName);
         }
 
-        public async Task<bool> UpdateAsync(IEnumerable<Stake> entityList, string connectionString = null)
+        public async Task<bool> UpdateAsync(IEnumerable<Stake> entityList, string dataBaseName = null)
         {
-            return await StakeRepo.UpdateAsync(entityList, connectionString);
+            return await StakeRepo.UpdateAsync(entityList, dataBaseName);
         }
     }
 }
