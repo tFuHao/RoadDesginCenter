@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Mvc;
 using SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Models;
+using SSKJ.RoadDesignCenter.API.Data;
 using SSKJ.RoadDesignCenter.IBusines.Project.RouteElement;
 using SSKJ.RoadDesignCenter.Models.ProjectModel;
 
@@ -13,13 +14,11 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RoutInfo
 {
     [Route("api/RouteManage/[action]")]
     [Area("RouteManage_RoutInfo")]
-    public class RouteManageController : Controller
+    public class RouteManageController : BaseController
     {
         public IRouteBusines RouteBus;
 
         public HostingEnvironment HostingEnvironmentost;
-
-        public string ConStr = "server=139.224.200.194;port=3306;database=road_project_001;user id=root;password=SSKJ*147258369";
 
         public RouteManageController(IRouteBusines routeBus, HostingEnvironment hostingEnvironmentost)
         {
@@ -34,10 +33,11 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RoutInfo
 
         public async Task<IActionResult> Get(int pageSize, int pageIndex)
         {
-            var data = await RouteBus.GetListAsync(e => e.ParentId == null, e => e.RouteId, true, pageSize, pageIndex, ConStr);
+            var data = await RouteBus.GetListAsync(e => true, e => e.RouteId, true, pageSize, pageIndex, GetConStr());
+            var result = data.Item1.ToList().RouteTreeGridJson(null);
             return Json(new
             {
-                data = data.Item1,
+                data = result,
                 count = data.Item2
             });
         }
@@ -68,20 +68,20 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RoutInfo
                             RouteName = input.RouteName,
                             Description = input.Description
                         };
-                        result = await RouteBus.CreateAsync(input, ConStr);
+                        result = await RouteBus.CreateAsync(input, GetConStr());
                     }
                     //添加线路
                     else if (wayType == WayType.Child)
                     {
                         input.RouteId = Guid.NewGuid().ToString();
-                        result = await RouteBus.CreateAsync(input, ConStr);
+                        result = await RouteBus.CreateAsync(input, GetConStr());
                     }
                     return Json(result);
                 }
                 else
                 {
                     //更新
-                    var entity = await RouteBus.GetEntityAsync(e => e.RouteId == input.RouteId, ConStr);
+                    var entity = await RouteBus.GetEntityAsync(e => e.RouteId == input.RouteId, GetConStr());
                     if (entity == null)
                         return null;
                     if (wayType == WayType.Parent)
@@ -101,7 +101,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RoutInfo
                         entity.Description = input.Description;
                         entity.DesignSpeed = input.DesignSpeed;
                     }
-                    var result = await RouteBus.UpdateAsync(entity, ConStr);
+                    var result = await RouteBus.UpdateAsync(entity, GetConStr());
                     return Json(result);
                 }
             }
@@ -127,10 +127,37 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RoutInfo
         {
             if (list.Any())
             {
-                var result = await RouteBus.DeleteAsync(list, ConStr);
+                var result = await RouteBus.DeleteAsync(list, GetConStr());
                 return Json(result);
             }
             return Json(false);
+        }
+
+        /// <summary>
+        /// 路线信息页面获取路线信息
+        /// </summary>
+        /// <param name="routeId">路线Id</param>
+        /// <returns></returns>
+        public async Task<IActionResult> GetRouteInfo(string routeId)
+        {
+            if (!string.IsNullOrEmpty(routeId))
+            {
+                var result = await RouteBus.GetEntityAsync(e => e.RouteId == routeId, GetConStr());
+                return Json(result);
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// 路线信息更改路线列表
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> GetRouteList()
+        {
+            var list = await RouteBus.GetListAsync(e => true, GetConStr());
+            var result = list.ToList().RouteTreeGridJson(null);
+            return Json(result);
         }
     }
 }

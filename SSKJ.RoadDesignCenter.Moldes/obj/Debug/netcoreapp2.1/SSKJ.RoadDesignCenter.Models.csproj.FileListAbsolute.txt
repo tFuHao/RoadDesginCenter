@@ -24,6 +24,7 @@ D:\project\AspNetCore\RoadDesginCenter\SSKJ.RoadDesignCenter.Moldes\bin\Debug\ne
 D:\project\AspNetCore\RoadDesginCenter\SSKJ.RoadDesignCenter.Moldes\bin\Debug\netcoreapp2.1\SSKJ.RoadDesignCenter.Models.runtimeconfig.dev.json
 D:\project\AspNetCore\RoadDesginCenter\SSKJ.RoadDesignCenter.Moldes\bin\Debug\netcoreapp2.1\SSKJ.RoadDesignCenter.Models.dll
 D:\project\AspNetCore\RoadDesginCenter\SSKJ.RoadDesignCenter.Moldes\bin\Debug\netcoreapp2.1\SSKJ.RoadDesignCenter.Models.pdb
+D:\project\AspNetCore\RoadDesginCenter\SSKJ.RoadDesignCenter.Moldes\obj\Debug\netcoreapp2.1\SSKJ.RoadDesignCenter.Models.csprojAssemblyReference.cache
 D:\project\AspNetCore\RoadDesginCenter\SSKJ.RoadDesignCenter.Moldes\obj\Debug\netcoreapp2.1\SSKJ.RoadDesignCenter.Models.csproj.CoreCompileInputs.cache
 D:\project\AspNetCore\RoadDesginCenter\SSKJ.RoadDesignCenter.Moldes\obj\Debug\netcoreapp2.1\SSKJ.RoadDesignCenter.Models.AssemblyInfoInputs.cache
 D:\project\AspNetCore\RoadDesginCenter\SSKJ.RoadDesignCenter.Moldes\obj\Debug\netcoreapp2.1\SSKJ.RoadDesignCenter.Models.AssemblyInfo.cs
