@@ -23,6 +23,7 @@ namespace SSKJ.RoadDesignCenter.API.Data
                     strJson.Append("\"ParentId\":\"" + entity.ParentId + "\",");
                     strJson.Append("\"ProjectId\":\"" + entity.ProjectId + "\",");
                     strJson.Append("\"RouteName\":\"" + entity.RouteName + "\",");
+                    strJson.Append("\"RouteType\":\"" + entity.RouteType + "\",");
                     strJson.Append("\"RouteLength\":\"" + entity.RouteLength + "\",");
                     strJson.Append("\"StartStake\":\"" + entity.StartStake + "\",");
                     strJson.Append("\"EndStake\":\"" + entity.EndStake + "\",");
