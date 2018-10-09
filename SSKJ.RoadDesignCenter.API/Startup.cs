@@ -138,6 +138,8 @@ namespace SSKJ.RoadDesignCenter.API
 
             app.UseSession();
 
+            app.UseStaticFiles();
+
             // global cors policy
             app.UseCors(x => x
                 .AllowAnyOrigin()
