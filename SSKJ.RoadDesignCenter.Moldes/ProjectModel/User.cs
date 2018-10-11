@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace SSKJ.RoadDesignCenter.Models.ProjectModel
@@ -9,10 +8,11 @@ namespace SSKJ.RoadDesignCenter.Models.ProjectModel
         public string UserId { get; set; }
         [Required(ErrorMessage = "账户不能为空")]
         public string Account { get; set; }
-        [Required(ErrorMessage = "密码不能为空")]
+        [PasswordValidator]
         public string Password { get; set; }
         public string Secretkey { get; set; }
         public string RealName { get; set; }
+        [Required(ErrorMessage = "头像不能为空")]
         public string HeadIcon { get; set; }
         public int? Gender { get; set; }
         public DateTime? Birthday { get; set; }

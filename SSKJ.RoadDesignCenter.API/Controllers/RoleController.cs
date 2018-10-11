@@ -15,14 +15,17 @@ namespace SSKJ.RoadDesignCenter.API.Controllers
     {
         public IRoleBusines RoleBus;
 
-        public RoleController(IRoleBusines roleBus)
+        public IUserBusines UserBus;
+
+        public RoleController(IRoleBusines roleBus, IUserBusines userBus)
         {
             RoleBus = roleBus;
+            UserBus = userBus;
         }
 
         public async Task<IActionResult> GetRoles(int pageSize, int pageIndex)
         {
-            var result = await RoleBus.GetListAsync(e => true, e => e.RoleId, true, pageSize, pageIndex, GetConStr());
+            var result = await RoleBus.GetListAsync(e => true, e => e.SortCode, true, pageSize, pageIndex, GetConStr());
             return Json(new
             {
                 data = result.Item1,
@@ -45,6 +48,11 @@ namespace SSKJ.RoadDesignCenter.API.Controllers
                 }
                 else
                 {
+                    if (input.DeleteMark == 1)
+                    {
+                        return Json(false);
+                    }
+
                     var entity = await RoleBus.GetEntityAsync(e => e.RoleId == input.RoleId, GetConStr());
                     if (entity == null)
                         return null;
@@ -71,19 +79,24 @@ namespace SSKJ.RoadDesignCenter.API.Controllers
             return null;
         }
 
-        public IActionResult Delete(List<Role> list)
+        public async Task<IActionResult> Delete(List<Role> list)
         {
+            var result = false;
             if (list.Any())
             {
                 list.ForEach(async i =>
                 {
-                    i.DeleteMark = 1;
-                    i.EnabledMark = 0;
-                    await RoleBus.UpdateAsync(i, GetConStr());
+                    var users = await UserBus.GetListAsync(e => e.RoleId == i.RoleId, GetConStr());
+                    users.ToList().ForEach(async j =>
+                    {
+                        j.RoleId = null;
+                        await UserBus.UpdateAsync(j, GetConStr());
+                    });
                 });
+                result = await RoleBus.DeleteAsync(list, GetConStr());
             }
 
-            return null;
+            return Json(result);
         }
 
         /// <summary>
@@ -94,7 +107,7 @@ namespace SSKJ.RoadDesignCenter.API.Controllers
         public async Task<IActionResult> ChangeEnable(string roleId)
         {
             var entity = await RoleBus.GetEntityAsync(e => e.RoleId == roleId, GetConStr());
-            if (entity.DeleteMark == 1)
+            if (entity.DeleteMark != 1)
             {
                 if (entity.EnabledMark == 1)
                 {
