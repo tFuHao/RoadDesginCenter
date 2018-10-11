@@ -18,15 +18,17 @@ namespace SSKJ.RoadDesignCenter.API.Controllers
     public class UsersController : Controller
     {
         private readonly IUserBusines prjUserBll;
+        private readonly IRoleBusines roleBusines;
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly HostingEnvironment Host;
 
-        public UsersController(IUserBusines prjUserBll, IHttpContextAccessor httpContextAccessor, HostingEnvironment host)
+        public UsersController(IRoleBusines roleBusines, IUserBusines prjUserBll, IHttpContextAccessor httpContextAccessor, HostingEnvironment host)
         {
             this.prjUserBll = prjUserBll;
             this.httpContextAccessor = httpContextAccessor;
             CurrentUser.Configure(httpContextAccessor);
             this.Host = host;
+            this.roleBusines = roleBusines;
         }
 
         public async Task<IActionResult> Index()
@@ -53,6 +55,7 @@ namespace SSKJ.RoadDesignCenter.API.Controllers
                     input.CreateDate = DateTime.Now;
                     input.CreateUserId = GetUserId();
                     input.HeadIcon = SaveHead(input.HeadIcon);
+                    input.EnabledMark = 1;
                     var result = await prjUserBll.CreateAsync(input, GetConStr());
                     return Json(result);
                 }
@@ -70,7 +73,6 @@ namespace SSKJ.RoadDesignCenter.API.Controllers
                     entity.Gender = input.Gender;
                     entity.Mobile = input.Mobile;
                     entity.Birthday = input.Birthday;
-                    entity.Password = input.Password;
                     entity.Email = input.Email;
                     entity.RoleId = input.RoleId;
                     entity.ModifyDate = DateTime.Now;
@@ -152,6 +154,29 @@ namespace SSKJ.RoadDesignCenter.API.Controllers
             }
 
             return Json(!result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetRoleList()
+        {
+            var result = await roleBusines.GetListAsync(e => true, GetConStr());
+            return Json(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeEnable(string userId)
+        {
+            var entity = await prjUserBll.GetEntityAsync(e => e.UserId == userId, GetConStr());
+            if (entity.EnabledMark == 1)
+            {
+                entity.EnabledMark = 0;
+            }
+            else
+            {
+                entity.EnabledMark = 1;
+            }
+            var result = await prjUserBll.UpdateAsync(entity, GetConStr());
+            return Json(result);
         }
 
         /// <summary>
