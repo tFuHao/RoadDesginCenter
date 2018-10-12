@@ -188,10 +188,19 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                         Offset = Convert.ToDouble(tempList[0]),
                         RightCorner = Convert.ToDouble(tempList[1])
                     };
-                    var result = await StakeBus.CreateAsync(temp, GetConStr());
-                    if (result)
-                        success++;
-                    else error++;
+                    var validate = TryValidateModel(temp);
+                    if (validate)
+                    {
+                        var result = await StakeBus.CreateAsync(temp, GetConStr());
+                        if (result)
+                            success++;
+                        else error++;
+                    }
+                    else
+                    {
+                        error++;
+                    }
+                    
                 }
                 reader.Close();
                 FileUtils.DeleteFile(path);

@@ -125,6 +125,16 @@ namespace SSKJ.RoadDesignCenter.API.Controllers
         }
 
         /// <summary>
+        /// 更改角色成员时获取项目成员
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> GetUsers()
+        {
+            var result = await UserBus.GetListAsync(e => e.EnabledMark == 1, GetConStr());
+            return Ok(result);
+        }
+
+        /// <summary>
         /// 从token中获得当前登录的用户ID  
         /// </summary>
         /// <returns></returns>

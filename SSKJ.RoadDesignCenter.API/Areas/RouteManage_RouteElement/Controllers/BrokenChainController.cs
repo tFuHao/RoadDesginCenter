@@ -66,7 +66,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                     }
 
                     var result = await BrokenBus.CreateAsync(input, GetConStr());
-                    return Json(result);
+                    return Ok(result);
                 }
                 else
                 {
@@ -77,7 +77,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                     entity.AfterStake = input.AfterStake;
                     entity.SerialNumber = input.SerialNumber;
                     var result = await BrokenBus.UpdateAsync(entity, GetConStr());
-                    return Json(result);
+                    return Ok(result);
                 }
             }
 
@@ -85,11 +85,11 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
             {
                 if (data.Errors.Count > 0)
                 {
-                    return Json(data.Errors[0].ErrorMessage);
+                    return BadRequest(data.Errors[0].ErrorMessage);
                 }
             }
 
-            return null;
+            return BadRequest();
         }
 
         /// <summary>
@@ -189,10 +189,18 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                         FrontStake = Convert.ToDouble(tempList[0]),
                         AfterStake = Convert.ToDouble(tempList[1])
                     };
-                    var result = await BrokenBus.CreateAsync(temp, GetConStr());
-                    if (result)
-                        success++;
-                    else error++;
+                    var validate = TryValidateModel(temp);
+                    if (validate)
+                    {
+                        var result = await BrokenBus.CreateAsync(temp, GetConStr());
+                        if (result)
+                            success++;
+                        else error++;
+                    }
+                    else
+                    {
+                        error++;
+                    }
                 }
                 reader.Close();
                 FileUtils.DeleteFile(path);
