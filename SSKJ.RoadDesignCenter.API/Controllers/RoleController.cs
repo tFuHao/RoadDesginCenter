@@ -139,11 +139,11 @@ namespace SSKJ.RoadDesignCenter.API.Controllers
             return Ok(result);
         }
 
-        //public async Task<IActionResult> GetModuleTree()
-        //{
-        //    var list = ModuleBus.GetListAsync(e => e.ParentId != "0");
-        //    var result = 
-        //}
+        public async Task<IActionResult> GetModuleTree()
+        {
+            var list = await ModuleBus.GetListAsync();
+            return Ok(Data.ModuleTreeJson.TreeGridJson(list.OrderBy(e => e.SortCode).ToList()));
+        }
 
         /// <summary>
         /// 从token中获得当前登录的用户ID  
