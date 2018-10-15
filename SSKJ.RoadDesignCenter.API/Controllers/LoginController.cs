@@ -62,7 +62,7 @@ namespace SSKJ.RoadDesignCenter.API.Controllers
                     return BadRequest(new { message = "用户名或密码错误，请重新输入!" });
 
                 var _user = Utility.Tools.MapperUtils.MapTo<User, UserInfoModel>(user);
-                _user.dataBaseName = entity.PrjDataBase;
+                _user.DataBaseName = entity.PrjDataBase;
                 _user.TokenExpiration = DateTime.Now.AddDays(1);
 
                 string token = Utility.Tools.TokenUtils.ToToken(_user);

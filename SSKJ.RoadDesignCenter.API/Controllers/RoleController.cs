@@ -6,21 +6,26 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using SSKJ.RoadDesignCenter.API.Models;
 using SSKJ.RoadDesignCenter.IBusines.Project;
+using SSKJ.RoadDesignCenter.IBusines.System;
 using SSKJ.RoadDesignCenter.Models.ProjectModel;
+using IUserBusines = SSKJ.RoadDesignCenter.IBusines.Project.IUserBusines;
 
 namespace SSKJ.RoadDesignCenter.API.Controllers
 {
     [Route("api/Role/[action]")]
     public class RoleController : Controller
     {
-        public IRoleBusines RoleBus;
+        private readonly IRoleBusines RoleBus;
 
-        public IUserBusines UserBus;
+        private readonly IUserBusines UserBus;
 
-        public RoleController(IRoleBusines roleBus, IUserBusines userBus)
+        private readonly IModuleBusines ModuleBus;
+
+        public RoleController(IRoleBusines roleBus, IUserBusines userBus, IModuleBusines moduleBus)
         {
             RoleBus = roleBus;
             UserBus = userBus;
+            ModuleBus = moduleBus;
         }
 
         public async Task<IActionResult> GetRoles(int pageSize, int pageIndex)
@@ -134,6 +139,12 @@ namespace SSKJ.RoadDesignCenter.API.Controllers
             return Ok(result);
         }
 
+        //public async Task<IActionResult> GetModuleTree()
+        //{
+        //    var list = ModuleBus.GetListAsync(e => e.ParentId != "0");
+        //    var result = 
+        //}
+
         /// <summary>
         /// 从token中获得当前登录的用户ID  
         /// </summary>
@@ -172,7 +183,7 @@ namespace SSKJ.RoadDesignCenter.API.Controllers
 
                 var userInfo = Utility.Tools.TokenUtils.ToObject<UserInfoModel>(strToken);
 
-                result = userInfo.dataBaseName;
+                result = userInfo.DataBaseName;
             }
             catch (Exception)
             {
