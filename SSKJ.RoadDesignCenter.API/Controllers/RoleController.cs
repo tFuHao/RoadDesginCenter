@@ -172,7 +172,7 @@ namespace SSKJ.RoadDesignCenter.API.Controllers
 
                 var userInfo = Utility.Tools.TokenUtils.ToObject<UserInfoModel>(strToken);
 
-                result = userInfo.dataBaseName;
+                result = userInfo.DataBaseName;
             }
             catch (Exception)
             {
