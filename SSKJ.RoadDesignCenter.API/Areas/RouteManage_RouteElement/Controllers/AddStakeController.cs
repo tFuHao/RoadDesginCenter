@@ -190,10 +190,19 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                         Stake = Convert.ToDouble(tempList[0]),
                         Description = tempList[1]
                     };
-                    var result = await AddStakeBus.CreateAsync(temp, GetConStr());
-                    if (result)
-                        success++;
-                    else error++;
+                    var validate = TryValidateModel(temp);
+                    if (validate)
+                    {
+                        var result = await AddStakeBus.CreateAsync(temp, GetConStr());
+                        if (result)
+                            success++;
+                        else error++;
+                    }
+                    else
+                    {
+                        error++;
+                    }
+                    
                 }
                 reader.Close();
                 FileUtils.DeleteFile(path);

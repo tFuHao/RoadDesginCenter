@@ -22,15 +22,3 @@ D:\Source\Repos\BIMCenter\RoadDesignCenter\SSKJ.RoadDesignCenter.IBusines\obj\De
 D:\Source\Repos\BIMCenter\RoadDesignCenter\SSKJ.RoadDesignCenter.IBusines\obj\Debug\netcoreapp2.1\SSKJ.RoadDesignCenter.IBusines.csproj.CopyComplete
 D:\Source\Repos\BIMCenter\RoadDesignCenter\SSKJ.RoadDesignCenter.IBusines\obj\Debug\netcoreapp2.1\SSKJ.RoadDesignCenter.IBusines.dll
 D:\Source\Repos\BIMCenter\RoadDesignCenter\SSKJ.RoadDesignCenter.IBusines\obj\Debug\netcoreapp2.1\SSKJ.RoadDesignCenter.IBusines.pdb
-D:\project\AspNetCore\RoadDesginCenter\SSKJ.RoadDesignCenter.IBusines\bin\Debug\netcoreapp2.1\SSKJ.RoadDesignCenter.IBusines.deps.json
-D:\project\AspNetCore\RoadDesginCenter\SSKJ.RoadDesignCenter.IBusines\bin\Debug\netcoreapp2.1\SSKJ.RoadDesignCenter.IBusines.dll
-D:\project\AspNetCore\RoadDesginCenter\SSKJ.RoadDesignCenter.IBusines\bin\Debug\netcoreapp2.1\SSKJ.RoadDesignCenter.IBusines.pdb
-D:\project\AspNetCore\RoadDesginCenter\SSKJ.RoadDesignCenter.IBusines\bin\Debug\netcoreapp2.1\SSKJ.RoadDesignCenter.Models.dll
-D:\project\AspNetCore\RoadDesginCenter\SSKJ.RoadDesignCenter.IBusines\bin\Debug\netcoreapp2.1\SSKJ.RoadDesignCenter.Models.pdb
-D:\project\AspNetCore\RoadDesginCenter\SSKJ.RoadDesignCenter.IBusines\obj\Debug\netcoreapp2.1\SSKJ.RoadDesignCenter.IBusines.csprojAssemblyReference.cache
-D:\project\AspNetCore\RoadDesginCenter\SSKJ.RoadDesignCenter.IBusines\obj\Debug\netcoreapp2.1\SSKJ.RoadDesignCenter.IBusines.csproj.CoreCompileInputs.cache
-D:\project\AspNetCore\RoadDesginCenter\SSKJ.RoadDesignCenter.IBusines\obj\Debug\netcoreapp2.1\SSKJ.RoadDesignCenter.IBusines.AssemblyInfoInputs.cache
-D:\project\AspNetCore\RoadDesginCenter\SSKJ.RoadDesignCenter.IBusines\obj\Debug\netcoreapp2.1\SSKJ.RoadDesignCenter.IBusines.AssemblyInfo.cs
-D:\project\AspNetCore\RoadDesginCenter\SSKJ.RoadDesignCenter.IBusines\obj\Debug\netcoreapp2.1\SSKJ.RoadDesignCenter.IBusines.csproj.CopyComplete
-D:\project\AspNetCore\RoadDesginCenter\SSKJ.RoadDesignCenter.IBusines\obj\Debug\netcoreapp2.1\SSKJ.RoadDesignCenter.IBusines.dll
-D:\project\AspNetCore\RoadDesginCenter\SSKJ.RoadDesignCenter.IBusines\obj\Debug\netcoreapp2.1\SSKJ.RoadDesignCenter.IBusines.pdb

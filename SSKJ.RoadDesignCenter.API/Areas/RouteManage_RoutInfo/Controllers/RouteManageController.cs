@@ -9,6 +9,7 @@ using SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Models;
 using SSKJ.RoadDesignCenter.API.Data;
 using SSKJ.RoadDesignCenter.IBusines.Project.RouteElement;
 using SSKJ.RoadDesignCenter.Models.ProjectModel;
+using SSKJ.RoadDesignCenter.Models.SystemModel;
 
 namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RoutInfo
 {
@@ -31,15 +32,11 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RoutInfo
             Parent, Child
         }
 
-        public async Task<IActionResult> Get(int pageSize, int pageIndex)
+        public async Task<IActionResult> Get()
         {
-            var data = await RouteBus.GetListAsync(e => true, e => e.RouteId, true, pageSize, pageIndex, GetConStr());
-            var result = data.Item1.ToList().RouteTreeGridJson(null);
-            return Json(new
-            {
-                data = result,
-                count = data.Item2
-            });
+            var data = await RouteBus.GetListAsync(GetConStr());
+            var result = data.ToList().RouteTreeGridJson(null);
+            return Json(result);
         }
 
         /// <summary>
@@ -157,6 +154,12 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RoutInfo
         {
             var list = await RouteBus.GetListAsync(e => true, GetConStr());
             var result = list.ToList().RouteTreeGridJson(null);
+            return Json(result);
+        }
+
+        public async Task<IActionResult> GetRouteGroup()
+        {
+            var result = await RouteBus.GetListAsync(e => e.RouteType == null, GetConStr());
             return Json(result);
         }
     }

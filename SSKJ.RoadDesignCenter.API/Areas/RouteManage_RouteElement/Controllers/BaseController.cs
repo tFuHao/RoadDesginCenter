@@ -22,7 +22,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
 
                 conStr = userInfo.DataBaseName;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 
             }

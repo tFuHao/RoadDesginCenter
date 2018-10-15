@@ -114,10 +114,18 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                         CrossSectionGroundLineId = Guid.NewGuid().ToString(),
                         Stake = Convert.ToDouble(tempList[0]),
                     };
-                    var result = await SectionBus.CreateAsync(temp, GetConStr());
-                    if (result)
-                        success++;
-                    else error++;
+                    var validate = TryValidateModel(temp);
+                    if (validate)
+                    {
+                        var result = await SectionBus.CreateAsync(temp, GetConStr());
+                        if (result)
+                            success++;
+                        else error++;
+                    }
+                    else
+                    {
+                        error++;
+                    }
                 }
                 reader.Close();
                 FileUtils.DeleteFile(path);

@@ -202,10 +202,18 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                         Ls1R = Convert.ToDouble(tempList[7]),
                         Ls2R = Convert.ToDouble(tempList[8])
                     };
-                    var result = await FlatCurveBus.CreateAsync(temp, GetConStr());
-                    if (result)
-                        success++;
-                    else error++;
+                    var validate = TryValidateModel(temp);
+                    if (validate)
+                    {
+                        var result = await FlatCurveBus.CreateAsync(temp, GetConStr());
+                        if (result)
+                            success++;
+                        else error++;
+                    }
+                    else
+                    {
+                        error++;
+                    }
                 }
                 reader.Close();
                 FileUtils.DeleteFile(path);

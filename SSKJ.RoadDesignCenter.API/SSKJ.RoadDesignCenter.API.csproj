@@ -46,6 +46,7 @@
     <Folder Include="Areas\SystemManage\Models\" />
     <Folder Include="Areas\SystemManage\Views\" />
     <Folder Include="wwwroot\" />
+    <Folder Include="wwwroot\image\head\" />
     <Folder Include="wwwroot\upload\import\" />
   </ItemGroup>
 
