@@ -12,7 +12,7 @@ namespace SSKJ.RoadDesignCenter.API.Models
         public string Account { get; set; }
         public string Email { get; set; }
         public string RoleId { get; set; }
-        public string dataBaseName { get; set; }
+        public string DataBaseName { get; set; }
         public DateTime? TokenExpiration { get; set; }
     }
 }

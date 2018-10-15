@@ -6,7 +6,7 @@ namespace SSKJ.RoadDesignCenter.Models.ProjectModel
     public partial class ProjectInfo
     {
         public string ProjectId { get; set; }
-        public string Name { get; set; }
+        public string PrjName { get; set; }
         public string Identification { get; set; }
         public string Description { get; set; }
         public string OwnerUnit { get; set; }

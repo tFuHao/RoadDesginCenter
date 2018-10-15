@@ -22,6 +22,8 @@ namespace SSKJ.RoadDesignCenter.Models.SystemModel
         public int? EnabledMark { get; set; }
         public string Description { get; set; }
         public DateTime? CreateDate { get; set; }
-        public DateTime? ModifyDate { get; set; }
+        public string ProvinceId { get; set; }
+        public string CityId { get; set; }
+        public string CountyId { get; set; }
     }
 }

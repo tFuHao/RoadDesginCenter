@@ -16,7 +16,10 @@ namespace SSKJ.RoadDesignCenter.DependencyInjection
             //system
             services.AddSingleton<ibSystem.IUserBusines, bSystem.UserBusines>();
             services.AddSingleton<ibSystem.IModuleBusines, bSystem.ModuleBusines>();
+            services.AddSingleton<ibSystem.IButtonBusines, bSystem.ButtonBusines>();
+            services.AddSingleton<ibSystem.IColumnBusines, bSystem.ColumnBusines>();
             services.AddSingleton<ibSystem.IUserProjectBusines, bSystem.UserProjectBusines>();
+            services.AddSingleton<ibSystem.IAreaBusines, bSystem.AreaBusines>();
 
             //project
             services.AddSingleton<ibProject.IUserBusines, bProject.UserBusines>();

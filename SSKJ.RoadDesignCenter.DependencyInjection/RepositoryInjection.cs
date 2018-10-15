@@ -15,8 +15,11 @@ namespace SSKJ.RoadDesignCenter.DependencyInjection
         {
             //system
             services.AddSingleton<irSystem.IModuleRepository, rSystem.ModuleRepository>();
+            services.AddSingleton<irSystem.IButtonRepository, rSystem.ButtonRepository>();
+            services.AddSingleton<irSystem.IColumnRepository, rSystem.ColumnRepository>();
             services.AddSingleton<irSystem.IUserRepository, rSystem.UserRepository>();
             services.AddSingleton<irSystem.IUserProjectRepository, rSystem.UserProjectRepository>();
+            services.AddSingleton<irSystem.IAreaRepository, rSystem.AreaRepository>();
 
             //project
             services.AddSingleton<irProject.IUserRepository, rProject.UserRepository>();

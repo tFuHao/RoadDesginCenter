@@ -243,7 +243,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
                 entity.Property(e => e.Identification).HasColumnType("varchar(50)");
 
-                entity.Property(e => e.Name).HasColumnType("varchar(50)");
+                entity.Property(e => e.PrjName).HasColumnType("varchar(50)");
 
                 entity.Property(e => e.OwnerUnit).HasColumnType("varchar(50)");
 
@@ -278,9 +278,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
                 entity.Property(e => e.Host).HasColumnType("varchar(200)");
 
-                entity.Property(e => e.Ipaddress)
-                    .HasColumnName("IPAddress")
-                    .HasColumnType("varchar(50)");
+                entity.Property(e => e.Ipaddress).HasColumnType("varchar(50)");
 
                 entity.Property(e => e.Module).HasColumnType("varchar(50)");
 
@@ -389,9 +387,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
                 entity.Property(e => e.Birthday).HasColumnType("datetime");
 
-                entity.Property(e => e.CreateDate)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("'0000-00-00 00:00:00'");
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.CreateUserId).HasColumnType("varchar(50)");
 
@@ -403,17 +399,13 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
                 entity.Property(e => e.EnabledMark).HasColumnType("int(11)");
 
-                entity.Property(e => e.FirstVisit)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("'CURRENT_TIMESTAMP'");
+                entity.Property(e => e.FirstVisit).HasColumnType("datetime");
 
                 entity.Property(e => e.Gender).HasColumnType("int(11)");
 
                 entity.Property(e => e.HeadIcon).HasColumnType("varchar(200)");
 
-                entity.Property(e => e.LastVisit)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("'0000-00-00 00:00:00'");
+                entity.Property(e => e.LastVisit).HasColumnType("datetime");
 
                 entity.Property(e => e.LogOnCount).HasColumnType("int(11)");
 
@@ -421,9 +413,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
                 entity.Property(e => e.Mobile).HasColumnType("varchar(50)");
 
-                entity.Property(e => e.ModifyDate)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("'0000-00-00 00:00:00'");
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
 
                 entity.Property(e => e.ModifyUserId).HasColumnType("varchar(50)");
 
