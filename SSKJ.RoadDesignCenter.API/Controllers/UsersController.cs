@@ -179,6 +179,76 @@ namespace SSKJ.RoadDesignCenter.API.Controllers
             return Json(result);
         }
 
+        /// <summary>
+        /// 个人信息面板信息初始化
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> GetPersonInfo(string userId)
+        {
+            if (!string.IsNullOrEmpty(userId))
+            {
+                var result = await prjUserBll.GetEntityAsync(e => e.UserId == userId, GetConStr());
+                result.Password = "";
+                return Ok(result);
+            }
+            return BadRequest();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdatePersonInfo(User input)
+        {
+            if (ModelState.IsValid)
+            {
+                var entity = await prjUserBll.GetEntityAsync(e => e.UserId == input.UserId, GetConStr());
+                if (entity != null)
+                {
+                    entity.Account = input.Account;
+                    entity.Mobile = input.Mobile;
+                    entity.Email = input.Email;
+                    var result = await prjUserBll.UpdateAsync(entity, GetConStr());
+                    return Ok(result);
+                }
+                else
+                {
+                    return BadRequest("信息不存在");
+                }
+            }
+            foreach (var i in ModelState.Values)
+            {
+                if (i.Errors.Count > 0)
+                {
+                    return BadRequest(i.Errors[0].ErrorMessage);
+                }
+            }
+            return BadRequest();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdatePassword(string userId, string oldPwd, string newPwd)
+        {
+            if (!string.IsNullOrEmpty(userId))
+            {
+                var entity = await prjUserBll.GetEntityAsync(e => e.UserId == userId, GetConStr());
+                if (entity == null)
+                    return BadRequest();
+                if (entity.Password == oldPwd)
+                {
+                    entity.Password = newPwd;
+                    var result = await prjUserBll.UpdateAsync(entity, GetConStr());
+                    return Ok(result);
+                }
+                else
+                {
+                    return BadRequest("旧密码输入错误");
+                }
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
 
         /// <summary>
         /// 从token中获得当前登录的用户ID  

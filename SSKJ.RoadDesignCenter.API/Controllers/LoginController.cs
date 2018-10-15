@@ -55,6 +55,9 @@ namespace SSKJ.RoadDesignCenter.API.Controllers
 
                 var user = await prjUserBll.GetEntityAsync(u => u.Account == model.UserName && u.Password == model.Password, entity.PrjDataBase);
 
+                if (user.EnabledMark == 0)
+                    return BadRequest(new { message = "该角色已被锁定，请联系管理员解锁" });
+
                 if (user == null)
                     return BadRequest(new { message = "用户名或密码错误，请重新输入!" });
 
