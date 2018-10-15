@@ -92,7 +92,7 @@ namespace SSKJ.RoadDesignCenter.API.Controllers
 
                 string token = Utility.Tools.TokenUtils.ToToken(_user);
 
-                return Ok(new { type = 1, code = 1, token });
+                return Ok(new { type = 1, role = _user.RoleId, code = 1, token });
             }
             catch (Exception)
             {
