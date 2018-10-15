@@ -24,7 +24,6 @@ namespace SSKJ.RoadDesignCenter.API.Controllers
     [Route("api/Login/[action]")]
     public class LoginController : Controller
     {
-        private readonly IUserBusines sysUserBll;
         private readonly IUserProjectBusines userProjectBll;
         private readonly IBusines.Project.IUserBusines prjUserBll;
 
@@ -43,60 +42,36 @@ namespace SSKJ.RoadDesignCenter.API.Controllers
         {
             try
             {
-                var _user = new UserInfoModel();
                 if (string.IsNullOrEmpty(model.ProjectCode))
-                {
-                    if (model.UserName.ToLower() == "system")
-                    {
-                        if (model.Password == "123456")
-                            _user.UserId = _user.RoleId = "System";
-                        else
-                            return BadRequest(new { type = 0, message = "密码错误，请重新输入!" });
-                    }
-                    else
-                    {
-                        var user = await sysUserBll.GetEntityAsync(u => u.Account == model.UserName);
-                        if (user == null)
-                            return BadRequest(new { type = 0, message = "用户名错误或用户名不存在，请重新输入!" });
-                        else
-                        {
-                            if (user.Password != model.Password)
-                                return BadRequest(new { type = 0, message = "密码错误，请重新输入!" });
-                        }
-                        _user = Utility.Tools.MapperUtils.MapTo<RoadDesignCenter.Models.SystemModel.User, UserInfoModel>(user);
-                        _user.RoleId = "PrjManager";
-                    }
-                }
-                else
-                {
-                    var entity = await userProjectBll.GetEntityAsync(p => p.PrjIdentification == model.ProjectCode);
+                    return BadRequest(new { message = "项目代码不能为空，请输入后再试!" });
 
-                    if (entity == null)
-                        return BadRequest(new { type = 0, message = "项目代码有误或不存在，请重新输入!" });
+                var entity = await userProjectBll.GetEntityAsync(p => p.PrjIdentification == model.ProjectCode);
 
-                    if (string.IsNullOrEmpty(entity.PrjDataBase))
-                        return BadRequest(new { type = 0, message = "出错了，请稍后重试!" });
+                if (entity == null)
+                    return BadRequest(new { message = "项目代码有误或不存在，请重新输入!" });
 
-                    var user = await prjUserBll.GetEntityAsync(u => u.Account == model.UserName && u.Password == model.Password, entity.PrjDataBase);
+                if (string.IsNullOrEmpty(entity.PrjDataBase))
+                    return BadRequest(new { message = "出错了，请稍后重试!" });
 
-                    if (user == null)
-                        return BadRequest(new { type = 0, message = "用户名或密码错误，请重新输入!" });
+                var user = await prjUserBll.GetEntityAsync(u => u.Account == model.UserName && u.Password == model.Password, entity.PrjDataBase);
 
-                    if (user.EnabledMark == 0)
-                        return BadRequest(new { type = 0, message = "该角色已被锁定，请联系管理员解锁" });
+                if (user.EnabledMark == 0)
+                    return BadRequest(new { message = "该角色已被锁定，请联系管理员解锁" });
 
-                    _user = Utility.Tools.MapperUtils.MapTo<User, UserInfoModel>(user);
-                    _user.DataBaseName = entity.PrjDataBase;
-                }
+                if (user == null)
+                    return BadRequest(new { message = "用户名或密码错误，请重新输入!" });
+
+                var _user = Utility.Tools.MapperUtils.MapTo<User, UserInfoModel>(user);
+                _user.DataBaseName = entity.PrjDataBase;
                 _user.TokenExpiration = DateTime.Now.AddDays(1);
 
                 string token = Utility.Tools.TokenUtils.ToToken(_user);
 
-                return Ok(new { type = 1, role = _user.RoleId, code = 1, token });
+                return Ok(new { code = 1, token });
             }
             catch (Exception)
             {
-                return BadRequest(new { type = 0, message = "出错了，请稍后重试!" });
+                return BadRequest(new { message = "出错了，请稍后重试!" });
             }
         }
 
