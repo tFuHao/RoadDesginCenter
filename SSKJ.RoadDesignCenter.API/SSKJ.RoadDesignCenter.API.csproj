@@ -43,6 +43,8 @@
     <Folder Include="Areas\RouteManage_RouteElement\Views\" />
     <Folder Include="Areas\RouteManage_RoutInfo\Data\" />
     <Folder Include="Areas\RouteManage_RoutInfo\Views\" />
+    <Folder Include="Areas\SystemManage\Models\" />
+    <Folder Include="Areas\SystemManage\Views\" />
     <Folder Include="wwwroot\" />
     <Folder Include="wwwroot\upload\import\" />
   </ItemGroup>

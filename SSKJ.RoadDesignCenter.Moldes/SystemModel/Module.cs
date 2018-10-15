@@ -13,9 +13,6 @@ namespace SSKJ.RoadDesignCenter.Models.SystemModel
         public string Target { get; set; }
         public int? IsMenu { get; set; }
         public int? AllowExpand { get; set; }
-        public int? IsPublic { get; set; }
-        public int? AllowEdit { get; set; }
-        public int? AllowDelete { get; set; }
         public int? SortCode { get; set; }
         public int? DeleteMark { get; set; }
         public int? EnabledMark { get; set; }
@@ -23,6 +20,6 @@ namespace SSKJ.RoadDesignCenter.Models.SystemModel
         public DateTime? CreateDate { get; set; }
         public string CreateUserId { get; set; }
         public DateTime? ModifyDate { get; set; }
-        public string ModifyUserId { get; set; }
+        public string ModifyUserId { get; set; }       
     }
 }

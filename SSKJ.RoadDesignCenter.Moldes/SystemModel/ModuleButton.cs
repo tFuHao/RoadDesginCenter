@@ -12,5 +12,7 @@ namespace SSKJ.RoadDesignCenter.Models.SystemModel
         public string FullName { get; set; }
         public string ActionAddress { get; set; }
         public int? SortCode { get; set; }
+        public string Description { get; set; }
+        public string EnCode { get; set; }
     }
 }

@@ -142,7 +142,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.System
         {
             using (SystemContext context = DataBaseConfig.CreateContext(connectionString))
             {
-                int total = await context.Set<T>().AsNoTracking().CountAsync();
+                int total = await context.Set<T>().Where(where).AsNoTracking().CountAsync();
                 if (isAsc)
                 {
                     var temp = context.Set<T>().Where(where)
