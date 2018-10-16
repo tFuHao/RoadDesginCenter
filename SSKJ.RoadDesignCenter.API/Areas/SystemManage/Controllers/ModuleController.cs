@@ -36,7 +36,8 @@ namespace SSKJ.RoadDesignCenter.API.Areas.SystemManage.Controllers
                 else
                     data = await moduleBll.GetListAsync();
 
-                return Ok(Data.ModuleTreeJson.TreeGridJson(data.OrderByDescending(o => o.SortCode).ToList()));
+                return Ok(Data.ModuleTreeJson.TreeGridJson(data.OrderBy(o => o.SortCode).ToList()));
+                //return Ok(new { temp = Data.ModuleTreeJson.TreeGridJson(data.OrderBy(o => o.SortCode).ToList()), count = data.Count() });
             }
             catch (Exception)
             {
@@ -54,7 +55,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.SystemManage.Controllers
             else
                 data = await buttonBll.GetListAsync();
 
-            return Ok(Data.ButtonTreeJson.TreeGridJson(data.OrderByDescending(o => o.SortCode).ToList()));
+            return Ok(Data.ButtonTreeJson.TreeGridJson(data.OrderBy(o => o.SortCode).ToList()));
         }
 
         [HttpGet]
@@ -66,13 +67,13 @@ namespace SSKJ.RoadDesignCenter.API.Areas.SystemManage.Controllers
             else
                 data = await columnBll.GetListAsync();
 
-            return Ok(data.OrderByDescending(o => o.SortCode).ToList());
+            return Ok(data.OrderBy(o => o.SortCode).ToList());
         }
 
         [HttpPost]
         public IActionResult ButtonListToTree(List<ModuleButton> list)
         {
-            return Ok(Data.ButtonTreeJson.TreeGridJson(list.OrderByDescending(o => o.SortCode).ToList()));
+            return Ok(Data.ButtonTreeJson.TreeGridJson(list.OrderBy(o => o.SortCode).ToList()));
         }
 
         [HttpPost]

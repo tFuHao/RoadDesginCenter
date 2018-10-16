@@ -1,38 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Principal;
-using System.Text;
 using System.Threading.Tasks;
-using Jose;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
-using Microsoft.IdentityModel.Tokens;
 using SSKJ.RoadDesignCenter.API.Models;
-using SSKJ.RoadDesignCenter.IBusines.System;
 using SSKJ.RoadDesignCenter.Models.ProjectModel;
-using SSKJ.RoadDesignCenter.Utility;
 
 namespace SSKJ.RoadDesignCenter.API.Controllers
 {
     [Route("api/Login/[action]")]
     public class LoginController : Controller
     {
-        private readonly IUserProjectBusines userProjectBll;
-        private readonly IUserBusines sysUserBll;
+        private readonly IBusines.System.IUserProjectBusines userProjectBll;
+        private readonly IBusines.System.IUserBusines sysUserBll;
         private readonly IBusines.Project.IUserBusines prjUserBll;
+        private readonly IBusines.Project.Authorize.IAuthorizeBusines authorizeBll;
 
-        public LoginController(IBusines.Project.IUserBusines prjUserBll, IUserProjectBusines userProjectBll, IUserBusines sysUserBll)
+        public LoginController(IBusines.Project.IUserBusines prjUserBll, IBusines.System.IUserProjectBusines userProjectBll, IBusines.System.IUserBusines sysUserBll, IBusines.Project.Authorize.IAuthorizeBusines authorizeBll)
         {
             this.prjUserBll = prjUserBll;
             this.userProjectBll = userProjectBll;
             this.sysUserBll = sysUserBll;
+            this.authorizeBll = authorizeBll;
         }
         //public IActionResult Index()
         //{
@@ -45,6 +34,7 @@ namespace SSKJ.RoadDesignCenter.API.Controllers
             try
             {
                 var _user = new UserInfoModel();
+                var authorize = new AuthorizeModel();
                 if (string.IsNullOrEmpty(model.ProjectCode))
                 {
                     if (model.UserName.ToLower() == "system")
@@ -86,6 +76,13 @@ namespace SSKJ.RoadDesignCenter.API.Controllers
                     if (user.EnabledMark == 0)
                         return BadRequest(new { type = 0, message = "该角色已被锁定，请联系管理员解锁" });
 
+                    if (user.RoleId != "PrjAdmin")
+                    {
+                        authorize.ModuleAuthorizes = await authorizeBll.GetModuleAuthorizes(2, user.RoleId, entity.PrjDataBase);
+                        authorize.ButtonAuthorizes = await authorizeBll.GetButtonAuthorizes(2, user.RoleId, entity.PrjDataBase);
+                        authorize.ColumnAuthorizes = await authorizeBll.GetColumnAuthorizes(2, user.RoleId, entity.PrjDataBase);
+                    }
+
                     _user = Utility.Tools.MapperUtils.MapTo<User, UserInfoModel>(user);
                     _user.DataBaseName = entity.PrjDataBase;
                 }
@@ -93,7 +90,7 @@ namespace SSKJ.RoadDesignCenter.API.Controllers
 
                 string token = Utility.Tools.TokenUtils.ToToken(_user);
 
-                return Ok(new { type = 1, role = _user.RoleId, code = 1, token });
+                return Ok(new { type = 1, role = _user.RoleId, authorize, token });
             }
             catch (Exception)
             {
