@@ -1,85 +1,135 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using SSKJ.RoadDesignCenter.IBusines.Project.Authorize;
+﻿using SSKJ.RoadDesignCenter.IBusines.Project.Authorize;
 using SSKJ.RoadDesignCenter.IRepository.Project.Authorize;
-using SSKJ.RoadDesignCenter.Models.ProjectModel;
+using SSKJ.RoadDesignCenter.IRepository.System;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace SSKJ.RoadDesignCenter.Busines.Project.Authorize
 {
     public class AuthorizeBusines : IAuthorizeBusines
     {
-        private readonly IAuthorizeRepository AuthorizeRepo;
+        private readonly IAuthorizeRepository authorizeRepo;
+        private readonly IModuleRepository moduleRepo;
+        private readonly IButtonRepository buttonRepo;
+        private readonly IColumnRepository columnRepo;
 
-        public AuthorizeBusines(IAuthorizeRepository authorizeRepo)
+        public AuthorizeBusines(IAuthorizeRepository authorizeRepo, IModuleRepository moduleRepo, IButtonRepository buttonRepo, IColumnRepository columnRepo)
         {
-            AuthorizeRepo = authorizeRepo;
+            this.authorizeRepo = authorizeRepo;
+            this.moduleRepo = moduleRepo;
+            this.buttonRepo = buttonRepo;
+            this.columnRepo = columnRepo;
+        }
+
+        /// <summary>
+        /// 获取功能权限
+        /// </summary>
+        /// <param name="category">1用户权限 2角色权限</param>
+        /// <param name="objectId">用户ID或角色ID</param>
+        /// <param name="dataBaseName"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<Models.SystemModel.Module>> GetModuleAuthorizes(int category, string objectId, string dataBaseName)
+        {
+            var authorizes = await authorizeRepo.GetListAsync(a => a.Category == category && a.ObjectId == objectId && a.ItemType == 1,dataBaseName);
+
+            return await moduleRepo.GetListAsync(m => m.EnabledMark == 1 && authorizes.Any(a => a.ItemId == m.ModuleId));
+        }
+
+        /// <summary>
+        /// 获取功能按钮权限
+        /// </summary>
+        /// <param name="category">1用户权限 2角色权限</param>
+        /// <param name="objectId">用户ID或角色ID</param>
+        /// <param name="dataBaseName"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<Models.SystemModel.ModuleButton>> GetButtonAuthorizes(int category, string objectId, string dataBaseName)
+        {
+            var authorizes = await authorizeRepo.GetListAsync(a => a.Category == category && a.ObjectId == objectId && a.ItemType == 2, dataBaseName);
+
+            return await buttonRepo.GetListAsync(m => authorizes.Any(a => a.ItemId == m.ModuleButtonId));
+        }
+
+        /// <summary>
+        /// 获取功能视图权限
+        /// </summary>
+        /// <param name="category">1用户权限 2角色权限</param>
+        /// <param name="objectId">用户ID或角色ID</param>
+        /// <param name="dataBaseName"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<Models.SystemModel.ModuleColumn>> GetColumnAuthorizes(int category, string objectId, string dataBaseName)
+        {
+            var authorizes = await authorizeRepo.GetListAsync(a => a.Category == category && a.ObjectId == objectId && a.ItemType == 3, dataBaseName);
+
+            return await columnRepo.GetListAsync(m => authorizes.Any(a => a.ItemId == m.ModuleColumnId));
         }
 
         public async Task<bool> CreateAsync(Models.ProjectModel.Authorize entity, string dataBaseName = null)
         {
-            return await AuthorizeRepo.CreateAsync(entity, dataBaseName);
+            return await authorizeRepo.CreateAsync(entity, dataBaseName);
         }
 
         public async Task<bool> CreateAsync(IEnumerable<Models.ProjectModel.Authorize> entityList, string dataBaseName = null)
         {
-            return await AuthorizeRepo.CreateAsync(entityList, dataBaseName);
+            return await authorizeRepo.CreateAsync(entityList, dataBaseName);
         }
 
         public async Task<bool> DeleteAsync(string keyValue, string dataBaseName = null)
         {
-            return await AuthorizeRepo.DeleteAsync(keyValue, dataBaseName);
+            return await authorizeRepo.DeleteAsync(keyValue, dataBaseName);
         }
 
         public async Task<bool> DeleteAsync(string[] keyValues, string dataBaseName = null)
         {
-            return await AuthorizeRepo.DeleteAsync(keyValues, dataBaseName);
+            return await authorizeRepo.DeleteAsync(keyValues, dataBaseName);
         }
 
         public async Task<bool> DeleteAsync(Models.ProjectModel.Authorize entity, string dataBaseName = null)
         {
-            return await AuthorizeRepo.DeleteAsync(entity, dataBaseName);
+            return await authorizeRepo.DeleteAsync(entity, dataBaseName);
         }
 
         public async Task<bool> DeleteAsync(IEnumerable<Models.ProjectModel.Authorize> entityList, string dataBaseName = null)
         {
-            return await AuthorizeRepo.DeleteAsync(entityList, dataBaseName);
+            return await authorizeRepo.DeleteAsync(entityList, dataBaseName);
         }
 
         public async Task<Models.ProjectModel.Authorize> GetEntityAsync(Expression<Func<Models.ProjectModel.Authorize, bool>> where, string dataBaseName = null)
         {
-            return await AuthorizeRepo.GetEntityAsync(where, dataBaseName);
+            return await authorizeRepo.GetEntityAsync(where, dataBaseName);
         }
 
         public async Task<Models.ProjectModel.Authorize> GetEntityAsync(string keyValue, string dataBaseName = null)
         {
-            return await AuthorizeRepo.GetEntityAsync(keyValue, dataBaseName);
+            return await authorizeRepo.GetEntityAsync(keyValue, dataBaseName);
         }
 
         public async Task<IEnumerable<Models.ProjectModel.Authorize>> GetListAsync(Expression<Func<Models.ProjectModel.Authorize, bool>> where, string dataBaseName = null)
         {
-            return await AuthorizeRepo.GetListAsync(where, dataBaseName);
+            return await authorizeRepo.GetListAsync(where, dataBaseName);
         }
 
         public async Task<Tuple<IEnumerable<Models.ProjectModel.Authorize>, int>> GetListAsync<Tkey>(Expression<Func<Models.ProjectModel.Authorize, bool>> where, Func<Models.ProjectModel.Authorize, Tkey> orderbyLambda, bool isAsc, int pageSize, int pageIndex, string dataBaseName = null)
         {
-            return await AuthorizeRepo.GetListAsync(where, orderbyLambda, isAsc, pageSize, pageIndex, dataBaseName);
+            return await authorizeRepo.GetListAsync(where, orderbyLambda, isAsc, pageSize, pageIndex, dataBaseName);
         }
 
         public async Task<IEnumerable<Models.ProjectModel.Authorize>> GetListAsync(string dataBaseName = null)
         {
-            return await AuthorizeRepo.GetListAsync(dataBaseName);
+            return await authorizeRepo.GetListAsync(dataBaseName);
         }
 
         public async Task<bool> UpdateAsync(Models.ProjectModel.Authorize entity, string dataBaseName = null)
         {
-            return await AuthorizeRepo.UpdateAsync(entity, dataBaseName);
+            return await authorizeRepo.UpdateAsync(entity, dataBaseName);
         }
 
         public async Task<bool> UpdateAsync(IEnumerable<Models.ProjectModel.Authorize> entityList, string dataBaseName = null)
         {
-            return await AuthorizeRepo.UpdateAsync(entityList, dataBaseName);
+            return await authorizeRepo.UpdateAsync(entityList, dataBaseName);
         }
     }
 }
