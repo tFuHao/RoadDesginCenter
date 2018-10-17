@@ -60,7 +60,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.System
 
                 entity.Property(e => e.ModuleId).HasColumnType("varchar(50)");
 
-                entity.Property(e => e.AllowExpand).HasColumnType("int(1)");
+                entity.Property(e => e.AllowCache).HasColumnType("int(1)");
 
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
@@ -71,6 +71,8 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.System
                 entity.Property(e => e.Description).HasColumnType("varchar(200)");
 
                 entity.Property(e => e.EnabledMark).HasColumnType("int(1)");
+
+                entity.Property(e => e.EnCode).HasColumnType("varchar(50)");
 
                 entity.Property(e => e.FullName).HasColumnType("varchar(50)");
 
