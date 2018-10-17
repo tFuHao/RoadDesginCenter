@@ -2,7 +2,7 @@
 
 namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project.Authorize
 {
-    public class AuthorizeRepository : BaseRepository<Models.ProjectModel.Authorize>, IAuthorizeRepository
+    public class AuthorizeDataRepository : BaseRepository<Models.ProjectModel.AuthorizeData>, IAuthorizeDataRepository
     {
         
     }

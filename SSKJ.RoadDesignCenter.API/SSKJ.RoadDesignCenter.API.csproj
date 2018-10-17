@@ -35,8 +35,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\AuthorizeManage\Controllers\" />
-    <Folder Include="Areas\AuthorizeManage\Data\" />
     <Folder Include="Areas\AuthorizeManage\Models\" />
     <Folder Include="Areas\AuthorizeManage\Views\" />
     <Folder Include="Areas\ProjectManage\Data\" />
