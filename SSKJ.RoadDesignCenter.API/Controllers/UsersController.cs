@@ -95,7 +95,7 @@ namespace SSKJ.RoadDesignCenter.API.Controllers
 
         public async Task<IActionResult> GetProUsers(int pageSize, int pageIndex)
         {
-            var result = await prjUserBll.GetListAsync(e => true, e => e.UserId, true, pageSize, pageIndex, GetConStr());
+            var result = await prjUserBll.GetListAsync(e => e.RoleId != "PrjAdmin", e => e.UserId, true, pageSize, pageIndex, GetConStr());
             return Json(new
             {
                 data = result.Item1,

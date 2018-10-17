@@ -233,7 +233,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.AuthorizeManage.Controllers
                     var temp = new Authorize()
                     {
                         AuthorizeId = Guid.NewGuid().ToString(),
-                        Category = null,
+                        Category = 2,
                         ObjectId = roleId,
                         ItemType = 1,
                         ItemId = moduleList[i],
@@ -249,7 +249,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.AuthorizeManage.Controllers
                     var temp = new Authorize()
                     {
                         AuthorizeId = Guid.NewGuid().ToString(),
-                        Category = null,
+                        Category = 2,
                         ObjectId = roleId,
                         ItemType = 2,
                         ItemId = buttonList[i],
@@ -265,7 +265,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.AuthorizeManage.Controllers
                     var temp = new Authorize()
                     {
                         AuthorizeId = Guid.NewGuid().ToString(),
-                        Category = null,
+                        Category = 2,
                         ObjectId = roleId,
                         ItemType = 3,
                         ItemId = columnList[i],
