@@ -7,12 +7,13 @@ namespace SSKJ.RoadDesignCenter.Models.SystemModel
     {
         public string ModuleId { get; set; }
         public string ParentId { get; set; }
+        public string EnCode { get; set; }
         public string FullName { get; set; }
         public string Icon { get; set; }
         public string UrlAddress { get; set; }
         public string Target { get; set; }
         public int? IsMenu { get; set; }
-        public int? AllowExpand { get; set; }
+        public int? AllowCache { get; set; }
         public int? SortCode { get; set; }
         public int? DeleteMark { get; set; }
         public int? EnabledMark { get; set; }
