@@ -32,11 +32,12 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.Authorize
         /// <param name="objectId">用户ID或角色ID</param>
         /// <param name="dataBaseName"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<Models.SystemModel.Module>> GetModuleAuthorizes(int category, string objectId, string dataBaseName)
+        public async Task<string> GetModuleAuthorizes(int category, string objectId, string dataBaseName)
         {
             var authorizes = await authorizeRepo.GetListAsync(a => a.Category == category && a.ObjectId == objectId && a.ItemType == 1,dataBaseName);
+            var modules = await moduleRepo.GetListAsync(m => m.EnabledMark == 1 && authorizes.Any(a => a.ItemId == m.ModuleId));
 
-            return await moduleRepo.GetListAsync(m => m.EnabledMark == 1 && authorizes.Any(a => a.ItemId == m.ModuleId));
+            return TreeData.ModuleTreeJson(modules.OrderBy(o => o.SortCode).ToList());
         }
 
         /// <summary>
@@ -46,11 +47,12 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.Authorize
         /// <param name="objectId">用户ID或角色ID</param>
         /// <param name="dataBaseName"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<Models.SystemModel.ModuleButton>> GetButtonAuthorizes(int category, string objectId, string dataBaseName)
+        public async Task<string> GetButtonAuthorizes(int category, string objectId, string dataBaseName)
         {
             var authorizes = await authorizeRepo.GetListAsync(a => a.Category == category && a.ObjectId == objectId && a.ItemType == 2, dataBaseName);
+            var buttons=await buttonRepo.GetListAsync(m => authorizes.Any(a => a.ItemId == m.ModuleButtonId));
 
-            return await buttonRepo.GetListAsync(m => authorizes.Any(a => a.ItemId == m.ModuleButtonId));
+            return TreeData.ButtonTreeJson(buttons.OrderBy(o => o.SortCode).ToList());
         }
 
         /// <summary>
@@ -63,8 +65,9 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.Authorize
         public async Task<IEnumerable<Models.SystemModel.ModuleColumn>> GetColumnAuthorizes(int category, string objectId, string dataBaseName)
         {
             var authorizes = await authorizeRepo.GetListAsync(a => a.Category == category && a.ObjectId == objectId && a.ItemType == 3, dataBaseName);
+            var columns = await columnRepo.GetListAsync(m => authorizes.Any(a => a.ItemId == m.ModuleColumnId));
 
-            return await columnRepo.GetListAsync(m => authorizes.Any(a => a.ItemId == m.ModuleColumnId));
+            return columns.ToList().OrderBy(o => o.SortCode);
         }
 
         public async Task<bool> CreateAsync(Models.ProjectModel.Authorize entity, string dataBaseName = null)

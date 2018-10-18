@@ -14,7 +14,7 @@ namespace SSKJ.RoadDesignCenter.IBusines.Project.Authorize
         /// <param name="objectId">用户ID或角色ID</param>
         /// <param name="dataBaseName"></param>
         /// <returns></returns>
-        Task<IEnumerable<Models.SystemModel.Module>> GetModuleAuthorizes(int category, string objectId, string dataBaseName);
+        Task<string> GetModuleAuthorizes(int category, string objectId, string dataBaseName);
 
         /// <summary>
         /// 获取功能按钮权限
@@ -23,7 +23,7 @@ namespace SSKJ.RoadDesignCenter.IBusines.Project.Authorize
         /// <param name="objectId">用户ID或角色ID</param>
         /// <param name="dataBaseName"></param>
         /// <returns></returns>
-        Task<IEnumerable<Models.SystemModel.ModuleButton>> GetButtonAuthorizes(int category, string objectId, string dataBaseName);
+        Task<string> GetButtonAuthorizes(int category, string objectId, string dataBaseName);
 
         /// <summary>
         /// 获取功能视图权限

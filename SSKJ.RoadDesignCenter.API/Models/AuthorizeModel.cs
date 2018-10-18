@@ -8,8 +8,8 @@ namespace SSKJ.RoadDesignCenter.API.Models
 {
     public class AuthorizeModel
     {
-        public IEnumerable<Module> ModuleAuthorizes { get; set; }
-        public IEnumerable<ModuleButton> ButtonAuthorizes { get; set; }
+        public string ModuleAuthorizes { get; set; }
+        public string ButtonAuthorizes { get; set; }
         public IEnumerable<ModuleColumn> ColumnAuthorizes { get; set; }
     }
 }
