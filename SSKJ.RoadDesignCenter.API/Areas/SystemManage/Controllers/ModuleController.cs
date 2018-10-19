@@ -37,7 +37,6 @@ namespace SSKJ.RoadDesignCenter.API.Areas.SystemManage.Controllers
                     data = await moduleBll.GetListAsync();
 
                 return Ok(Data.ModuleTreeJson.TreeGridJson(data.OrderBy(o => o.SortCode).ToList()));
-                //return Ok(new { temp = Data.ModuleTreeJson.TreeGridJson(data.OrderBy(o => o.SortCode).ToList()), count = data.Count() });
             }
             catch (Exception)
             {
