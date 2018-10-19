@@ -1,6 +1,7 @@
 ﻿using SSKJ.RoadDesignCenter.IBusines.Project.Authorize;
 using SSKJ.RoadDesignCenter.IRepository.Project.Authorize;
 using SSKJ.RoadDesignCenter.IRepository.System;
+using SSKJ.RoadDesignCenter.Models.SystemModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,12 +33,13 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.Authorize
         /// <param name="objectId">用户ID或角色ID</param>
         /// <param name="dataBaseName"></param>
         /// <returns></returns>
-        public async Task<string> GetModuleAuthorizes(int category, string objectId, string dataBaseName)
+        public async Task<IEnumerable<Module>> GetModuleAuthorizes(int category, string objectId, string dataBaseName)
         {
             var authorizes = await authorizeRepo.GetListAsync(a => a.Category == category && a.ObjectId == objectId && a.ItemType == 1,dataBaseName);
             var modules = await moduleRepo.GetListAsync(m => m.EnabledMark == 1 && authorizes.Any(a => a.ItemId == m.ModuleId));
 
-            return TreeData.ModuleTreeJson(modules.OrderBy(o => o.SortCode).ToList());
+            //return TreeData.ModuleTreeJson(modules.OrderBy(o => o.SortCode).ToList());
+            return modules;
         }
 
         /// <summary>
@@ -47,12 +49,13 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.Authorize
         /// <param name="objectId">用户ID或角色ID</param>
         /// <param name="dataBaseName"></param>
         /// <returns></returns>
-        public async Task<string> GetButtonAuthorizes(int category, string objectId, string dataBaseName)
+        public async Task<IEnumerable<ModuleButton>> GetButtonAuthorizes(int category, string objectId, string dataBaseName)
         {
             var authorizes = await authorizeRepo.GetListAsync(a => a.Category == category && a.ObjectId == objectId && a.ItemType == 2, dataBaseName);
-            var buttons=await buttonRepo.GetListAsync(m => authorizes.Any(a => a.ItemId == m.ModuleButtonId));
+            var buttons = await buttonRepo.GetListAsync(m => authorizes.Any(a => a.ItemId == m.ModuleButtonId));
 
-            return TreeData.ButtonTreeJson(buttons.OrderBy(o => o.SortCode).ToList());
+            //return TreeData.ButtonTreeJson(buttons.OrderBy(o => o.SortCode).ToList());
+            return buttons;
         }
 
         /// <summary>
