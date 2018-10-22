@@ -17,150 +17,70 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RoutInfo
     [Area("RouteManage_RoutInfo")]
     public class RouteManageController : BaseController
     {
-        public IRouteBusines RouteBus;
+        public readonly IRouteBusines routeBll;
 
-        public HostingEnvironment HostingEnvironmentost;
-
-        public RouteManageController(IRouteBusines routeBus, HostingEnvironment hostingEnvironmentost)
+        public RouteManageController(IRouteBusines routeBll)
         {
-            RouteBus = routeBus;
-            HostingEnvironmentost = hostingEnvironmentost;
-        }
-
-        public enum WayType
-        {
-            Parent, Child
+            this.routeBll = routeBll;
         }
 
         public async Task<IActionResult> Get()
         {
-            var data = await RouteBus.GetListAsync(GetConStr());
-            var result = data.ToList().RouteTreeGridJson(null);
-            return Json(result);
+            var data = await routeBll.GetListAsync(GetConStr());
+            var result = data.OrderBy(o => o.CreateDate).ToList().RouteTreeGridJson();
+            return Ok(result);
         }
 
-        /// <summary>
-        /// 添加 或 插入 断链数据方法
-        /// </summary>
-        /// <param name="input">添加 或 插入 的数据</param>
-        /// <param name="wayType">线路 或 线路组</param>
-        /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Insert(Route input, WayType wayType)
+        public async Task<IActionResult> SaveEntity(Route entity)
         {
-            if (ModelState.IsValid)
+            try
             {
-                //添加 路线 或 线路组
-                if (input.RouteId == null)
+                entity.RouteLength = entity.EndStake - entity.StartStake;
+                var result = false;
+                if (string.IsNullOrEmpty(entity.RouteId))
                 {
-                    var result = false;
-                    //添加线路组
-                    if (wayType == WayType.Parent)
-                    {
-                        var insert = new Route()
-                        {
-                            RouteId = Guid.NewGuid().ToString(),
-                            ProjectId = null,
-                            RouteLength = null,
-                            RouteName = input.RouteName,
-                            Description = input.Description
-                        };
-                        result = await RouteBus.CreateAsync(input, GetConStr());
-                    }
-                    //添加线路
-                    else if (wayType == WayType.Child)
-                    {
-                        input.RouteId = Guid.NewGuid().ToString();
-                        result = await RouteBus.CreateAsync(input, GetConStr());
-                    }
-                    return Json(result);
+                    entity.RouteId = Guid.NewGuid().ToString();
+                    entity.CreateDate = DateTime.Now;
+                    entity.CreateUserId = GetUserInfo().UserId;
+
+                    result = await routeBll.CreateAsync(entity, GetConStr());
                 }
                 else
                 {
-                    //更新
-                    var entity = await RouteBus.GetEntityAsync(e => e.RouteId == input.RouteId, GetConStr());
-                    if (entity == null)
-                        return null;
-                    if (wayType == WayType.Parent)
-                    {
-                        entity.ParentId = input.ParentId;
-                        entity.ProjectId = input.ProjectId;
-                        entity.RouteName = input.RouteName;
-                        entity.Description = input.Description;
-                    }else if (wayType == WayType.Child)
-                    {
-                        entity.ParentId = input.ParentId;
-                        entity.RouteName = input.RouteName;
-                        entity.RouteLength = input.RouteLength;
-                        entity.StartStake = input.StartStake;
-                        entity.EndStake = input.EndStake;
-                        entity.RouteType = input.RouteType;
-                        entity.Description = input.Description;
-                        entity.DesignSpeed = input.DesignSpeed;
-                    }
-                    var result = await RouteBus.UpdateAsync(entity, GetConStr());
-                    return Json(result);
+                    result = await routeBll.UpdateAsync(entity, GetConStr());
                 }
+                return Ok(result);
             }
-
-            foreach (var data in ModelState.Values)
+            catch (Exception)
             {
-                if (data.Errors.Count > 0)
-                {
-                    return Json(data.Errors[0].ErrorMessage);
-                }
+                return BadRequest(false);
             }
-
-            return null;
         }
 
-        /// <summary>
-        /// 删除断链数据
-        /// </summary>
-        /// <param name="list">删除的实体对象列表</param>
-        /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Delete(List<Route> list)
+        public async Task<IActionResult> Delete(string routeId)
         {
-            if (list.Any())
+            try
             {
-                var result = await RouteBus.DeleteAsync(list, GetConStr());
-                return Json(result);
-            }
-            return Json(false);
-        }
+                var list = await routeBll.GetListAsync(GetConStr());
+                var routes = GetRoutes(list.ToList(), routeId);
+                routes.Add(list.Single(m => m.RouteId == routeId));
 
-        /// <summary>
-        /// 路线信息页面获取路线信息
-        /// </summary>
-        /// <param name="routeId">路线Id</param>
-        /// <returns></returns>
-        public async Task<IActionResult> GetRouteInfo(string routeId)
-        {
-            if (!string.IsNullOrEmpty(routeId))
+                var result = await routeBll.DeleteAsync(routes,GetConStr());
+                return Ok(result);
+            }
+            catch (Exception)
             {
-                var result = await RouteBus.GetEntityAsync(e => e.RouteId == routeId, GetConStr());
-                return Json(result);
+                return BadRequest(false);
             }
-
-            return null;
         }
 
-        /// <summary>
-        /// 路线信息更改路线列表
-        /// </summary>
-        /// <returns></returns>
-        public async Task<IActionResult> GetRouteList()
+        public List<Route> GetRoutes(List<Route> list, string pId)
         {
-            var list = await RouteBus.GetListAsync(e => true, GetConStr());
-            var result = list.ToList().RouteTreeGridJson(null);
-            return Json(result);
-        }
+            var _list = list.Where(f => f.ParentId == pId).ToList();
 
-        public async Task<IActionResult> GetRouteGroup()
-        {
-            var result = await RouteBus.GetListAsync(e => e.RouteType == null, GetConStr());
-            return Json(result);
+            return _list.Concat(_list.SelectMany(t => GetRoutes(list, t.RouteId))).ToList();
         }
     }
 }

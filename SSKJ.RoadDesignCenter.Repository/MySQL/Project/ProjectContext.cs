@@ -347,6 +347,10 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
                 entity.Property(e => e.RouteType).HasColumnType("int(11)");
 
                 entity.Property(e => e.StartStake).HasColumnType("double(18,4)");
+
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.CreateUserId).HasColumnType("varchar(50)");
             });
 
             modelBuilder.Entity<SampleLine>(entity =>

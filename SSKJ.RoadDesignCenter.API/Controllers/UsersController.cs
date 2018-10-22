@@ -4,13 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting.Internal;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using SSKJ.RoadDesignCenter.API.Models;
 using SSKJ.RoadDesignCenter.IBusines.Project;
 using SSKJ.RoadDesignCenter.Models.ProjectModel;
-using SSKJ.RoadDesignCenter.Utility;
 
 namespace SSKJ.RoadDesignCenter.API.Controllers
 {
@@ -19,29 +17,13 @@ namespace SSKJ.RoadDesignCenter.API.Controllers
     {
         private readonly IUserBusines prjUserBll;
         private readonly IRoleBusines roleBusines;
-        private readonly IHttpContextAccessor httpContextAccessor;
         private readonly HostingEnvironment Host;
 
-        public UsersController(IRoleBusines roleBusines, IUserBusines prjUserBll, IHttpContextAccessor httpContextAccessor, HostingEnvironment host)
+        public UsersController(IRoleBusines roleBusines, IUserBusines prjUserBll, HostingEnvironment host)
         {
             this.prjUserBll = prjUserBll;
-            this.httpContextAccessor = httpContextAccessor;
-            CurrentUser.Configure(httpContextAccessor);
             this.Host = host;
             this.roleBusines = roleBusines;
-        }
-
-        public async Task<IActionResult> Index()
-        {
-            var connectionString = CurrentUser.UserConnectionString;
-            if (connectionString == null)
-            {
-                return RedirectToAction("Index", "Login");
-            }
-            var user = await prjUserBll.GetListAsync(connectionString);
-            var users = await prjUserBll.GetListAsync(u => true, u => u.UserId, false, 30, 1, connectionString);
-
-            return View(users.Item1);
         }
 
         [HttpPost]

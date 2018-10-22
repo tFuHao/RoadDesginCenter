@@ -15,5 +15,7 @@ namespace SSKJ.RoadDesignCenter.Models.ProjectModel
         public int? RouteType { get; set; }
         public string Description { get; set; }
         public string DesignSpeed { get; set; }
+        public DateTime? CreateDate { get; set; }
+        public string CreateUserId { get; set; }
     }
 }
