@@ -58,7 +58,6 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                     var entity = await SectionBus.GetEntityAsync(e => e.CrossSectionGroundLineId == input.CrossSectionGroundLineId, GetConStr());
                     if (entity == null)
                         return null;
-                    entity.RouteId = input.RouteId;
                     entity.Stake = input.Stake;
                     var result = await SectionBus.UpdateAsync(entity, GetConStr());
                     return Json(result);
@@ -96,7 +95,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
         /// 从文件导入数据
         /// </summary>
         /// <returns></returns>
-        public async Task<IActionResult> Import()
+        public async Task<IActionResult> Import(string routeId)
         {
             var file = Request.Form.Files;
             var success = 0;
@@ -112,6 +111,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                     var temp = new CrossSectionGroundLine()
                     {
                         CrossSectionGroundLineId = Guid.NewGuid().ToString(),
+                        RouteId = routeId,
                         Stake = Convert.ToDouble(tempList[0]),
                     };
                     var validate = TryValidateModel(temp);
