@@ -9,6 +9,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RoutInfo
     public class BaseController : Controller
     {
         private string conStr;
+        public UserInfoModel userInfo;
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
@@ -20,6 +21,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RoutInfo
 
                 var userInfo = Utility.Tools.TokenUtils.ToObject<UserInfoModel>(strToken);
 
+                this.userInfo = userInfo;
                 conStr = userInfo.DataBaseName;
             }
             catch (Exception)
@@ -32,6 +34,11 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RoutInfo
         public string GetConStr()
         {
             return conStr;
+        }
+
+        public UserInfoModel GetUserInfo()
+        {
+            return userInfo;
         }
     }
 }

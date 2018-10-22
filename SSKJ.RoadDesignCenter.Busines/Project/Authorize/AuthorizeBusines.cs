@@ -38,8 +38,8 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.Authorize
             var authorizes = await authorizeRepo.GetListAsync(a => a.Category == category && a.ObjectId == objectId && a.ItemType == 1,dataBaseName);
             var modules = await moduleRepo.GetListAsync(m => m.EnabledMark == 1 && authorizes.Any(a => a.ItemId == m.ModuleId));
 
-            //return TreeData.ModuleTreeJson(modules.OrderBy(o => o.SortCode).ToList());
-            return modules;
+            //return TreeData.ModuleTreeJson(modules.ToList());
+            return modules.OrderBy(o => o.SortCode);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.Authorize
             var buttons = await buttonRepo.GetListAsync(m => authorizes.Any(a => a.ItemId == m.ModuleButtonId));
 
             //return TreeData.ButtonTreeJson(buttons.OrderBy(o => o.SortCode).ToList());
-            return buttons;
+            return buttons.OrderBy(o => o.SortCode);
         }
 
         /// <summary>

@@ -9,7 +9,7 @@ namespace SSKJ.RoadDesignCenter.API.Data
 {
     public static class TreeJson
     {
-        public static string RouteTreeGridJson(this List<Route> list, string ParentId = null)
+        public static string RouteTreeGridJson(this List<Route> list, string ParentId = "0")
         {
             StringBuilder strJson = new StringBuilder();
             List<Route> item = list.FindAll(t => t.ParentId == ParentId);
@@ -21,15 +21,15 @@ namespace SSKJ.RoadDesignCenter.API.Data
                     strJson.Append("{");
                     strJson.Append("\"RouteId\":\"" + entity.RouteId + "\",");
                     strJson.Append("\"ParentId\":\"" + entity.ParentId + "\",");
-                    strJson.Append("\"ProjectId\":\"" + entity.ProjectId + "\",");
                     strJson.Append("\"RouteName\":\"" + entity.RouteName + "\",");
                     strJson.Append("\"RouteType\":\"" + entity.RouteType + "\",");
                     strJson.Append("\"RouteLength\":\"" + entity.RouteLength + "\",");
                     strJson.Append("\"StartStake\":\"" + entity.StartStake + "\",");
                     strJson.Append("\"EndStake\":\"" + entity.EndStake + "\",");
                     strJson.Append("\"Description\":\"" + entity.Description + "\",");
+                    strJson.Append("\"CreateDate\":\"" + entity.CreateDate + "\",");
                     strJson.Append("\"DesignSpeed\":\"" + entity.DesignSpeed + "\",");
-                    strJson.Append("\"Children\":" + RouteTreeGridJson(list, entity.RouteId) + "");
+                    strJson.Append("\"children\":" + RouteTreeGridJson(list, entity.RouteId) + "");
                     strJson.Append("},");
                 });
                 strJson = strJson.Remove(strJson.Length - 1, 1);
