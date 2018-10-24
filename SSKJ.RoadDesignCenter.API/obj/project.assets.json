@@ -5677,7 +5677,8 @@
         "dependencies": {
           "SSKJ.RoadDesignCenter.IBusines": "1.0.0",
           "SSKJ.RoadDesignCenter.IRepository": "1.0.0",
-          "SSKJ.RoadDesignCenter.Models": "1.0.0"
+          "SSKJ.RoadDesignCenter.Models": "1.0.0",
+          "SSKJ.RoadDesignCenter.Utility": "1.0.0"
         },
         "compile": {
           "bin/placeholder/SSKJ.RoadDesignCenter.Busines.dll": {}

@@ -1,4 +1,5 @@
-﻿using SSKJ.RoadDesignCenter.Models.SystemModel;
+﻿using SSKJ.RoadDesignCenter.Models.ProjectModel;
+using SSKJ.RoadDesignCenter.Models.SystemModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,6 @@ namespace SSKJ.RoadDesignCenter.API.Models
         public IEnumerable<Module> ModuleAuthorizes { get; set; }
         public IEnumerable<ModuleButton> ButtonAuthorizes { get; set; }
         public IEnumerable<ModuleColumn> ColumnAuthorizes { get; set; }
+        public IEnumerable<Route> RouteAuthorizes { get; set; }
     }
 }

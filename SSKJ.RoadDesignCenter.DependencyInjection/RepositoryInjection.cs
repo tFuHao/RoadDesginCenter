@@ -24,6 +24,7 @@ namespace SSKJ.RoadDesignCenter.DependencyInjection
             //project
             services.AddSingleton<irProject.Authorize.IAuthorizeRepository, rProject.Authorize.AuthorizeRepository>();
             services.AddSingleton<irProject.IUserRepository, rProject.UserRepository>();
+            services.AddSingleton<irProject.Authorize.IUserRelationRepository, rProject.Authorize.UserRelationRepository>();
             services.AddSingleton<irProject.ProjectInfo.IPrjInfoRepository, rProject.ProjectInfo.PrjInfoRepository>();
             services.AddSingleton<irProject.RouteElement.IBrokenChainRepository, rProject.RouteElement.BrokenChainRepository>();
             services.AddSingleton<irProject.RouteElement.IFlatCurve_CurveElementRepository, rProject.RouteElement.FlatCurve_CurveElementRepository>();

@@ -14,7 +14,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
     {
         public async Task<bool> CreateAsync(T entity, string dataBaseName = null)
         {
-            using (ProjectContext context = DataBaseConfig.CreateContext(dataBaseName))
+            using (ProjectContext context = await DataBaseConfig.CreateContext(dataBaseName))
             {
                 await context.Set<T>().AddAsync(entity);
                 return await context.SaveChangesAsync() > 0;
@@ -23,7 +23,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
         public async Task<bool> CreateAsync(IEnumerable<T> entityList, string dataBaseName = null)
         {
-            using (ProjectContext context = DataBaseConfig.CreateContext(dataBaseName))
+            using (ProjectContext context = await DataBaseConfig.CreateContext(dataBaseName))
             {
                 await context.Set<T>().AddRangeAsync(entityList);
                 return await context.SaveChangesAsync() > 0;
@@ -32,7 +32,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
         public async Task<bool> DeleteAsync(string keyValue, string dataBaseName = null)
         {
-            using (ProjectContext context = DataBaseConfig.CreateContext(dataBaseName))
+            using (ProjectContext context = await DataBaseConfig.CreateContext(dataBaseName))
             {
                 context.Set<T>().Remove(context.Find<T>(keyValue));
                 return await context.SaveChangesAsync() > 0;
@@ -41,7 +41,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
         public async Task<bool> DeleteAsync(string[] keyValues, string dataBaseName = null)
         {
-            using (ProjectContext context = DataBaseConfig.CreateContext(dataBaseName))
+            using (ProjectContext context = await DataBaseConfig.CreateContext(dataBaseName))
             {
                 List<T> entitys = new List<T>();
                 entitys.ForEach(async u =>
@@ -54,7 +54,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
         public async Task<bool> DeleteAsync(T entity, string dataBaseName = null)
         {
-            using (ProjectContext context = DataBaseConfig.CreateContext(dataBaseName))
+            using (ProjectContext context = await DataBaseConfig.CreateContext(dataBaseName))
             {
                 context.Set<T>().Remove(entity);
                 return await context.SaveChangesAsync() > 0;
@@ -63,7 +63,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
         public async Task<bool> DeleteAsync(IEnumerable<T> entityList, string dataBaseName = null)
         {
-            using (ProjectContext context = DataBaseConfig.CreateContext(dataBaseName))
+            using (ProjectContext context = await DataBaseConfig.CreateContext(dataBaseName))
             {
                 context.Set<T>().RemoveRange(entityList);
                 return await context.SaveChangesAsync() > 0;
@@ -72,7 +72,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
         public async Task<IEnumerable<T>> GetListAsync(string dataBaseName = null)
         {
-            using (ProjectContext context = DataBaseConfig.CreateContext(dataBaseName))
+            using (ProjectContext context = await DataBaseConfig.CreateContext(dataBaseName))
             {
                 return await context.Set<T>().AsNoTracking().ToListAsync();
             }
@@ -80,7 +80,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
         public async Task<T> GetEntityAsync(string keyValue, string dataBaseName = null)
         {
-            using (ProjectContext context = DataBaseConfig.CreateContext(dataBaseName))
+            using (ProjectContext context = await DataBaseConfig.CreateContext(dataBaseName))
             {
                 return await context.FindAsync<T>(keyValue);
             }
@@ -88,7 +88,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
         public async Task<T> GetEntityAsync(Expression<Func<T, bool>> where, string dataBaseName = null)
         {
-            using (ProjectContext context = DataBaseConfig.CreateContext(dataBaseName))
+            using (ProjectContext context = await DataBaseConfig.CreateContext(dataBaseName))
             {
                 return await context.Set<T>().FirstOrDefaultAsync(where);
             }
@@ -96,7 +96,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
         public async Task<IEnumerable<T>> GetListAsync(Expression<Func<T, bool>> where, string dataBaseName = null)
         {
-            using (ProjectContext context = DataBaseConfig.CreateContext(dataBaseName))
+            using (ProjectContext context = await DataBaseConfig.CreateContext(dataBaseName))
             {
                 return await context.Set<T>().AsNoTracking().Where(where).ToListAsync();
             }
@@ -104,25 +104,25 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
         public async Task<Tuple<IEnumerable<T>, int>> GetListAsync<Tkey>(Expression<Func<T, bool>> where, Func<T, Tkey> orderbyLambda, bool isAsc, int pageSize, int pageIndex, string dataBaseName = null)
         {
-            using (ProjectContext context = DataBaseConfig.CreateContext(dataBaseName))
+            using (ProjectContext context = await DataBaseConfig.CreateContext(dataBaseName))
             {
-                var list = await context.Set<T>().AsNoTracking().ToListAsync();
+                var list= await context.Set<T>().AsNoTracking().Where(where).ToListAsync();
                 int total = list.Count();
                 if (isAsc)
                 {
-                    var temp = list.AsQueryable().Where(where)
+                    var temp = list
                                  .OrderBy(orderbyLambda)
                                  .Skip(pageSize * (pageIndex - 1))
                                  .Take(pageSize);
-                    return new Tuple<IEnumerable<T>, int>(temp.AsEnumerable(), total);
+                    return new Tuple<IEnumerable<T>, int>(temp, total);
                 }
                 else
                 {
-                    var temp = list.AsQueryable().Where(where)
+                    var temp = list
                                .OrderByDescending(orderbyLambda)
                                .Skip(pageSize * (pageIndex - 1))
                                .Take(pageSize);
-                    return new Tuple<IEnumerable<T>, int>(temp.AsEnumerable(), total);
+                    return new Tuple<IEnumerable<T>, int>(temp, total);
                 }
             }
         }
@@ -130,7 +130,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
         public async Task<bool> UpdateAsync(IEnumerable<T> entityList, string dataBaseName = null)
         {
-            using (ProjectContext context = DataBaseConfig.CreateContext(dataBaseName))
+            using (ProjectContext context = await DataBaseConfig.CreateContext(dataBaseName))
             {
                 context.UpdateRange(entityList);
                 return await context.SaveChangesAsync() > 0;
@@ -139,7 +139,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
         public async Task<bool> UpdateAsync(T entity, string dataBaseName = null)
         {
-            using (ProjectContext context = DataBaseConfig.CreateContext(dataBaseName))
+            using (ProjectContext context = await DataBaseConfig.CreateContext(dataBaseName))
             {
                 context.Update(entity);
                 return await context.SaveChangesAsync() > 0;

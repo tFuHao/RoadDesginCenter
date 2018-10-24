@@ -51,7 +51,8 @@ namespace SSKJ.RoadDesignCenter.API.Controllers
                             return BadRequest(new { type = 0, message = "用户名错误或用户名不存在，请重新输入!" });
                         else
                         {
-                            if (user.Password != model.Password)
+                            var paw = Utility.Tools.MD5Utils.Sign(model.Password, user.Secretkey);
+                            if (user.Password != paw)
                                 return BadRequest(new { type = 0, message = "密码错误，请重新输入!" });
                         }
                         _user = Utility.Tools.MapperUtils.MapTo<RoadDesignCenter.Models.SystemModel.User, UserInfoModel>(user);
@@ -68,10 +69,16 @@ namespace SSKJ.RoadDesignCenter.API.Controllers
                     if (string.IsNullOrEmpty(entity.PrjDataBase))
                         return BadRequest(new { type = 0, message = "出错了，请稍后重试!" });
 
-                    var user = await prjUserBll.GetEntityAsync(u => u.Account == model.UserName && u.Password == model.Password, entity.PrjDataBase);
+                    var user = await prjUserBll.GetEntityAsync(u => u.Account == model.UserName, entity.PrjDataBase);
 
                     if (user == null)
-                        return BadRequest(new { type = 0, message = "用户名或密码错误，请重新输入!" });
+                        return BadRequest(new { type = 0, message = "用户名错误或用户名不存在，请重新输入!" });
+                    else
+                    {
+                        var paw = Utility.Tools.MD5Utils.Sign(model.Password, user.Secretkey);
+                        if (user.Password != paw)
+                            return BadRequest(new { type = 0, message = "密码错误，请重新输入!" });
+                    }
 
                     if (user.EnabledMark == 0)
                         return BadRequest(new { type = 0, message = "该角色已被锁定，请联系管理员解锁" });

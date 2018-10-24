@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using SSKJ.RoadDesignCenter.API.Areas.AuthorizeManage.Data;
+using SSKJ.RoadDesignCenter.API.Controllers;
 using SSKJ.RoadDesignCenter.API.Models;
 using SSKJ.RoadDesignCenter.IBusines.Project;
 using SSKJ.RoadDesignCenter.IBusines.Project.Authorize;
@@ -17,9 +18,11 @@ using IUserBusines = SSKJ.RoadDesignCenter.IBusines.Project.IUserBusines;
 namespace SSKJ.RoadDesignCenter.API.Areas.AuthorizeManage.Controllers
 {
     [Route("api/Role/[action]")]
-    public class RoleController : Controller
+    [Area("AuthorizeManage")]
+    public class RoleController : BaseController
     {
         private readonly IRoleBusines RoleBus;
+        private readonly IUserRelationBusines roleUserBll;
 
         private readonly IUserBusines UserBus;
 
@@ -31,7 +34,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.AuthorizeManage.Controllers
 
         private readonly IAuthorizeBusines AuthorizeBus;
 
-        public RoleController(IRoleBusines roleBus, IUserBusines userBus, IModuleBusines moduleBus, IButtonBusines buttonBus, IColumnBusines columnBus, IAuthorizeBusines authorizeBus)
+        public RoleController(IRoleBusines roleBus, IUserBusines userBus, IModuleBusines moduleBus, IButtonBusines buttonBus, IColumnBusines columnBus, IAuthorizeBusines authorizeBus, IUserRelationBusines roleUserBll)
         {
             RoleBus = roleBus;
             UserBus = userBus;
@@ -39,11 +42,12 @@ namespace SSKJ.RoadDesignCenter.API.Areas.AuthorizeManage.Controllers
             ButtonBus = buttonBus;
             ColumnBus = columnBus;
             AuthorizeBus = authorizeBus;
+            this.roleUserBll = roleUserBll;
         }
 
         public async Task<IActionResult> GetRoles(int pageSize, int pageIndex)
         {
-            var result = await RoleBus.GetListAsync(e => true, e => e.SortCode, true, pageSize, pageIndex, GetConStr());
+            var result = await RoleBus.GetListAsync(e => true, e => e.SortCode, true, pageSize, pageIndex, GetUserInfo().DataBaseName);
             return Json(new
             {
                 data = result.Item1,
@@ -60,28 +64,20 @@ namespace SSKJ.RoadDesignCenter.API.Areas.AuthorizeManage.Controllers
                     input.RoleId = Guid.NewGuid().ToString();
                     input.DeleteMark = 0;
                     input.CreateDate = DateTime.Now;
-                    input.CreateUserId = GetUserId();
-                    var result = await RoleBus.CreateAsync(input, GetConStr());
+                    input.CreateUserId = GetUserInfo().UserId;
+                    var result = await RoleBus.CreateAsync(input, GetUserInfo().DataBaseName);
                     return Json(result);
                 }
                 else
                 {
-                    if (input.DeleteMark == 1)
-                    {
-                        return Json(false);
-                    }
-
-                    var entity = await RoleBus.GetEntityAsync(e => e.RoleId == input.RoleId, GetConStr());
+                    var entity = await RoleBus.GetEntityAsync(e => e.RoleId == input.RoleId, GetUserInfo().DataBaseName);
                     if (entity == null)
                         return null;
                     entity.FullName = input.FullName;
-                    entity.SortCode = input.SortCode;
-                    //entity.DeleteMark = input.DeleteMark;
-                    entity.EnabledMark = input.EnabledMark;
                     entity.Description = input.Description;
                     entity.ModifyDate = DateTime.Now;
-                    entity.ModifyUserId = GetUserId();
-                    var result = await RoleBus.UpdateAsync(entity, GetConStr());
+                    entity.ModifyUserId = GetUserInfo().UserId;
+                    var result = await RoleBus.UpdateAsync(entity, GetUserInfo().DataBaseName);
                     return Json(result);
                 }
             }
@@ -93,7 +89,6 @@ namespace SSKJ.RoadDesignCenter.API.Areas.AuthorizeManage.Controllers
                     return Json(data.Errors[0].ErrorMessage);
                 }
             }
-
             return null;
         }
 
@@ -104,107 +99,106 @@ namespace SSKJ.RoadDesignCenter.API.Areas.AuthorizeManage.Controllers
             {
                 list.ForEach(async i =>
                 {
-                    var users = await UserBus.GetListAsync(e => e.RoleId == i.RoleId, GetConStr());
+                    var users = await UserBus.GetListAsync(e => e.RoleId == i.RoleId, GetUserInfo().DataBaseName);
                     users.ToList().ForEach(async j =>
                     {
                         j.RoleId = null;
-                        await UserBus.UpdateAsync(j, GetConStr());
+                        await UserBus.UpdateAsync(j, GetUserInfo().DataBaseName);
                     });
                 });
-                result = await RoleBus.DeleteAsync(list, GetConStr());
+                result = await RoleBus.DeleteAsync(list, GetUserInfo().DataBaseName);
             }
 
             return Json(result);
         }
 
-        /// <summary>
-        /// 更改角色的开启状态
-        /// </summary>
-        /// <param name="list">将要更改的列表</param>
-        /// <returns></returns>
-        public async Task<IActionResult> ChangeEnable(string roleId)
-        {
-            var entity = await RoleBus.GetEntityAsync(e => e.RoleId == roleId, GetConStr());
-            if (entity.DeleteMark != 1)
-            {
-                if (entity.EnabledMark == 1)
-                {
-                    entity.EnabledMark = 0;
-                }
-                else
-                {
-                    entity.EnabledMark = 1;
-                }
-                var result = await RoleBus.UpdateAsync(entity, GetConStr());
-                return Json(result);
-            }
-
-            return Json(false);
-        }
 
         /// <summary>
         /// 更改角色成员时获取项目成员
         /// </summary>
         /// <returns></returns>
-        public async Task<IActionResult> GetUsers()
+        public async Task<IActionResult> GetUsers(string roleId)
         {
-            var result = await UserBus.GetListAsync(e => e.EnabledMark == 1, GetConStr());
-            return Ok(result);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> GetModuleTree(string roleId)
-        {
-            var list = await ModuleBus.GetListAsync();
-            var tree = Data.ModuleTreeJson.TreeGridJson(list.OrderBy(e => e.SortCode).ToList());
-            var check = await AuthorizeBus.GetListAsync(e => e.ObjectId == roleId && e.ItemType == 1, GetConStr());
-            return Ok(new { tree, check });
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> GetButtonTree(string roleId, List<string> moduleList)
-        {
-            var tree = new List<ModuleConvertButton>();
-            foreach (var i in moduleList)
+            try
             {
-                var module = await ModuleBus.GetEntityAsync(e => e.ModuleId == i);
-                var parent = new ModuleConvertButton()
-                {
-                    ModuleButtonId = module.ModuleId,
-                    FullName = module.FullName
-                };
-                var buttonList = await ButtonBus.GetListAsync(e => e.ModuleId == i);
-                parent.Children = buttonList;
-                if (parent.Children.Any())
-                    tree.Add(parent);
+                var roleUsers = await roleUserBll.GetListAsync(r => r.ObjectId == roleId, GetUserInfo().DataBaseName);
+                var allUsers = await UserBus.GetListAsync(e => e.EnabledMark == 1 && e.RoleId != "PrjAdmin", GetUserInfo().DataBaseName);
+                return Ok(new { checkeds = roleUsers.Select(r => r.UserId), users = allUsers });
             }
-
-            var check = await AuthorizeBus.GetListAsync(e => e.ObjectId == roleId && e.ItemType == 2, GetConStr());
-
-            return Ok(new { tree, check });
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> GetViewTree(string roleId, List<string> moduleList)
-        {
-            var tree = new List<ColumnTreeDto>();
-            foreach (var i in moduleList)
+            catch (Exception)
             {
-                var module = await ModuleBus.GetEntityAsync(e => e.ModuleId == i);
-                var parent = new ColumnTreeDto()
-                {
-                    ParentId = module.ParentId,
-                    ModuleId = module.ModuleId,
-                    FullName = module.FullName,
-                    ModuleColumnId = module.ModuleId
-                };
-                parent.Children = await ColumnBus.GetListAsync(e => e.ModuleId == i);
-                if (parent.Children.Any())
-                    tree.Add(parent);
+                return BadRequest(false);
             }
+        }
+        public async Task<IActionResult> SaveRoleUsers(string roleId, List<string> userIds)
+        {
+            try
+            {
+                var users = await UserBus.GetListAsync(u => u.RoleId == roleId, GetUserInfo().DataBaseName);
+                var delList = await roleUserBll.GetListAsync(r => r.ObjectId == roleId, GetUserInfo().DataBaseName);
+                await roleUserBll.DeleteAsync(delList, GetUserInfo().DataBaseName);
 
-            var check = await AuthorizeBus.GetListAsync(e => e.ObjectId == roleId && e.ItemType == 3, GetConStr());
-            return Ok(new { tree, check });
+                var list = new List<UserRelation>();
+                if (userIds.Count() > 0)
+                {
+                    if (users.Count()>0)
+                    {
+                        var _users = users.ToList().FindAll(u => !(userIds.Any(id => u.UserId == id)));
+                        if (_users.Count>0)
+                        {
+                            _users.ForEach(user =>
+                            {
+                                var entity = new UserRelation
+                                {
+                                    UserRelationId = Guid.NewGuid().ToString(),
+                                    ObjectId = roleId,
+                                    UserId = user.UserId,
+                                    IsDefault = 1
+                                };
+                                list.Add(entity);
+                            });
+                        }
+                    }
+                    userIds.ForEach(id =>
+                    {
+                        var isDefault = 0;
+                        if (users.Count() > 0 && users.Any(u => u.UserId == id))
+                            isDefault = 1;
+                        var entity = new UserRelation
+                        {
+                            UserRelationId = Guid.NewGuid().ToString(),
+                            ObjectId = roleId,
+                            UserId = id,
+                            IsDefault = isDefault
+                        };
+                        list.Add(entity);
+                    });
+                }
+                else
+                {
+                    if (users.Count() > 0)
+                    {
+                        users.ToList().ForEach(user =>
+                        {
+                            var entity = new UserRelation
+                            {
+                                UserRelationId = Guid.NewGuid().ToString(),
+                                ObjectId = roleId,
+                                UserId = user.UserId,
+                                IsDefault = 1
+                            };
+                            list.Add(entity);
+                        });
+                    }
+                }
+
+                var result = await roleUserBll.CreateAsync(list, GetUserInfo().DataBaseName);
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+                return BadRequest(false);
+            }
         }
 
         /// <summary>
@@ -215,90 +209,27 @@ namespace SSKJ.RoadDesignCenter.API.Areas.AuthorizeManage.Controllers
         /// <param name="buttonList">module对应的按钮</param>
         /// <param name="columnList">页面的视图</param>
         /// <returns></returns>
-        public async Task<IActionResult> SetAuthorize(string roleId, List<string> moduleList, List<string> buttonList, List<string> columnList)
+        public async Task<IActionResult> SetAuthorize(string userId, List<AuthorizeIdType> modules, List<AuthorizeIdType> buttons, List<AuthorizeIdType> columns, List<AuthorizeIdType> routes)
         {
-            var userId = GetUserId();
-            if (!string.IsNullOrEmpty(userId) && !string.IsNullOrEmpty(roleId))
+            try
             {
-                var insertList = new List<Authorize>();
-                var moduleCount = await AuthorizeBus.GetListAsync(e => e.ItemType == 1, GetConStr());
-                var buttonCount = await AuthorizeBus.GetListAsync(e => e.ItemType == 2, GetConStr());
-                var columnCount = await AuthorizeBus.GetListAsync(e => e.ItemType == 3, GetConStr());
-
-                var delete = await AuthorizeBus.GetListAsync(e => e.ObjectId == roleId, GetConStr());
-                await AuthorizeBus.DeleteAsync(delete, GetConStr());
-
-                for (var i = 0; i < moduleList.Count; i++)
-                {
-                    var temp = new Authorize()
-                    {
-                        AuthorizeId = Guid.NewGuid().ToString(),
-                        Category = 2,
-                        ObjectId = roleId,
-                        ItemType = 1,
-                        ItemId = moduleList[i],
-                        SortCode = moduleCount.Count() + insertList.FindAll(e => e.ItemType == 1).Count + 1,
-                        CreateDate = DateTime.Now,
-                        CreateUserId = userId
-                    };
-                    insertList.Add(temp);
-                }
-
-                for (var i = 0; i < buttonList.Count; i++)
-                {
-                    var temp = new Authorize()
-                    {
-                        AuthorizeId = Guid.NewGuid().ToString(),
-                        Category = 2,
-                        ObjectId = roleId,
-                        ItemType = 2,
-                        ItemId = buttonList[i],
-                        SortCode = buttonCount.Count() + insertList.FindAll(e => e.ItemType == 2).Count + 1,
-                        CreateDate = DateTime.Now,
-                        CreateUserId = userId
-                    };
-                    insertList.Add(temp);
-                }
-
-                for (var i = 0; i < columnList.Count; i++)
-                {
-                    var temp = new Authorize()
-                    {
-                        AuthorizeId = Guid.NewGuid().ToString(),
-                        Category = 2,
-                        ObjectId = roleId,
-                        ItemType = 3,
-                        ItemId = columnList[i],
-                        SortCode = columnCount.Count() + insertList.FindAll(e => e.ItemType == 3).Count + 1,
-                        CreateDate = DateTime.Now,
-                        CreateUserId = userId
-                    };
-                    insertList.Add(temp);
-                }
-                var result = await AuthorizeBus.CreateAsync(insertList, GetConStr());
-
-                if (result)
-                {
-                    return Ok();
-                }
-                else
-                {
-                    return BadRequest();
-                }
+                var result = await AuthorizeBus.SavePermission(GetUserInfo().UserId, GetUserInfo().UserId, 2, modules, buttons, columns, routes, GetUserInfo().DataBaseName);
+                return Ok(result);
             }
-
-            return BadRequest();
+            catch (Exception)
+            {
+                return BadRequest(false);
+            }
         }
 
         public async Task<IActionResult> GetAuthorize()
         {
-            var userId = GetUserId();
-            if (!string.IsNullOrEmpty(userId))
+            if (!string.IsNullOrEmpty(GetUserInfo().UserId))
             {
-                var user = await UserBus.GetEntityAsync(e => e.UserId == userId, GetConStr());
-                var role = await RoleBus.GetEntityAsync(e => e.RoleId == user.RoleId, GetConStr());
+                var user = await UserBus.GetEntityAsync(e => e.UserId == GetUserInfo().UserId, GetUserInfo().DataBaseName);
+                var role = await RoleBus.GetEntityAsync(e => e.RoleId == user.RoleId, GetUserInfo().DataBaseName);
 
-                var tempModule = await AuthorizeBus.GetListAsync(e => e.ObjectId == role.RoleId && e.ItemType == 1, GetConStr());
+                var tempModule = await AuthorizeBus.GetListAsync(e => e.ObjectId == role.RoleId && e.ItemType == 1, GetUserInfo().DataBaseName);
                 var module = new List<AuthorizeModuleDto>();
                 foreach (var temp in tempModule)
                 {
@@ -312,53 +243,6 @@ namespace SSKJ.RoadDesignCenter.API.Areas.AuthorizeManage.Controllers
             {
                 return BadRequest();
             }
-        }
-
-        /// <summary>
-        /// 从token中获得当前登录的用户ID  
-        /// </summary>
-        /// <returns></returns>
-        public string GetUserId()
-        {
-            var result = "";
-            try
-            {
-                string strToken = "";
-                if (Request.Headers.TryGetValue("x-access-token", out StringValues token))
-                    strToken = token.ToString();
-
-                var userInfo = Utility.Tools.TokenUtils.ToObject<UserInfoModel>(strToken);
-                result = userInfo.UserId;
-            }
-            catch (Exception)
-            {
-
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// 从token中获得当前用户数据库名称
-        /// </summary>
-        /// <returns></returns>
-        public string GetConStr()
-        {
-            var result = "";
-            try
-            {
-                string strToken = "";
-                if (Request.Headers.TryGetValue("x-access-token", out StringValues token))
-                    strToken = token.ToString();
-
-                var userInfo = Utility.Tools.TokenUtils.ToObject<UserInfoModel>(strToken);
-
-                result = userInfo.DataBaseName;
-            }
-            catch (Exception)
-            {
-
-            }
-            return result;
         }
     }
 }
