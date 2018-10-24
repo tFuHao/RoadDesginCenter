@@ -75,7 +75,6 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                         return null;
                     entity.FrontStake = input.FrontStake;
                     entity.AfterStake = input.AfterStake;
-                    entity.SerialNumber = input.SerialNumber;
                     var result = await BrokenBus.UpdateAsync(entity, GetConStr());
                     return Ok(result);
                 }
@@ -168,7 +167,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
         /// 从文件导入数据
         /// </summary>
         /// <returns></returns>
-        public async Task<IActionResult> Import()
+        public async Task<IActionResult> Import(string routeId)
         {
             var file = Request.Form.Files;
             var success = 0;
@@ -185,6 +184,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                     var temp = new BrokenChainage()
                     {
                         BrokenId = Guid.NewGuid().ToString(),
+                        RouteId = routeId,
                         SerialNumber = list.Count() + 1,
                         FrontStake = Convert.ToDouble(tempList[0]),
                         AfterStake = Convert.ToDouble(tempList[1])

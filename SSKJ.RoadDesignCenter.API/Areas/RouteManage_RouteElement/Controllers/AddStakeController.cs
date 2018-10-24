@@ -73,9 +73,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                     var entity = await AddStakeBus.GetEntityAsync(e => e.AddStakeId == input.AddStakeId, GetConStr());
                     if (entity == null)
                         return null;
-                    entity.RouteId = input.RouteId;
                     entity.Description = input.Description;
-                    entity.SerialNumber = input.SerialNumber;
                     entity.Stake = input.Stake;
                     var result = await AddStakeBus.UpdateAsync(entity, GetConStr());
                     return Json(result);
@@ -169,7 +167,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
         /// 从文件导入数据
         /// </summary>
         /// <returns></returns>
-        public async Task<IActionResult> Import()
+        public async Task<IActionResult> Import(string routeId)
         {
             var file = Request.Form.Files;
             var success = 0;
@@ -186,6 +184,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                     var temp = new AddStake()
                     {
                         AddStakeId = Guid.NewGuid().ToString(),
+                        RouteId = routeId,
                         SerialNumber = list.Count() + 1,
                         Stake = Convert.ToDouble(tempList[0]),
                         Description = tempList[1]
