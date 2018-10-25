@@ -33,6 +33,11 @@ namespace SSKJ.RoadDesignCenter.IBusines.Project.Authorize
         /// <param name="objectId">用户ID或角色ID</param>
         /// <param name="dataBaseName"></param>
         /// <returns></returns>
-        Task<IEnumerable<Models.SystemModel.ModuleColumn>> GetColumnAuthorizes(int category, string objectId, string dataBaseName);
+        Task<IEnumerable<ModuleColumn>> GetColumnAuthorizes(int category, string objectId, string dataBaseName);
+        Task<IEnumerable<Models.ProjectModel.Route>> GetRouteAuthorizes(int category, string objectId, string dataBaseName);
+
+        Task<Models.PermissionModel> GetModuleAndRoutePermission(int category, string objectId, string dataBaseName);
+        Models.PermissionModel GetButtonAndColumnPermission(List<string> halfKeys, List<string> checkedKeys, string strAuthorizes, string strModules, string strButtons, string strColumns);
+        Task<bool> SavePermission(string userId, string currentUserId, int category, List<Models.ProjectModel.AuthorizeIdType> modules, List<Models.ProjectModel.AuthorizeIdType> buttons, List<Models.ProjectModel.AuthorizeIdType> columns, List<Models.ProjectModel.AuthorizeIdType> routes, string dataBaseName);
     }
 }

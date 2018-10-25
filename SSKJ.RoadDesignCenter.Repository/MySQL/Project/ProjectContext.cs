@@ -55,6 +55,8 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
                 entity.Property(e => e.Category).HasColumnType("int(11)");
 
+                entity.Property(e => e.IsHalf).HasColumnType("int(1)");
+
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.CreateUserId).HasColumnType("varchar(50)");

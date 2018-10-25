@@ -13,5 +13,6 @@ namespace SSKJ.RoadDesignCenter.Models.ProjectModel
         public int? SortCode { get; set; }
         public DateTime? CreateDate { get; set; }
         public string CreateUserId { get; set; }
+        public int? IsHalf { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 {
@@ -12,7 +13,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
         /// </summary>
         private const string DefaultProjectConnectionString = "server=139.224.200.194;port=3306;database={database};user id=root;password=SSKJ*147258369";
 
-        public static ProjectContext CreateContext(string dataBaseName = null)
+        public static async Task<ProjectContext> CreateContext(string dataBaseName = null)
         {
             var connectionString = "";
             if (string.IsNullOrWhiteSpace(dataBaseName))
@@ -25,7 +26,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
             optionBuilder.UseMySql(connectionString, m => { });
 
             var context = new ProjectContext(optionBuilder.Options);
-            context.Database.EnsureCreated();
+            await context.Database.EnsureCreatedAsync();
 
             return context;
         }
