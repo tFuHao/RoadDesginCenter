@@ -9,6 +9,7 @@ namespace SSKJ.RoadDesignCenter.API.Models
 {
     public class AuthorizeModel
     {
+        public UserInfoModel UserInfo { get; set; }
         public IEnumerable<Module> ModuleAuthorizes { get; set; }
         public IEnumerable<ModuleButton> ButtonAuthorizes { get; set; }
         public IEnumerable<ModuleColumn> ColumnAuthorizes { get; set; }

@@ -9,7 +9,7 @@ using SSKJ.RoadDesignCenter.Models.ProjectModel;
 namespace SSKJ.RoadDesignCenter.API.Controllers
 {
     [Route("api/Login/[action]")]
-    public class LoginController : Controller
+    public class LoginController : BaseController
     {
         private readonly IBusines.System.IUserProjectBusines userProjectBll;
         private readonly IBusines.System.IUserBusines sysUserBll;
@@ -106,23 +106,25 @@ namespace SSKJ.RoadDesignCenter.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetUserInfo()
+        public async Task<IActionResult> GetUserPermission()
         {
             try
             {
-                string strToken = "";
-                if (Request.Headers.TryGetValue("x-access-token", out StringValues token))
-                    strToken = token.ToString();
-
-                if (string.IsNullOrEmpty(strToken))
-                    return BadRequest(new { message = "登录超时，请重新登录!" });
-
-                var userInfo = Utility.Tools.TokenUtils.ToObject<UserInfoModel>(strToken);
+                var userInfo = GetUserInfo();
 
                 if (userInfo.TokenExpiration <= DateTime.Now)
-                    return BadRequest(new { message = "登录超时，请重新登录!" });
+                    return BadRequest(new { type = 0, message = "登录超时，请重新登录!" });
 
-                return Ok(userInfo);
+                var authorize = new AuthorizeModel
+                {
+                    UserInfo=userInfo,
+                    ModuleAuthorizes = await authorizeBll.GetModuleAuthorizes(2, userInfo.RoleId, userInfo.DataBaseName),
+                    ButtonAuthorizes = await authorizeBll.GetButtonAuthorizes(2, userInfo.RoleId, userInfo.DataBaseName),
+                    ColumnAuthorizes = await authorizeBll.GetColumnAuthorizes(2, userInfo.RoleId, userInfo.DataBaseName),
+                    RouteAuthorizes = await authorizeBll.GetRouteAuthorizes(2, userInfo.RoleId, userInfo.DataBaseName)
+                };
+
+                return Ok(authorize);
             }
             catch (Exception)
             {
