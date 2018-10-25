@@ -39,13 +39,46 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.Authorize
         /// <returns></returns>
         public async Task<IEnumerable<Module>> GetModuleAuthorizes(int category, string objectId, string dataBaseName)
         {
-            var authorizes = await authorizeRepo.GetListAsync(a => a.Category == category && a.ObjectId == objectId && a.ItemType == 1, dataBaseName);
-            var modules = await moduleRepo.GetListAsync(m => m.EnabledMark == 1 && authorizes.Any(a => a.ItemId == m.ModuleId));
+            var modules = await moduleRepo.GetListAsync(m => m.EnabledMark == 1);
+            var _modules = new List<Module>();
+            if (objectId == "System")
+            {
+                _modules = modules.ToList().FindAll(m => m.ParentId == "0" || m.ModuleId == "c1d4085e-df18-4584-8315-f14da229f6c9");
+                _modules.ToList().AddRange(GetModules(modules, "c1d4085e-df18-4584-8315-f14da229f6c9"));
+            }
+            else if (objectId == "PrjManager")
+            {
+                _modules = modules.ToList().FindAll(m => m.ParentId == "0" || m.ModuleId == "ff01c3d3-9690-4848-8001-066831f6250c");
+                _modules.ToList().AddRange(GetModules(modules, "ff01c3d3-9690-4848-8001-066831f6250c"));
+            }
+            else if (objectId == "PrjAdmin")
+            {
+                var ids = new List<string>();
+                var mod = GetModules(modules, "c1d4085e-df18-4584-8315-f14da229f6c9");
+                mod.ToList().AddRange(GetModules(modules, "ff01c3d3-9690-4848-8001-066831f6250c"));
+                ids = mod.Select(s => s.ModuleId).ToList();
+                ids.AddRange(new List<string>
+                {
+                    "c1d4085e-df18-4584-8315-f14da229f6c9",
+                    "ff01c3d3-9690-4848-8001-066831f6250c"
+                });
+                _modules = modules.ToList().FindAll(m => !(ids.Any(id => id == m.ModuleId)));
+            }
+            else
+            {
+                var authorizes = await authorizeRepo.GetListAsync(a => a.Category == category && a.ObjectId == objectId && a.ItemType == 1, dataBaseName);
+                _modules = modules.ToList().FindAll(m => authorizes.Any(a => a.ItemId == m.ModuleId));
+            }
 
             //return TreeData.ModuleTreeJson(modules.ToList());
-            return modules.OrderBy(o => o.SortCode);
+            return _modules.OrderBy(o => o.SortCode);
         }
+        public IEnumerable<Module> GetModules(IEnumerable<Module> list, string pId)
+        {
+            var _list = list.Where(f => f.ParentId == pId);
 
+            return _list.Concat(_list.SelectMany(t => GetModules(list, t.ModuleId)));
+        }
         /// <summary>
         /// 获取功能按钮权限
         /// </summary>
@@ -55,11 +88,38 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.Authorize
         /// <returns></returns>
         public async Task<IEnumerable<ModuleButton>> GetButtonAuthorizes(int category, string objectId, string dataBaseName)
         {
-            var authorizes = await authorizeRepo.GetListAsync(a => a.Category == category && a.ObjectId == objectId && a.ItemType == 2, dataBaseName);
-            var buttons = await buttonRepo.GetListAsync(m => authorizes.Any(a => a.ItemId == m.ModuleButtonId));
+            var modules = await moduleRepo.GetListAsync(m => m.EnabledMark == 1);
+            var buttons = await buttonRepo.GetListAsync();
+            var _buttons = new List<ModuleButton>();
+            if (objectId == "System")
+            {
+                var _modules = GetModules(modules, "c1d4085e-df18-4584-8315-f14da229f6c9").Select(m => m.ModuleId).ToList();
+                _modules.Add("c1d4085e-df18-4584-8315-f14da229f6c9");
+                _buttons = buttons.ToList().FindAll(m => _modules.Any(id => id == m.ModuleId));
+            }
+            else if (objectId == "PrjManager")
+            {
+                var _modules = GetModules(modules, "ff01c3d3-9690-4848-8001-066831f6250c").Select(m => m.ModuleId).ToList();
+                _modules.Add("ff01c3d3-9690-4848-8001-066831f6250c");
+                _buttons = buttons.ToList().FindAll(m => _modules.Any(id => id == m.ModuleId));
+            }
+            else if (objectId == "PrjAdmin")
+            {
+                var _modules = GetModules(modules, "ff01c3d3-9690-4848-8001-066831f6250c").Select(m => m.ModuleId).ToList();
+                _modules.Add("ff01c3d3-9690-4848-8001-066831f6250c");
+                _modules.AddRange(GetModules(modules, "c1d4085e-df18-4584-8315-f14da229f6c9").Select(m => m.ModuleId).ToList());
+                _modules.Add("c1d4085e-df18-4584-8315-f14da229f6c9");
+
+                _buttons = buttons.ToList().FindAll(m => !(_modules.Any(id => id == m.ModuleId)));
+            }
+            else
+            {
+                var authorizes = await authorizeRepo.GetListAsync(a => a.Category == category && a.ObjectId == objectId && a.ItemType == 2, dataBaseName);
+                _buttons = buttons.ToList().FindAll(m => authorizes.Any(a => a.ItemId == m.ModuleId));
+            }
 
             //return TreeData.ButtonTreeJson(buttons.OrderBy(o => o.SortCode).ToList());
-            return buttons.OrderBy(o => o.SortCode);
+            return _buttons.OrderBy(o => o.SortCode);
         }
 
         /// <summary>
@@ -71,10 +131,36 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.Authorize
         /// <returns></returns>
         public async Task<IEnumerable<ModuleColumn>> GetColumnAuthorizes(int category, string objectId, string dataBaseName)
         {
-            var authorizes = await authorizeRepo.GetListAsync(a => a.Category == category && a.ObjectId == objectId && a.ItemType == 3, dataBaseName);
-            var columns = await columnRepo.GetListAsync(m => authorizes.Any(a => a.ItemId == m.ModuleColumnId));
+            var modules = await moduleRepo.GetListAsync(m => m.EnabledMark == 1);
+            var columns = await columnRepo.GetListAsync();
+            var _columns = new List<ModuleColumn>();
+            if (objectId == "System")
+            {
+                var _modules = GetModules(modules, "c1d4085e-df18-4584-8315-f14da229f6c9").Select(m => m.ModuleId).ToList();
+                _modules.Add("c1d4085e-df18-4584-8315-f14da229f6c9");
+                _columns = columns.ToList().FindAll(m => _modules.Any(id => id == m.ModuleId));
+            }
+            else if (objectId == "PrjManager")
+            {
+                var _modules = GetModules(modules, "ff01c3d3-9690-4848-8001-066831f6250c").Select(m => m.ModuleId).ToList();
+                _modules.Add("ff01c3d3-9690-4848-8001-066831f6250c");
+                _columns = columns.ToList().FindAll(m => _modules.Any(id => id == m.ModuleId));
+            }
+            else if (objectId == "PrjAdmin")
+            {
+                var _modules = GetModules(modules, "ff01c3d3-9690-4848-8001-066831f6250c").Select(m => m.ModuleId).ToList();
+                _modules.Add("ff01c3d3-9690-4848-8001-066831f6250c");
+                _modules.AddRange(GetModules(modules, "c1d4085e-df18-4584-8315-f14da229f6c9").Select(m => m.ModuleId).ToList());
+                _modules.Add("c1d4085e-df18-4584-8315-f14da229f6c9");
+                _columns = columns.ToList().FindAll(m => !(_modules.Any(id => id == m.ModuleId)));
+            }
+            else
+            {
+                var authorizes = await authorizeRepo.GetListAsync(a => a.Category == category && a.ObjectId == objectId && a.ItemType == 3, dataBaseName);
+                _columns = columns.ToList().FindAll(m => authorizes.Any(a => a.ItemId == m.ModuleId));
+            }
 
-            return columns.ToList().OrderBy(o => o.SortCode);
+            return _columns.ToList().OrderBy(o => o.SortCode);
         }
         /// <summary>
         /// 获取路线权限
@@ -85,19 +171,30 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.Authorize
         /// <returns></returns>
         public async Task<IEnumerable<Models.ProjectModel.Route>> GetRouteAuthorizes(int category, string objectId, string dataBaseName)
         {
-            var authorizes = await authorizeRepo.GetListAsync(a => a.Category == category && a.ObjectId == objectId && a.ItemType == 4, dataBaseName);
-            var routes = await routeRepo.GetListAsync(m => authorizes.Any(a => a.ItemId == m.RouteId));
-
-            return routes.ToList().OrderBy(o => o.CreateDate);
+            if (objectId == "System" || objectId == "PrjManager" || objectId == "PrjAdmin")
+                return null;
+            else
+            {
+                var routes = await routeRepo.GetListAsync(dataBaseName);
+                var authorizes = await authorizeRepo.GetListAsync(a => a.Category == category && a.ObjectId == objectId && a.ItemType == 4, dataBaseName);
+                var _routes = routes.ToList().FindAll(m => authorizes.Any(a => a.ItemId == m.RouteId));
+                return _routes.OrderBy(o => o.CreateDate);
+            }
         }
 
         public async Task<PermissionModel> GetModuleAndRoutePermission(int category, string objectId, string dataBaseName)
         {
             var existList = await authorizeRepo.GetListAsync(a => a.Category == category && a.ObjectId == objectId, dataBaseName);
-            var moduleList = await moduleRepo.GetListAsync(m => m.EnabledMark == 1);
+            var moduleList = await moduleRepo.GetListAsync(m => m.EnabledMark == 1&&m.ModuleId!="c1d4085e-df18-4584-8315-f14da229f6c9"&&m.ModuleId!= "ff01c3d3-9690-4848-8001-066831f6250c");
             var moduleTreeList = new List<TreeEntity>();
             var moduleChecked = new List<string>();
             var moduleHalfChecked = new List<string>();
+
+            var moduleIds = GetModules(moduleList, "c1d4085e-df18-4584-8315-f14da229f6c9").Select(m=>m.ModuleId);
+            moduleIds.ToList().AddRange(GetModules(moduleList, "ff01c3d3-9690-4848-8001-066831f6250c").Select(m=>m.ModuleId));
+
+            moduleList = moduleList.ToList().FindAll(m => !(moduleIds.Any(id => id == m.ModuleId)));
+
             moduleList.OrderBy(o => o.SortCode).ToList().ForEach(module =>
             {
                 var check = existList.Count(t => t.ItemId == module.ModuleId && t.ItemType == 1 && t.IsHalf == 0);

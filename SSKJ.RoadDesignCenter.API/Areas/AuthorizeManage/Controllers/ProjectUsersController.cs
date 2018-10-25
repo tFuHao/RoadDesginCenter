@@ -152,10 +152,13 @@ namespace SSKJ.RoadDesignCenter.API.Areas.AuthorizeManage.Controllers
             try
             {
                 var userAuth = await authBll.GetListAsync(a => list.Any(u => u.UserId == a.ObjectId), GetUserInfo().DataBaseName);
+                var roleUser = await roleUserBll.GetListAsync(r => list.Any(u => u.UserId == r.UserId), GetUserInfo().DataBaseName);
                 var result = await userBll.DeleteAsync(list, GetUserInfo().DataBaseName);
                 if (result)
                 {
                     await authBll.DeleteAsync(userAuth, GetUserInfo().DataBaseName);
+                    await roleUserBll.DeleteAsync(roleUser, GetUserInfo().DataBaseName);
+
                     return Ok(result);
                 }
                 return BadRequest(result);

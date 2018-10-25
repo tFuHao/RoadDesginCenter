@@ -34,7 +34,7 @@ namespace SSKJ.RoadDesignCenter.API.Controllers
             try
             {
                 var _user = new UserInfoModel();
-                var authorize = new AuthorizeModel();
+
                 if (string.IsNullOrEmpty(model.ProjectCode))
                 {
                     if (model.UserName.ToLower() == "system")
@@ -83,19 +83,19 @@ namespace SSKJ.RoadDesignCenter.API.Controllers
                     if (user.EnabledMark == 0)
                         return BadRequest(new { type = 0, message = "该角色已被锁定，请联系管理员解锁" });
 
-                    if (user.RoleId != "PrjAdmin")
-                    {
-                        authorize.ModuleAuthorizes = await authorizeBll.GetModuleAuthorizes(2, user.RoleId, entity.PrjDataBase);
-                        authorize.ButtonAuthorizes = await authorizeBll.GetButtonAuthorizes(2, user.RoleId, entity.PrjDataBase);
-                        authorize.ColumnAuthorizes = await authorizeBll.GetColumnAuthorizes(2, user.RoleId, entity.PrjDataBase);
-                    }
-
                     _user = Utility.Tools.MapperUtils.MapTo<User, UserInfoModel>(user);
                     _user.DataBaseName = entity.PrjDataBase;
                 }
                 _user.TokenExpiration = DateTime.Now.AddDays(1);
 
                 string token = Utility.Tools.TokenUtils.ToToken(_user);
+                var authorize = new AuthorizeModel
+                {
+                    ModuleAuthorizes = await authorizeBll.GetModuleAuthorizes(2, _user.RoleId, _user.DataBaseName),
+                    ButtonAuthorizes = await authorizeBll.GetButtonAuthorizes(2, _user.RoleId, _user.DataBaseName),
+                    ColumnAuthorizes = await authorizeBll.GetColumnAuthorizes(2, _user.RoleId, _user.DataBaseName),
+                    RouteAuthorizes = await authorizeBll.GetRouteAuthorizes(2, _user.RoleId, _user.DataBaseName)
+                };
 
                 return Ok(new { type = 1, role = _user.RoleId, authorize, token });
             }
