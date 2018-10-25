@@ -48,9 +48,15 @@ namespace SSKJ.RoadDesignCenter.API.Areas.AuthorizeManage.Controllers
         public async Task<IActionResult> GetRoles(int pageSize, int pageIndex)
         {
             var result = await RoleBus.GetListAsync(e => true, e => e.SortCode, true, pageSize, pageIndex, GetUserInfo().DataBaseName);
+            var users = await roleUserBll.GetListAsync(GetUserInfo().DataBaseName);
             return Json(new
             {
-                data = result.Item1,
+                data = result.Item1.Select(role =>new{
+                    role.RoleId,
+                    role.FullName,
+                    role.Description,
+                    UserNumber= users.ToList().FindAll(r=>r.ObjectId==role.RoleId).Count()
+                }),
                 count = result.Item2
             });
         }
