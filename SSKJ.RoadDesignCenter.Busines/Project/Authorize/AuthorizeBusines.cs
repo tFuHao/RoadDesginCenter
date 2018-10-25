@@ -171,8 +171,13 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.Authorize
         /// <returns></returns>
         public async Task<IEnumerable<Models.ProjectModel.Route>> GetRouteAuthorizes(int category, string objectId, string dataBaseName)
         {
-            if (objectId == "System" || objectId == "PrjManager" || objectId == "PrjAdmin")
+            if (objectId == "System" || objectId == "PrjManager")
                 return null;
+            else if (objectId == "PrjAdmin")
+            {
+                var routes = await routeRepo.GetListAsync(dataBaseName);
+                return routes.OrderBy(o => o.CreateDate);
+            }
             else
             {
                 var routes = await routeRepo.GetListAsync(dataBaseName);
@@ -185,13 +190,13 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.Authorize
         public async Task<PermissionModel> GetModuleAndRoutePermission(int category, string objectId, string dataBaseName)
         {
             var existList = await authorizeRepo.GetListAsync(a => a.Category == category && a.ObjectId == objectId, dataBaseName);
-            var moduleList = await moduleRepo.GetListAsync(m => m.EnabledMark == 1&&m.ModuleId!="c1d4085e-df18-4584-8315-f14da229f6c9"&&m.ModuleId!= "ff01c3d3-9690-4848-8001-066831f6250c");
+            var moduleList = await moduleRepo.GetListAsync(m => m.EnabledMark == 1 && m.ModuleId != "c1d4085e-df18-4584-8315-f14da229f6c9" && m.ModuleId != "ff01c3d3-9690-4848-8001-066831f6250c");
             var moduleTreeList = new List<TreeEntity>();
             var moduleChecked = new List<string>();
             var moduleHalfChecked = new List<string>();
 
-            var moduleIds = GetModules(moduleList, "c1d4085e-df18-4584-8315-f14da229f6c9").Select(m=>m.ModuleId);
-            moduleIds.ToList().AddRange(GetModules(moduleList, "ff01c3d3-9690-4848-8001-066831f6250c").Select(m=>m.ModuleId));
+            var moduleIds = GetModules(moduleList, "c1d4085e-df18-4584-8315-f14da229f6c9").Select(m => m.ModuleId);
+            moduleIds.ToList().AddRange(GetModules(moduleList, "ff01c3d3-9690-4848-8001-066831f6250c").Select(m => m.ModuleId));
 
             moduleList = moduleList.ToList().FindAll(m => !(moduleIds.Any(id => id == m.ModuleId)));
 
