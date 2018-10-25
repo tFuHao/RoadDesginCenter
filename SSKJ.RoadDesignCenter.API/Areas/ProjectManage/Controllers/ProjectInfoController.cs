@@ -129,6 +129,8 @@ namespace SSKJ.RoadDesignCenter.API.Areas.ProjectManage.Controllers
                     if (string.IsNullOrEmpty(entity.UserInfo.UserId))
                     {
                         entity.UserInfo.UserId = Guid.NewGuid().ToString();
+                        entity.UserInfo.Secretkey = Guid.NewGuid().ToString();
+                        entity.UserInfo.Password= Utility.Tools.MD5Utils.Sign(entity.UserInfo.Password, entity.UserInfo.Secretkey);
                         entity.UserInfo.CreateDate = DateTime.Now;
                         entity.UserInfo.CreateUserId = userInfo.UserId;
                         entity.UserInfo.RoleId = "PrjAdmin";
