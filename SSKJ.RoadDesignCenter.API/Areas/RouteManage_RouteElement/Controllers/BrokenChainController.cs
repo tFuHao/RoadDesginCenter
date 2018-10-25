@@ -26,9 +26,9 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
             HostingEnvironmentost = hostingEnvironmentost;
         }
 
-        public async Task<IActionResult> Get(int pageSize, int pageIndex)
+        public async Task<IActionResult> Get(int pageSize, int pageIndex, string routeId)
         {
-            var result = await BrokenBus.GetListAsync(e => true, e => e.SerialNumber, true, pageSize, pageIndex, GetConStr());
+            var result = await BrokenBus.GetListAsync(e => e.RouteId == routeId, e => e.SerialNumber, true, pageSize, pageIndex, GetConStr());
             return Json(new
             {
                 data = result.Item1,
@@ -43,19 +43,19 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
         /// <param name="serialNumber">插入的序号，添加则为0</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Insert(BrokenChainage input, int serialNumber)
+        public async Task<IActionResult> Insert(BrokenChainage input, int serialNumber, string routeId)
         {
             if (ModelState.IsValid)
             {
                 if (input.BrokenId == null)
                 {
-                    var allList = await BrokenBus.GetListAsync(GetConStr());
+                    var allList = await BrokenBus.GetListAsync(e => e.RouteId == routeId, GetConStr());
                     var count = allList.Count();
                     input.BrokenId = Guid.NewGuid().ToString();
                     input.SerialNumber = count + 1;
                     if (serialNumber != 0)
                     {
-                        var temp = await BrokenBus.GetListAsync(e => e.SerialNumber >= serialNumber, GetConStr());
+                        var temp = await BrokenBus.GetListAsync(e => e.RouteId == routeId && e.SerialNumber >= serialNumber, GetConStr());
                         var list = temp.ToList();
                         list.ForEach(async i =>
                         {

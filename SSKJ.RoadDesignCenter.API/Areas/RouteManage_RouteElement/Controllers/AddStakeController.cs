@@ -26,9 +26,9 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
             HostingEnvironmentost = hostingEnvironmentost;
         }
 
-        public async Task<IActionResult> Get(int pageSize, int pageIndex)
+        public async Task<IActionResult> Get(int pageSize, int pageIndex, string routeId)
         {
-            var result = await AddStakeBus.GetListAsync(e => true, e => e.SerialNumber, true, pageSize, pageIndex, GetConStr());
+            var result = await AddStakeBus.GetListAsync(e => e.RouteId == routeId, e => e.SerialNumber, true, pageSize, pageIndex, GetConStr());
             return Json(new
             {
                 data = result.Item1,
@@ -43,19 +43,19 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
         /// <param name="serialNumber">插入的序号，添加则为0</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Insert(AddStake input, int serialNumber)
+        public async Task<IActionResult> Insert(AddStake input, int serialNumber, string routeId)
         {
             if (ModelState.IsValid)
             {
                 if (input.AddStakeId == null)
                 {
-                    var allList = await AddStakeBus.GetListAsync(GetConStr());
+                    var allList = await AddStakeBus.GetListAsync(e => e.RouteId == routeId, GetConStr());
                     var count = allList.Count();
                     input.AddStakeId = Guid.NewGuid().ToString();
                     input.SerialNumber = count + 1;
                     if (serialNumber != 0)
                     {
-                        var temp = await AddStakeBus.GetListAsync(e => e.SerialNumber >= serialNumber, GetConStr());
+                        var temp = await AddStakeBus.GetListAsync(e => e.RouteId == routeId && e.SerialNumber >= serialNumber, GetConStr());
                         var list = temp.ToList();
                         list.ForEach(async i =>
                         {
