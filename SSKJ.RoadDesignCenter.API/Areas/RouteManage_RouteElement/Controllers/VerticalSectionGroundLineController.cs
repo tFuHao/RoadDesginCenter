@@ -130,7 +130,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
         /// <param name="isUp">true为上移，false为下移</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Move(int serialNumber, bool isUp)
+        public async Task<IActionResult> Move(int serialNumber, bool isUp, string routeId)
         {
             var topNumber = 0;
             var bottomNumber = 0;
@@ -143,15 +143,15 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
             }
             else
             {
-                var data = await SectionBus.GetListAsync(GetConStr());
+                var data = await SectionBus.GetListAsync(e => e.RouteId == routeId, GetConStr());
                 if (serialNumber == data.Count())
                     return Json(new { code = 0, errorMsg = "选项不能再下移" });
                 topNumber = serialNumber;
                 bottomNumber = serialNumber + 1;
             }
 
-            var top = await SectionBus.GetEntityAsync(e => e.SerialNumber == topNumber, GetConStr());
-            var bottom = await SectionBus.GetEntityAsync(e => e.SerialNumber == bottomNumber, GetConStr());
+            var top = await SectionBus.GetEntityAsync(e => e.SerialNumber == topNumber && e.RouteId == routeId, GetConStr());
+            var bottom = await SectionBus.GetEntityAsync(e => e.SerialNumber == bottomNumber && e.RouteId == routeId, GetConStr());
             var temp = top.SerialNumber;
             top.SerialNumber = bottom.SerialNumber;
             bottom.SerialNumber = temp;
