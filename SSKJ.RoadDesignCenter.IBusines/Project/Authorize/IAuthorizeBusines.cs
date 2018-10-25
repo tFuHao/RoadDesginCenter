@@ -38,6 +38,6 @@ namespace SSKJ.RoadDesignCenter.IBusines.Project.Authorize
 
         Task<Models.PermissionModel> GetModuleAndRoutePermission(int category, string objectId, string dataBaseName);
         Models.PermissionModel GetButtonAndColumnPermission(List<string> halfKeys, List<string> checkedKeys, string strAuthorizes, string strModules, string strButtons, string strColumns);
-        Task<bool> SavePermission(string userId, string currentUserId, int category, List<Models.ProjectModel.AuthorizeIdType> modules, List<Models.ProjectModel.AuthorizeIdType> buttons, List<Models.ProjectModel.AuthorizeIdType> columns, List<Models.ProjectModel.AuthorizeIdType> routes, string dataBaseName);
+        Task<bool> SavePermission(string objectId, string currentUserId, int category, List<Models.ProjectModel.AuthorizeIdType> modules, List<Models.ProjectModel.AuthorizeIdType> buttons, List<Models.ProjectModel.AuthorizeIdType> columns, List<Models.ProjectModel.AuthorizeIdType> routes, string dataBaseName);
     }
 }
