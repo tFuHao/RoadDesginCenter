@@ -26,9 +26,9 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
             Hosting = hosting;
         }
 
-        public async Task<IActionResult> Get(int pageSize, int pageIndex)
+        public async Task<IActionResult> Get(int pageSize, int pageIndex, string routeId)
         {
-            var result = await SectionBus.GetListAsync(e => true, e => e.SerialNumber, true, pageSize, pageIndex, GetConStr());
+            var result = await SectionBus.GetListAsync(e => e.RouteId == routeId, e => e.SerialNumber, true, pageSize, pageIndex, GetConStr());
             return Json(new
             {
                 data = result.Item1,
@@ -43,19 +43,19 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
         /// <param name="serialNumber">插入的序号，添加则为0</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Insert(VerticalSectionGroundLine input, int serialNumber)
+        public async Task<IActionResult> Insert(VerticalSectionGroundLine input, int serialNumber, string routeId)
         {
             if (ModelState.IsValid)
             {
                 if (input.Id == null)
                 {
-                    var allList = await SectionBus.GetListAsync(GetConStr());
+                    var allList = await SectionBus.GetListAsync(e => e.RouteId == routeId, GetConStr());
                     var count = allList.Count();
                     input.Id = Guid.NewGuid().ToString();
                     input.SerialNumber = count + 1;
                     if (serialNumber != 0)
                     {
-                        var temp = await SectionBus.GetListAsync(e => e.SerialNumber >= serialNumber, GetConStr());
+                        var temp = await SectionBus.GetListAsync(e => e.RouteId == routeId && e.SerialNumber >= serialNumber, GetConStr());
                         var list = temp.ToList();
                         list.ForEach(async i =>
                         {
@@ -130,7 +130,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
         /// <param name="isUp">true为上移，false为下移</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Move(int serialNumber, bool isUp)
+        public async Task<IActionResult> Move(int serialNumber, bool isUp, string routeId)
         {
             var topNumber = 0;
             var bottomNumber = 0;
@@ -143,15 +143,15 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
             }
             else
             {
-                var data = await SectionBus.GetListAsync(GetConStr());
+                var data = await SectionBus.GetListAsync(e => e.RouteId == routeId, GetConStr());
                 if (serialNumber == data.Count())
                     return Json(new { code = 0, errorMsg = "选项不能再下移" });
                 topNumber = serialNumber;
                 bottomNumber = serialNumber + 1;
             }
 
-            var top = await SectionBus.GetEntityAsync(e => e.SerialNumber == topNumber, GetConStr());
-            var bottom = await SectionBus.GetEntityAsync(e => e.SerialNumber == bottomNumber, GetConStr());
+            var top = await SectionBus.GetEntityAsync(e => e.SerialNumber == topNumber && e.RouteId == routeId, GetConStr());
+            var bottom = await SectionBus.GetEntityAsync(e => e.SerialNumber == bottomNumber && e.RouteId == routeId, GetConStr());
             var temp = top.SerialNumber;
             top.SerialNumber = bottom.SerialNumber;
             bottom.SerialNumber = temp;

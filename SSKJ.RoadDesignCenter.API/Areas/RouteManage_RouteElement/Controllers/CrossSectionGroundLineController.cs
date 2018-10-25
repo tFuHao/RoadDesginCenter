@@ -26,9 +26,9 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
             Hosting = hosting;
         }
 
-        public async Task<IActionResult> Get(int pageSize, int pageIndex)
+        public async Task<IActionResult> Get(int pageSize, int pageIndex, string routeId)
         {
-            var result = await SectionBus.GetListAsync(e => true, e => e.CrossSectionGroundLineId, true, pageSize, pageIndex, GetConStr());
+            var result = await SectionBus.GetListAsync(e => e.RouteId == routeId, e => e.CrossSectionGroundLineId, true, pageSize, pageIndex, GetConStr());
             return Json(new
             {
                 data = result.Item1,
@@ -151,11 +151,6 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
             });
             content = content.Substring(0, content.Length - 2);
             return Content(content);
-        }
-
-        public IActionResult Test()
-        {
-            return Content("success");
         }
     }
 }
