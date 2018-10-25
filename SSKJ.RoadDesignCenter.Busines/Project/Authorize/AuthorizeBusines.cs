@@ -315,9 +315,9 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.Authorize
             return permissionModel;
         }
 
-        public async Task<bool> SavePermission(string userId, string currentUserId, int category, List<Models.ProjectModel.AuthorizeIdType> modules, List<Models.ProjectModel.AuthorizeIdType> buttons, List<Models.ProjectModel.AuthorizeIdType> columns, List<Models.ProjectModel.AuthorizeIdType> routes, string dataBaseName)
+        public async Task<bool> SavePermission(string objectId, string currentUserId, int category, List<Models.ProjectModel.AuthorizeIdType> modules, List<Models.ProjectModel.AuthorizeIdType> buttons, List<Models.ProjectModel.AuthorizeIdType> columns, List<Models.ProjectModel.AuthorizeIdType> routes, string dataBaseName)
         {
-            var delAuthorizes = await authorizeRepo.GetListAsync(a => a.ObjectId == userId, dataBaseName);
+            var delAuthorizes = await authorizeRepo.GetListAsync(a => a.ObjectId == objectId, dataBaseName);
             await authorizeRepo.DeleteAsync(delAuthorizes, dataBaseName);
 
             var addAuthorizes = new List<Models.ProjectModel.Authorize>();
@@ -329,7 +329,7 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.Authorize
                     Category = category,
                     ItemType = 1,
                     ItemId = module.Id,
-                    ObjectId = userId,
+                    ObjectId = objectId,
                     CreateDate = DateTime.Now,
                     CreateUserId = currentUserId,
                     IsHalf = module.IsHalf
@@ -344,7 +344,7 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.Authorize
                     Category = category,
                     ItemType = 2,
                     ItemId = button.Id,
-                    ObjectId = userId,
+                    ObjectId = objectId,
                     CreateDate = DateTime.Now,
                     CreateUserId = currentUserId,
                     IsHalf = button.IsHalf
@@ -359,7 +359,7 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.Authorize
                     Category = category,
                     ItemType = 3,
                     ItemId = column.Id,
-                    ObjectId = userId,
+                    ObjectId = objectId,
                     CreateDate = DateTime.Now,
                     CreateUserId = currentUserId,
                     IsHalf = column.IsHalf
@@ -374,7 +374,7 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.Authorize
                     Category = category,
                     ItemType = 4,
                     ItemId = route.Id,
-                    ObjectId = userId,
+                    ObjectId = objectId,
                     CreateDate = DateTime.Now,
                     CreateUserId = currentUserId,
                     IsHalf = route.IsHalf

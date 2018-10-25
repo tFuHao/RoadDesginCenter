@@ -215,11 +215,11 @@ namespace SSKJ.RoadDesignCenter.API.Areas.AuthorizeManage.Controllers
         /// <param name="buttonList">module对应的按钮</param>
         /// <param name="columnList">页面的视图</param>
         /// <returns></returns>
-        public async Task<IActionResult> SetAuthorize(string userId, List<AuthorizeIdType> modules, List<AuthorizeIdType> buttons, List<AuthorizeIdType> columns, List<AuthorizeIdType> routes)
+        public async Task<IActionResult> SetAuthorize(string objectId, List<AuthorizeIdType> modules, List<AuthorizeIdType> buttons, List<AuthorizeIdType> columns, List<AuthorizeIdType> routes)
         {
             try
             {
-                var result = await AuthorizeBus.SavePermission(GetUserInfo().UserId, GetUserInfo().UserId, 2, modules, buttons, columns, routes, GetUserInfo().DataBaseName);
+                var result = await AuthorizeBus.SavePermission(objectId, GetUserInfo().UserId, 2, modules, buttons, columns, routes, GetUserInfo().DataBaseName);
                 return Ok(result);
             }
             catch (Exception)
