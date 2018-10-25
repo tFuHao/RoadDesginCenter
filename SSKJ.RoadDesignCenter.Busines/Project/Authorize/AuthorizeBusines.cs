@@ -44,18 +44,18 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.Authorize
             if (objectId == "System")
             {
                 _modules = modules.ToList().FindAll(m => m.ParentId == "0" || m.ModuleId == "c1d4085e-df18-4584-8315-f14da229f6c9");
-                _modules.ToList().AddRange(GetModules(modules, "c1d4085e-df18-4584-8315-f14da229f6c9"));
+                _modules.AddRange(GetModules(modules, "c1d4085e-df18-4584-8315-f14da229f6c9").ToList());
             }
             else if (objectId == "PrjManager")
             {
                 _modules = modules.ToList().FindAll(m => m.ParentId == "0" || m.ModuleId == "ff01c3d3-9690-4848-8001-066831f6250c");
-                _modules.ToList().AddRange(GetModules(modules, "ff01c3d3-9690-4848-8001-066831f6250c"));
+                _modules.ToList().AddRange(GetModules(modules, "ff01c3d3-9690-4848-8001-066831f6250c").ToList());
             }
             else if (objectId == "PrjAdmin")
             {
                 var ids = new List<string>();
-                var mod = GetModules(modules, "c1d4085e-df18-4584-8315-f14da229f6c9");
-                mod.ToList().AddRange(GetModules(modules, "ff01c3d3-9690-4848-8001-066831f6250c"));
+                var mod = GetModules(modules, "c1d4085e-df18-4584-8315-f14da229f6c9").ToList();
+                mod.ToList().AddRange(GetModules(modules, "ff01c3d3-9690-4848-8001-066831f6250c").ToList());
                 ids = mod.Select(s => s.ModuleId).ToList();
                 ids.AddRange(new List<string>
                 {

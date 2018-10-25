@@ -380,6 +380,8 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
                 entity.Property(e => e.Offset).HasColumnType("double(18,4)");
 
+                entity.Property(e => e.StakeName).HasColumnType("double(18,4)");
+
                 entity.Property(e => e.RightCorner).HasColumnType("double(18,4)");
             });
 
