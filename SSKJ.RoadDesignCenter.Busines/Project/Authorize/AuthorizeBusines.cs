@@ -169,21 +169,21 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.Authorize
         /// <param name="objectId">用户ID或角色ID</param>
         /// <param name="dataBaseName"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<Models.ProjectModel.Route>> GetRouteAuthorizes(int category, string objectId, string dataBaseName)
+        public async Task<string> GetRouteAuthorizes(int category, string objectId, string dataBaseName)
         {
             if (objectId == "System" || objectId == "PrjManager")
                 return null;
             else if (objectId == "PrjAdmin")
             {
                 var routes = await routeRepo.GetListAsync(dataBaseName);
-                return routes.OrderBy(o => o.CreateDate);
+                return routes.OrderBy(o => o.CreateDate).ToList().RouteTreeJson(); 
             }
             else
             {
                 var routes = await routeRepo.GetListAsync(dataBaseName);
                 var authorizes = await authorizeRepo.GetListAsync(a => a.Category == category && a.ObjectId == objectId && a.ItemType == 4, dataBaseName);
                 var _routes = routes.ToList().FindAll(m => authorizes.Any(a => a.ItemId == m.RouteId));
-                return _routes.OrderBy(o => o.CreateDate);
+                return _routes.OrderBy(o => o.CreateDate).ToList().RouteTreeJson();
             }
         }
 
