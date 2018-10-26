@@ -97,12 +97,12 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
         /// <param name="list">删除的实体对象列表</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Delete(List<AddStake> list)
+        public async Task<IActionResult> Delete(List<AddStake> list, string routeId)
         {
             if (list.Any())
             {
                 var result = await AddStakeBus.DeleteAsync(list, GetConStr());
-                var temp = await AddStakeBus.GetListAsync(GetConStr());
+                var temp = await AddStakeBus.GetListAsync(e => e.RouteId == routeId, GetConStr());
                 var allItem = temp.OrderBy(e => e.SerialNumber).ToList();
                 if (allItem.Any())
                 {
@@ -180,7 +180,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                 while ((line = reader.ReadLine()) != null)
                 {
                     var tempList = line.Split(",");
-                    var list = await AddStakeBus.GetListAsync(GetConStr());
+                    var list = await AddStakeBus.GetListAsync(e => e.RouteId == routeId, GetConStr());
                     var temp = new AddStake()
                     {
                         AddStakeId = Guid.NewGuid().ToString(),
@@ -217,14 +217,13 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
         /// 导出数据到文件
         /// </summary>
         /// <returns></returns>
-        public async Task<IActionResult> Export()
+        public async Task<IActionResult> Export(string routeId)
         {
             var content = "";
-            var data = await AddStakeBus.GetListAsync(GetConStr());
+            var data = await AddStakeBus.GetListAsync(e => e.RouteId == routeId, GetConStr());
             var tableData = data.OrderBy(e => e.SerialNumber).ToList();
             tableData.ForEach(i =>
             {
-                //content += (i.FrontStake.ToString() + "," + i.AfterStake + ",\n");
                 content += $"{i.Stake},{i.Description},\n";
             });
             content = content.Substring(0, content.Length - 2);

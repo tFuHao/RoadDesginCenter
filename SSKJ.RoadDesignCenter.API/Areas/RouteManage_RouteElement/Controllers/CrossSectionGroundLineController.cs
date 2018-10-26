@@ -141,10 +141,10 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
         /// 导出数据到文件
         /// </summary>
         /// <returns></returns>
-        public async Task<IActionResult> Export()
+        public async Task<IActionResult> Export(string routeId)
         {
             var content = "";
-            var data = await SectionBus.GetListAsync(GetConStr());
+            var data = await SectionBus.GetListAsync(e => e.RouteId ==routeId, GetConStr());
             data.ToList().ForEach(i =>
             {
                 content += $"{i.Stake},\n";
