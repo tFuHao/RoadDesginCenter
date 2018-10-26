@@ -192,7 +192,7 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.Authorize
             var existList = await authorizeRepo.GetListAsync(a => a.Category == category && a.ObjectId == objectId, dataBaseName);
             var moduleList = await moduleRepo.GetListAsync(m => m.EnabledMark == 1 && m.ModuleId != "c1d4085e-df18-4584-8315-f14da229f6c9" && m.ModuleId != "ff01c3d3-9690-4848-8001-066831f6250c");
             var moduleTreeList = new List<TreeEntity>();
-            var moduleChecked = new List<string>();
+            var moduleChecked = new List<TreeEntity>();
             var moduleHalfChecked = new List<string>();
 
             var moduleIds = GetModules(moduleList, "c1d4085e-df18-4584-8315-f14da229f6c9").Select(m => m.ModuleId);
@@ -204,36 +204,36 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.Authorize
             {
                 var check = existList.Count(t => t.ItemId == module.ModuleId && t.ItemType == 1 && t.IsHalf == 0);
                 var halfCheck = existList.Count(t => t.ItemId == module.ModuleId && t.ItemType == 1 && t.IsHalf == 1);
-                if (check > 0)
-                    moduleChecked.Add(module.ModuleId);
                 if (halfCheck > 0)
                     moduleHalfChecked.Add(module.ModuleId);
                 TreeEntity tree = new TreeEntity
                 {
-                    Id = module.ModuleId,
-                    ParentId = module.ParentId,
-                    Name = module.FullName
+                    id = module.ModuleId,
+                    parentId = module.ParentId,
+                    label = module.FullName
                 };
                 moduleTreeList.Add(tree);
+                if (check > 0)
+                    moduleChecked.Add(tree);
             });
 
             var buttonList = await buttonRepo.GetListAsync();
             var columnList = await columnRepo.GetListAsync();
             var routeList = await routeRepo.GetListAsync(dataBaseName);
             var routeTreeList = new List<TreeEntity>();
-            var routeChecked = new List<string>();
+            var routeChecked = new List<TreeEntity>();
             routeList.OrderBy(o => o.CreateDate).ToList().ForEach(route =>
             {
                 var check = existList.Count(t => t.ItemId == route.RouteId && t.ItemType == 4 && t.IsHalf == 0);
-                if (check > 0)
-                    routeChecked.Add(route.RouteId);
                 TreeEntity tree = new TreeEntity
                 {
-                    Id = route.RouteId,
-                    ParentId = route.ParentId,
-                    Name = route.RouteName
+                    id = route.RouteId,
+                    parentId = route.ParentId,
+                    label = route.RouteName
                 };
                 routeTreeList.Add(tree);
+                if (check > 0)
+                    routeChecked.Add(tree);
             });
 
             PermissionModel permissionModel = new PermissionModel
@@ -257,7 +257,7 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.Authorize
             List<ModuleColumn> columns = Utility.Tools.JsonUtils.ToObject<List<ModuleColumn>>(strColumns);
 
             var moduleId = halfKeys.Concat(checkedKeys).Distinct().ToList();
-            var mods = modules.Where(m => moduleId.Any(c => c == m.Id)).ToList();
+            var mods = modules.Where(m => moduleId.Any(c => c == m.id)).ToList();
             var btns = buttons.Where(b => checkedKeys.Any(c => c == b.ModuleId)).ToList();
             var cols = columns.Where(b => checkedKeys.Any(c => c == b.ModuleId)).ToList();
 
@@ -266,44 +266,44 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.Authorize
             {
                 TreeEntity tree = new TreeEntity
                 {
-                    Id = module.Id,
-                    ParentId = module.ParentId,
-                    Name = module.Name
+                    id = module.id,
+                    parentId = module.parentId,
+                    label = module.label
                 };
                 treeList.Add(tree);
             });
 
             var buttonTreeList = new List<TreeEntity>();
             buttonTreeList.AddRange(treeList);
-            var buttonChecked = new List<string>();
+            var buttonChecked = new List<TreeEntity>();
             btns.OrderBy(o => o.SortCode).ToList().ForEach(button =>
             {
                 var check = authorizes.Count(t => t.ItemId == button.ModuleButtonId && t.ItemType == 2 && t.IsHalf == 0);
-                if (check > 0)
-                    buttonChecked.Add(button.ModuleButtonId);
                 TreeEntity tree = new TreeEntity
                 {
-                    Id = button.ModuleButtonId,
-                    ParentId = button.ParentId == "0" ? button.ModuleId : button.ParentId,
-                    Name = button.FullName
+                    id = button.ModuleButtonId,
+                    parentId = button.ParentId == "0" ? button.ModuleId : button.ParentId,
+                    label = button.FullName
                 };
                 buttonTreeList.Add(tree);
+                if (check > 0)
+                    buttonChecked.Add(tree);
             });
             var columnTreeList = new List<TreeEntity>();
             columnTreeList.AddRange(treeList);
-            var columnChecked = new List<string>();
+            var columnChecked = new List<TreeEntity>();
             cols.OrderBy(o => o.SortCode).ToList().ForEach(column =>
             {
                 var check = authorizes.Count(t => t.ItemId == column.ModuleColumnId && t.ItemType == 3 && t.IsHalf == 0);
-                if (check > 0)
-                    columnChecked.Add(column.ModuleColumnId);
                 TreeEntity tree = new TreeEntity
                 {
-                    Id = column.ModuleColumnId,
-                    ParentId = column.ParentId ?? column.ModuleId,
-                    Name = column.FullName
+                    id = column.ModuleColumnId,
+                    parentId = column.ParentId ?? column.ModuleId,
+                    label = column.FullName
                 };
                 columnTreeList.Add(tree);
+                if (check > 0)
+                    columnChecked.Add(tree);
             });
             PermissionModel permissionModel = new PermissionModel
             {
