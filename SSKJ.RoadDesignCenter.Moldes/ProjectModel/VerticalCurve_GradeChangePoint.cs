@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SSKJ.RoadDesignCenter.Models.ProjectModel
 {
@@ -8,8 +9,11 @@ namespace SSKJ.RoadDesignCenter.Models.ProjectModel
         public string GradeChangePointId { get; set; }
         public string VerticalCurveId { get; set; }
         public int? SerialNumber { get; set; }
+        [Required(ErrorMessage = "变坡点桩号不能为空")]
         public double? Stake { get; set; }
+        [Required(ErrorMessage = "变坡点高程不能为空")]
         public double? H { get; set; }
+        [Required(ErrorMessage = "竖曲线半径不能为空")]
         public double? R { get; set; }
     }
 }
