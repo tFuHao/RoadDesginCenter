@@ -34,7 +34,7 @@ namespace SSKJ.RoadDesignCenter.IBusines.Project.Authorize
         /// <param name="dataBaseName"></param>
         /// <returns></returns>
         Task<IEnumerable<ModuleColumn>> GetColumnAuthorizes(int category, string objectId, string dataBaseName);
-        Task<IEnumerable<Models.ProjectModel.Route>> GetRouteAuthorizes(int category, string objectId, string dataBaseName);
+        Task<string> GetRouteAuthorizes(int category, string objectId, string dataBaseName);
 
         Task<Models.PermissionModel> GetModuleAndRoutePermission(int category, string objectId, string dataBaseName);
         Models.PermissionModel GetButtonAndColumnPermission(List<string> halfKeys, List<string> checkedKeys, string strAuthorizes, string strModules, string strButtons, string strColumns);
