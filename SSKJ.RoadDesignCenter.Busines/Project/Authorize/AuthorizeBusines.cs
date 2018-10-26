@@ -115,7 +115,7 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.Authorize
             else
             {
                 var authorizes = await authorizeRepo.GetListAsync(a => a.Category == category && a.ObjectId == objectId && a.ItemType == 2, dataBaseName);
-                _buttons = buttons.ToList().FindAll(m => authorizes.Any(a => a.ItemId == m.ModuleId));
+                _buttons = buttons.ToList().FindAll(m => authorizes.Any(a => a.ItemId == m.ModuleButtonId));
             }
 
             //return TreeData.ButtonTreeJson(buttons.OrderBy(o => o.SortCode).ToList());
@@ -157,7 +157,7 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.Authorize
             else
             {
                 var authorizes = await authorizeRepo.GetListAsync(a => a.Category == category && a.ObjectId == objectId && a.ItemType == 3, dataBaseName);
-                _columns = columns.ToList().FindAll(m => authorizes.Any(a => a.ItemId == m.ModuleId));
+                _columns = columns.ToList().FindAll(m => authorizes.Any(a => a.ItemId == m.ModuleColumnId));
             }
 
             return _columns.ToList().OrderBy(o => o.SortCode);
