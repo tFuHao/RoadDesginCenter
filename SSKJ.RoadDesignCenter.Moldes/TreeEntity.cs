@@ -6,9 +6,8 @@ namespace SSKJ.RoadDesignCenter.Models
 {
     public class TreeEntity
     {
-        public string Id { get; set; }
-        public string ParentId { get; set; }
-        public string Name { get; set; }
-        public int? CheckState { get; set; }
+        public string id { get; set; }
+        public string parentId { get; set; }
+        public string label { get; set; }
     }
 }

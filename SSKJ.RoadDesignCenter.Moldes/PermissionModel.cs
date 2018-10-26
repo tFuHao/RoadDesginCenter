@@ -13,10 +13,10 @@ namespace SSKJ.RoadDesignCenter.Models
         public string RoutePermission { get; set; }
         public List<SystemModel.ModuleButton> ButtonList { get; set; }
         public List<SystemModel.ModuleColumn> ColumnList { get; set; }
-        public List<string> ModuleCheckeds { get; set; }
-        public List<string> ButtonCheckeds { get; set; }
-        public List<string> ColumnCheckeds { get; set; }
-        public List<string> RouteCheckeds { get; set; }
+        public List<TreeEntity> ModuleCheckeds { get; set; }
+        public List<TreeEntity> ButtonCheckeds { get; set; }
+        public List<TreeEntity> ColumnCheckeds { get; set; }
+        public List<TreeEntity> RouteCheckeds { get; set; }
         public List<string> ModuleHalfCheckeds { get; set; }
 
     }
