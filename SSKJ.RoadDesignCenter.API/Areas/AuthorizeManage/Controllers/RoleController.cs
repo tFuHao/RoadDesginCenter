@@ -4,13 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Primitives;
-using SSKJ.RoadDesignCenter.API.Areas.AuthorizeManage.Data;
 using SSKJ.RoadDesignCenter.API.Controllers;
-using SSKJ.RoadDesignCenter.API.Models;
 using SSKJ.RoadDesignCenter.IBusines.Project;
 using SSKJ.RoadDesignCenter.IBusines.Project.Authorize;
 using SSKJ.RoadDesignCenter.IBusines.System;
+using SSKJ.RoadDesignCenter.Models;
 using SSKJ.RoadDesignCenter.Models.ProjectModel;
 using SSKJ.RoadDesignCenter.Models.SystemModel;
 using IUserBusines = SSKJ.RoadDesignCenter.IBusines.Project.IUserBusines;
@@ -225,29 +223,6 @@ namespace SSKJ.RoadDesignCenter.API.Areas.AuthorizeManage.Controllers
             catch (Exception)
             {
                 return BadRequest(false);
-            }
-        }
-
-        public async Task<IActionResult> GetAuthorize()
-        {
-            if (!string.IsNullOrEmpty(GetUserInfo().UserId))
-            {
-                var user = await UserBus.GetEntityAsync(e => e.UserId == GetUserInfo().UserId, GetUserInfo().DataBaseName);
-                var role = await RoleBus.GetEntityAsync(e => e.RoleId == user.RoleId, GetUserInfo().DataBaseName);
-
-                var tempModule = await AuthorizeBus.GetListAsync(e => e.ObjectId == role.RoleId && e.ItemType == 1, GetUserInfo().DataBaseName);
-                var module = new List<AuthorizeModuleDto>();
-                foreach (var temp in tempModule)
-                {
-                    var entity = await ModuleBus.GetEntityAsync(e => e.ModuleId == temp.ItemId);
-                    module.Add(Mapper.Map<Module, AuthorizeModuleDto>(entity));
-                }
-
-                return Ok(module);
-            }
-            else
-            {
-                return BadRequest();
             }
         }
     }

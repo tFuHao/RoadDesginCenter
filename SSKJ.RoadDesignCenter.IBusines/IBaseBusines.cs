@@ -49,7 +49,7 @@ namespace SSKJ.RoadDesignCenter.IBusines
         /// <param name="where">条件where</param>
         /// <param name="dataBaseName">数据库名称</param>
         /// <returns></returns>
-        Task<IEnumerable<T>> GetListAsync(Expression<Func<T, bool>> where, string dataBaseName = null);
+        Task<IEnumerable<T>> GetListAsync(Expression<Func<T, bool>> where, string dataBaseName = null);        
 
         /// <summary>
         /// 根据条件where获取分页数据

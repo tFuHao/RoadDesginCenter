@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SSKJ.RoadDesignCenter.Models.ProjectModel
+namespace SSKJ.RoadDesignCenter.Models
 {
    public class AuthorizeIdType
     {

@@ -3,6 +3,7 @@ using SSKJ.RoadDesignCenter.IRepository.System;
 using SSKJ.RoadDesignCenter.Models.SystemModel;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
@@ -74,6 +75,13 @@ namespace SSKJ.RoadDesignCenter.Busines.System
         public async Task<IEnumerable<Module>> GetListAsync(string dataBaseName = null)
         {
             return await moduleRepository.GetListAsync(dataBaseName);
+        }
+
+        public async Task<string> GetTreeListAsync(Expression<Func<Module, bool>> where, string dataBaseName = null)
+        {
+            var data = await moduleRepository.GetListAsync(where);
+
+            return TreeData.ModuleTreeJson(data.ToList().OrderBy(o => o.SortCode).ToList());
         }
 
         public async Task<bool> UpdateAsync(IEnumerable<Module> entityList, string dataBaseName = null)

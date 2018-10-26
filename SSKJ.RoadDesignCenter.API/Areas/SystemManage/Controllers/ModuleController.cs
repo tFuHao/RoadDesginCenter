@@ -30,17 +30,16 @@ namespace SSKJ.RoadDesignCenter.API.Areas.SystemManage.Controllers
         {
             try
             {
-                IEnumerable<Module> data = null;
+                var data = "";
                 if (!string.IsNullOrEmpty(keyword))
-                    data = await moduleBll.GetListAsync(f => f.FullName.Contains(keyword));
+                    data = await moduleBll.GetTreeListAsync(f => f.FullName.Contains(keyword));
                 else
-                    data = await moduleBll.GetListAsync();
+                    data = await moduleBll.GetTreeListAsync(f=>true);
 
-                return Ok(Data.ModuleTreeJson.TreeGridJson(data.OrderBy(o => o.SortCode).ToList()));
+                return Ok(data);
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -48,13 +47,13 @@ namespace SSKJ.RoadDesignCenter.API.Areas.SystemManage.Controllers
         [HttpGet]
         public async Task<IActionResult> GetButtonTreeGrid(string moduleId)
         {
-            IEnumerable<ModuleButton> data = null;
+            var data = "";
             if (!string.IsNullOrEmpty(moduleId))
-                data = await buttonBll.GetListAsync(f => f.ModuleId.Equals(moduleId));
+                data = await buttonBll.GetTreeListAsync(f => f.ModuleId.Equals(moduleId));
             else
-                data = await buttonBll.GetListAsync();
+                data = await buttonBll.GetTreeListAsync(f=>true);
 
-            return Ok(Data.ButtonTreeJson.TreeGridJson(data.OrderBy(o => o.SortCode).ToList()));
+            return Ok(data);
         }
 
         [HttpGet]
@@ -72,7 +71,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.SystemManage.Controllers
         [HttpPost]
         public IActionResult ButtonListToTree(List<ModuleButton> list)
         {
-            return Ok(Data.ButtonTreeJson.TreeGridJson(list.OrderBy(o => o.SortCode).ToList()));
+            return Ok(buttonBll.ButtonListToTree(list));
         }
 
         [HttpPost]

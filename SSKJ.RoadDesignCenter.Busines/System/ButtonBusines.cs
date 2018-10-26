@@ -3,6 +3,7 @@ using SSKJ.RoadDesignCenter.IRepository.System;
 using SSKJ.RoadDesignCenter.Models.SystemModel;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,11 @@ namespace SSKJ.RoadDesignCenter.Busines.System
         public ButtonBusines(IButtonRepository buttonRepository)
         {
             this.buttonRepository = buttonRepository;
+        }
+
+        public string ButtonListToTree(List<ModuleButton> list, string dataBaseName = null)
+        {
+            return TreeData.ButtonTreeJson(list.OrderBy(o => o.SortCode).ToList());
         }
 
         public async Task<bool> CreateAsync(ModuleButton entity, string dataBaseName = null)
@@ -70,6 +76,13 @@ namespace SSKJ.RoadDesignCenter.Busines.System
         public async Task<IEnumerable<ModuleButton>> GetListAsync(string dataBaseName = null)
         {
             return await buttonRepository.GetListAsync(dataBaseName);
+        }
+
+        public async Task<string> GetTreeListAsync(Expression<Func<ModuleButton, bool>> where, string dataBaseName = null)
+        {
+            var data = await buttonRepository.GetListAsync(where);
+
+            return TreeData.ButtonTreeJson(data.ToList().OrderBy(o => o.SortCode).ToList());
         }
 
         public async Task<bool> UpdateAsync(IEnumerable<ModuleButton> entityList, string dataBaseName = null)

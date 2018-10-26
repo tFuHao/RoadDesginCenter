@@ -35,6 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\AuthorizeManage\Data\" />
     <Folder Include="Areas\AuthorizeManage\Views\" />
     <Folder Include="Areas\ProjectManage\Data\" />
     <Folder Include="Areas\ProjectManage\Models\" />
@@ -43,7 +44,9 @@
     <Folder Include="Areas\RouteManage_RouteElement\Models\" />
     <Folder Include="Areas\RouteManage_RouteElement\Views\" />
     <Folder Include="Areas\RouteManage_RoutInfo\Data\" />
+    <Folder Include="Areas\RouteManage_RoutInfo\Models\" />
     <Folder Include="Areas\RouteManage_RoutInfo\Views\" />
+    <Folder Include="Areas\SystemManage\Data\" />
     <Folder Include="Areas\SystemManage\Models\" />
     <Folder Include="Areas\SystemManage\Views\" />
     <Folder Include="wwwroot\image\head\" />

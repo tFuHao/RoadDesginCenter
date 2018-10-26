@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Mvc;
-using SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Models;
+using SSKJ.RoadDesignCenter.API.Controllers;
 using SSKJ.RoadDesignCenter.API.Data;
 using SSKJ.RoadDesignCenter.IBusines.Project.RouteElement;
 using SSKJ.RoadDesignCenter.Models.ProjectModel;
@@ -26,7 +25,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RoutInfo
 
         public async Task<IActionResult> Get()
         {
-            var data = await routeBll.GetListAsync(GetConStr());
+            var data = await routeBll.GetListAsync(GetUserInfo().DataBaseName);
             var result = data.OrderBy(o => o.CreateDate).ToList().RouteTreeGridJson();
             return Ok(result);
         }
@@ -44,11 +43,11 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RoutInfo
                     entity.CreateDate = DateTime.Now;
                     entity.CreateUserId = GetUserInfo().UserId;
 
-                    result = await routeBll.CreateAsync(entity, GetConStr());
+                    result = await routeBll.CreateAsync(entity, GetUserInfo().DataBaseName);
                 }
                 else
                 {
-                    result = await routeBll.UpdateAsync(entity, GetConStr());
+                    result = await routeBll.UpdateAsync(entity, GetUserInfo().DataBaseName);
                 }
                 return Ok(result);
             }
@@ -63,11 +62,11 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RoutInfo
         {
             try
             {
-                var list = await routeBll.GetListAsync(GetConStr());
+                var list = await routeBll.GetListAsync(GetUserInfo().DataBaseName);
                 var routes = GetRoutes(list.ToList(), routeId);
                 routes.Add(list.Single(m => m.RouteId == routeId));
 
-                var result = await routeBll.DeleteAsync(routes,GetConStr());
+                var result = await routeBll.DeleteAsync(routes, GetUserInfo().DataBaseName);
                 return Ok(result);
             }
             catch (Exception)

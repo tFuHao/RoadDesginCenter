@@ -315,7 +315,7 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.Authorize
             return permissionModel;
         }
 
-        public async Task<bool> SavePermission(string objectId, string currentUserId, int category, List<Models.ProjectModel.AuthorizeIdType> modules, List<Models.ProjectModel.AuthorizeIdType> buttons, List<Models.ProjectModel.AuthorizeIdType> columns, List<Models.ProjectModel.AuthorizeIdType> routes, string dataBaseName)
+        public async Task<bool> SavePermission(string objectId, string currentUserId, int category, List<AuthorizeIdType> modules, List<AuthorizeIdType> buttons, List<AuthorizeIdType> columns, List<AuthorizeIdType> routes, string dataBaseName)
         {
             var delAuthorizes = await authorizeRepo.GetListAsync(a => a.ObjectId == objectId, dataBaseName);
             await authorizeRepo.DeleteAsync(delAuthorizes, dataBaseName);

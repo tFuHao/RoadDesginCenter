@@ -361,6 +361,8 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
                 entity.Property(e => e.SampleLineId).HasColumnType("varchar(50)");
 
+                entity.Property(e => e.RouteId).HasColumnType("varchar(50)");
+
                 entity.Property(e => e.SerialNumber).HasColumnType("int(11)");
 
                 entity.Property(e => e.LeftOffset).HasColumnType("double(18,4)");
@@ -375,6 +377,8 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
                 entity.ToTable("stake");
 
                 entity.Property(e => e.StakeId).HasColumnType("varchar(50)");
+
+                entity.Property(e => e.RouteId).HasColumnType("varchar(50)");
 
                 entity.Property(e => e.SerialNumber).HasColumnType("int(11)");
 

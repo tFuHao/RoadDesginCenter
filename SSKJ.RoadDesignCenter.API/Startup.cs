@@ -5,11 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
 using SSKJ.RoadDesignCenter.DependencyInjection;
-using AutoMapper;
-using SSKJ.RoadDesignCenter.API.Areas.AuthorizeManage.Data;
-using SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Models;
-using SSKJ.RoadDesignCenter.Models.ProjectModel;
-using SSKJ.RoadDesignCenter.Models.SystemModel;
 
 namespace SSKJ.RoadDesignCenter.API
 {
@@ -37,14 +32,6 @@ namespace SSKJ.RoadDesignCenter.API
             services.AddMemoryCache();
 
             services.AddSession();
-
-            //自动映射初始化
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<Route, RouteDto>();
-                cfg.CreateMap<Module, AuthorizeModuleDto>();
-            });
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
