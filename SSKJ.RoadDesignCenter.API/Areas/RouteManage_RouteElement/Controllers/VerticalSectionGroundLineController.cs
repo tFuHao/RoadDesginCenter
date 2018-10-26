@@ -98,12 +98,12 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
         /// <param name="list">删除的实体对象列表</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Delete(List<VerticalSectionGroundLine> list)
+        public async Task<IActionResult> Delete(List<VerticalSectionGroundLine> list, string routeId)
         {
             if (list.Any())
             {
                 var result = await SectionBus.DeleteAsync(list, GetConStr());
-                var temp = await SectionBus.GetListAsync(GetConStr());
+                var temp = await SectionBus.GetListAsync(e => e.RouteId == routeId, GetConStr());
                 var allItem = temp.OrderBy(e => e.SerialNumber).ToList();
                 if (allItem.Any())
                 {
@@ -168,7 +168,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
         /// 从文件导入数据
         /// </summary>
         /// <returns></returns>
-        public async Task<IActionResult> Import()
+        public async Task<IActionResult> Import(string routeId)
         {
             var file = Request.Form.Files;
             var success = 0;
@@ -181,7 +181,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                 while ((line = reader.ReadLine()) != null)
                 {
                     var tempList = line.Split(",");
-                    var list = await SectionBus.GetListAsync(GetConStr());
+                    var list = await SectionBus.GetListAsync(e => e.RouteId == routeId, GetConStr());
                     var temp = new VerticalSectionGroundLine()
                     {
                         Id = Guid.NewGuid().ToString(),
@@ -217,7 +217,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
         /// 导出数据到文件
         /// </summary>
         /// <returns></returns>
-        public async Task<IActionResult> Export()
+        public async Task<IActionResult> Export(string routeId)
         {
             var content = "";
             var data = await SectionBus.GetListAsync(GetConStr());
