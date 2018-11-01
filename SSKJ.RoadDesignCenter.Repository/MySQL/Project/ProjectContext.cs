@@ -10,21 +10,15 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
         }
         public virtual DbSet<AddStake> AddStake { get; set; }
         public virtual DbSet<Models.ProjectModel.Authorize> Authorize { get; set; }
-        public virtual DbSet<AuthorizeData> AuthorizeData { get; set; }
         public virtual DbSet<BrokenChainage> BrokenChainage { get; set; }
         public virtual DbSet<CrossSectionGroundLine> CrossSectionGroundLine { get; set; }
         public virtual DbSet<CrossSectionGroundLineData> CrossSectionGroundLineData { get; set; }
         public virtual DbSet<FlatCurve> FlatCurve { get; set; }
         public virtual DbSet<FlatCurve_CurveElement> FlatCurve_CurveElement { get; set; }
         public virtual DbSet<FlatCurve_Intersection> FlatCurve_Intersection { get; set; }
-        public virtual DbSet<Models.ProjectModel.ProjectInfo> ProjectInfo { get; set; }
-        public virtual DbSet<ProjectLog> ProjectLog { get; set; }
-        public virtual DbSet<Role> Role { get; set; }
         public virtual DbSet<Route> Route { get; set; }
         public virtual DbSet<SampleLine> SampleLine { get; set; }
         public virtual DbSet<Stake> Stake { get; set; }
-        public virtual DbSet<User> User { get; set; }
-        public virtual DbSet<UserRelation> UserRelation { get; set; }
         public virtual DbSet<VerticalCurve> VerticalCurve { get; set; }
         public virtual DbSet<VerticalCurve_CurveElement> VerticalCurve_CurveElement { get; set; }
         public virtual DbSet<VerticalCurve_GradeChangePoint> VerticalCurve_GradeChangePoint { get; set; }
@@ -66,35 +60,6 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
                 entity.Property(e => e.ItemType).HasColumnType("int(11)");
 
                 entity.Property(e => e.ObjectId).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.SortCode).HasColumnType("int(11)");
-            });
-
-            modelBuilder.Entity<AuthorizeData>(entity =>
-            {
-                entity.ToTable("authorizedata");
-
-                entity.Property(e => e.AuthorizeDataId).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.AuthorizeConstraint).HasColumnType("varchar(200)");
-
-                entity.Property(e => e.AuthorizeType).HasColumnType("int(11)");
-
-                entity.Property(e => e.Category).HasColumnType("int(11)");
-
-                entity.Property(e => e.CreateDate).HasColumnType("datetime");
-
-                entity.Property(e => e.CreateUserId).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.IsRead).HasColumnType("int(11)");
-
-                entity.Property(e => e.ItemId).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.ItemName).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.ObjectId).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.ResourceId).HasColumnType("varchar(50)");
 
                 entity.Property(e => e.SortCode).HasColumnType("int(11)");
             });
@@ -229,103 +194,6 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
                 entity.Property(e => e.Y).HasColumnType("double(18,4)");
             });
 
-            modelBuilder.Entity<Models.ProjectModel.ProjectInfo>(entity =>
-            {
-                entity.HasKey(e => e.ProjectId);
-
-                entity.ToTable("projectinfo");
-
-                entity.Property(e => e.ProjectId).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.ConstructionUnit).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.Description).HasColumnType("varchar(200)");
-
-                entity.Property(e => e.DesignUnit).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.Identification).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.PrjName).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.OwnerUnit).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.SupervisoryUnit).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
-
-                entity.Property(e => e.SerialNumber).HasColumnType("int(11)");
-            });
-
-            modelBuilder.Entity<ProjectLog>(entity =>
-            {
-                entity.HasKey(e => e.LogId);
-
-                entity.ToTable("projectlog");
-
-                entity.Property(e => e.LogId).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.Browser).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.CategoryId).HasColumnType("int(11)");
-
-                entity.Property(e => e.DeleteMark).HasColumnType("int(11)");
-
-                entity.Property(e => e.Description).HasColumnType("varchar(200)");
-
-                entity.Property(e => e.EnabledMark).HasColumnType("int(11)");
-
-                entity.Property(e => e.ExecuteResult).HasColumnType("int(11)");
-
-                entity.Property(e => e.ExecuteResultJson).HasColumnType("longtext");
-
-                entity.Property(e => e.Host).HasColumnType("varchar(200)");
-
-                entity.Property(e => e.Ipaddress).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.Module).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.ModuleId).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.OperateAccount).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.OperateTime).HasColumnType("datetime");
-
-                entity.Property(e => e.OperateType).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.OperateTypeId).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.OperateUserId).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.SourceContentJson).HasColumnType("longtext");
-
-                entity.Property(e => e.SourceObjectId).HasColumnType("varchar(50)");
-            });
-
-            modelBuilder.Entity<Role>(entity =>
-            {
-                entity.ToTable("role");
-
-                entity.Property(e => e.RoleId).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.CreateDate).HasColumnType("datetime");
-
-                entity.Property(e => e.CreateUserId).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.DeleteMark).HasColumnType("int(11)");
-
-                entity.Property(e => e.Description).HasColumnType("varchar(200)");
-
-                entity.Property(e => e.EnabledMark).HasColumnType("int(11)");
-
-                entity.Property(e => e.FullName).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
-
-                entity.Property(e => e.ModifyUserId).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.SortCode).HasColumnType("int(11)");
-            });
-
             modelBuilder.Entity<Route>(entity =>
             {
                 entity.ToTable("route");
@@ -387,76 +255,6 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
                 entity.Property(e => e.StakeName).HasColumnType("double(18,4)");
 
                 entity.Property(e => e.RightCorner).HasColumnType("double(18,4)");
-            });
-
-            modelBuilder.Entity<User>(entity =>
-            {
-                entity.ToTable("user");
-
-                entity.Property(e => e.UserId).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.Account).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.Birthday).HasColumnType("datetime");
-
-                entity.Property(e => e.CreateDate).HasColumnType("datetime");
-
-                entity.Property(e => e.CreateUserId).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.DeleteMark).HasColumnType("int(11)");
-
-                entity.Property(e => e.Description).HasColumnType("varchar(200)");
-
-                entity.Property(e => e.Email).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.EnabledMark).HasColumnType("int(11)");
-
-                entity.Property(e => e.FirstVisit).HasColumnType("datetime");
-
-                entity.Property(e => e.Gender).HasColumnType("int(11)");
-
-                entity.Property(e => e.HeadIcon).HasColumnType("varchar(200)");
-
-                entity.Property(e => e.LastVisit).HasColumnType("datetime");
-
-                entity.Property(e => e.LogOnCount).HasColumnType("int(11)");
-
-                entity.Property(e => e.ManagerId).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.Mobile).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
-
-                entity.Property(e => e.ModifyUserId).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.Password).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.RealName).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.RoleId).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.Secretkey).HasColumnType("varchar(50)");
-            });
-
-            modelBuilder.Entity<UserRelation>(entity =>
-            {
-                entity.ToTable("userrelation");
-
-                entity.Property(e => e.UserRelationId).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.Category).HasColumnType("int(11)");
-
-                entity.Property(e => e.CreateDate).HasColumnType("datetime");
-
-                entity.Property(e => e.CreateUserId).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.IsDefault).HasColumnType("int(11)");
-
-                entity.Property(e => e.ObjectId).HasColumnType("varchar(50)");
-
-                entity.Property(e => e.SortCode).HasColumnType("int(11)");
-
-                entity.Property(e => e.UserId).HasColumnType("varchar(50)");
             });
 
             modelBuilder.Entity<VerticalCurve>(entity =>

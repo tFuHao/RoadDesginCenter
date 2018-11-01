@@ -5,9 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\RouteData\Data\**" />
+    <Compile Remove="Areas\RouteData\Views\**" />
     <Compile Remove="Areas\RouteManageInfo\**" />
+    <Content Remove="Areas\RouteData\Data\**" />
+    <Content Remove="Areas\RouteData\Views\**" />
     <Content Remove="Areas\RouteManageInfo\**" />
+    <EmbeddedResource Remove="Areas\RouteData\Data\**" />
+    <EmbeddedResource Remove="Areas\RouteData\Views\**" />
     <EmbeddedResource Remove="Areas\RouteManageInfo\**" />
+    <None Remove="Areas\RouteData\Data\**" />
+    <None Remove="Areas\RouteData\Views\**" />
     <None Remove="Areas\RouteManageInfo\**" />
   </ItemGroup>
 
@@ -29,26 +37,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Views\Login\GetUsers.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Areas\AuthorizeManage\Data\" />
-    <Folder Include="Areas\AuthorizeManage\Views\" />
-    <Folder Include="Areas\ProjectManage\Data\" />
-    <Folder Include="Areas\ProjectManage\Models\" />
-    <Folder Include="Areas\ProjectManage\Views\" />
-    <Folder Include="Areas\RouteManage_RouteElement\Data\" />
-    <Folder Include="Areas\RouteManage_RouteElement\Models\" />
-    <Folder Include="Areas\RouteManage_RouteElement\Views\" />
-    <Folder Include="Areas\RouteManage_RoutInfo\Data\" />
-    <Folder Include="Areas\RouteManage_RoutInfo\Models\" />
-    <Folder Include="Areas\RouteManage_RoutInfo\Views\" />
-    <Folder Include="Areas\SystemManage\Data\" />
-    <Folder Include="Areas\SystemManage\Models\" />
-    <Folder Include="Areas\SystemManage\Views\" />
+    <Folder Include="Areas\RouteCalculation\Controllers\" />
+    <Folder Include="Areas\RouteCalculation\Data\" />
+    <Folder Include="Areas\RouteCalculation\Models\" />
     <Folder Include="wwwroot\image\head\" />
     <Folder Include="wwwroot\upload\import\" />
   </ItemGroup>

@@ -14,18 +14,9 @@ namespace SSKJ.RoadDesignCenter.DependencyInjection
         public static void ConfigureBusiness(IServiceCollection services)
         {
             //system
-            services.AddSingleton<ibSystem.IUserBusines, bSystem.UserBusines>();
-            services.AddSingleton<ibSystem.IModuleBusines, bSystem.ModuleBusines>();
-            services.AddSingleton<ibSystem.IButtonBusines, bSystem.ButtonBusines>();
-            services.AddSingleton<ibSystem.IColumnBusines, bSystem.ColumnBusines>();
-            services.AddSingleton<ibSystem.IUserProjectBusines, bSystem.UserProjectBusines>();
             services.AddSingleton<ibSystem.IAreaBusines, bSystem.AreaBusines>();
 
             //project
-            services.AddSingleton<ibProject.Authorize.IAuthorizeBusines, bProject.Authorize.AuthorizeBusines>();
-            services.AddSingleton<ibProject.IUserBusines, bProject.UserBusines>();
-            services.AddSingleton<ibProject.Authorize.IUserRelationBusines, bProject.Authorize.UserRelationBusines>();
-            services.AddSingleton<ibProject.ProjectInfo.IPrjInfoBusines, bProject.ProjectInfo.PrjInfoBusines>();
             services.AddSingleton<ibProject.RouteElement.IBrokenChainageBusines, bProject.RouteElement.BrokenChainageBusines>();
             services.AddSingleton<ibProject.RouteElement.IFlatCurve_CurveElementBusines, bProject.RouteElement.FlatCurve_CurveElementBusines>();
             services.AddSingleton<ibProject.RouteElement.IFlatCurve_IntersectionBusines, bProject.RouteElement.FlatCurve_IntersectionBusines>();
@@ -36,9 +27,6 @@ namespace SSKJ.RoadDesignCenter.DependencyInjection
             services.AddSingleton<ibProject.RouteElement.ISampleLineBusines, bProject.RouteElement.SampleLineBusines>();
             services.AddSingleton<ibProject.RouteElement.IStakeBusines, bProject.RouteElement.StakeBusines>();
             services.AddSingleton<ibProject.RouteElement.IRouteBusines, bProject.RouteElement.RouteBusines>();
-            services.AddSingleton<ibProject.IRoleBusines, bProject.RoleBusines>();
-            services.AddSingleton<ibProject.Authorize.IAuthorizeDataBusines, bProject.Authorize.AuthorizeDataBusines>();
-            services.AddSingleton<ibProject.Authorize.IAuthorizeBusines, bProject.Authorize.AuthorizeBusines>();
         }
     }
 }

@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.1",
-    "signature": "7445e4001a14f62bb40071f4ad90fc4cc356f875"
+    "signature": "aaf04028fb49376c561882e13d69d66fb7da32dd"
   },
   "compilationOptions": {
     "defines": [
@@ -24,6 +24,7 @@
     ".NETCoreApp,Version=v2.1": {
       "SSKJ.RoadDesignCenter.API/1.0.0": {
         "dependencies": {
+          "AutoMapper": "7.0.1",
           "Microsoft.AspNetCore.All": "2.1.0",
           "Microsoft.NETCore.App": "2.1.0",
           "SSKJ.RoadDesignCenter.Busines": "1.0.0",
@@ -51,6 +52,27 @@
         },
         "compile": {
           "lib/netcoreapp2.0/AutoMapper.dll": {}
+        }
+      },
+      "jose-jwt/2.4.0": {
+        "dependencies": {
+          "Newtonsoft.Json": "11.0.2",
+          "System.IO.Compression": "4.3.0",
+          "System.Runtime.InteropServices": "4.3.0",
+          "System.Runtime.Serialization.Primitives": "4.3.0",
+          "System.Security.Cryptography.Algorithms": "4.3.0",
+          "System.Security.Cryptography.Cng": "4.5.0",
+          "System.Security.Cryptography.Csp": "4.3.0",
+          "System.Security.Cryptography.X509Certificates": "4.3.0"
+        },
+        "runtime": {
+          "lib/netstandard1.4/jose-jwt.dll": {
+            "assemblyVersion": "2.4.0.0",
+            "fileVersion": "2.4.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard1.4/jose-jwt.dll": {}
         }
       },
       "Microsoft.AspNetCore.Razor.Language/2.1.1": {
@@ -946,7 +968,8 @@
         "dependencies": {
           "SSKJ.RoadDesignCenter.IBusines": "1.0.0",
           "SSKJ.RoadDesignCenter.IRepository": "1.0.0",
-          "SSKJ.RoadDesignCenter.Models": "1.0.0"
+          "SSKJ.RoadDesignCenter.Models": "1.0.0",
+          "SSKJ.RoadDesignCenter.Utility": "1.0.0"
         },
         "runtime": {
           "SSKJ.RoadDesignCenter.Busines.dll": {}
@@ -1026,7 +1049,9 @@
           "Microsoft.AspNetCore.Http.Extensions": "2.1.0",
           "Microsoft.AspNetCore.Http.Features": "2.1.0",
           "Microsoft.AspNetCore.Session": "2.1.0",
-          "Newtonsoft.Json": "11.0.2"
+          "Newtonsoft.Json": "11.0.2",
+          "Pomelo.EntityFrameworkCore.MySql": "2.1.0",
+          "jose-jwt": "2.4.0"
         },
         "runtime": {
           "SSKJ.RoadDesignCenter.Utility.dll": {}
@@ -4333,6 +4358,13 @@
       "sha512": "sha512-6xHbhsW09sWjjYuE1sqhYn25PQzB6UEUVPME5uhlaIz2NR2+L3+FGbVxvknJKug1BLp6VTLxDb5RcGXKMm0ieQ==",
       "path": "automapper/7.0.1",
       "hashPath": "automapper.7.0.1.nupkg.sha512"
+    },
+    "jose-jwt/2.4.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-3rhpWfkgOO8TBKXVYTPHSVpkTEqThQO/RJ75NBJ7Xqw37jzbhRgsECIlXbI5uAwlmCW/5jKuyoDqrobClkitLQ==",
+      "path": "jose-jwt/2.4.0",
+      "hashPath": "jose-jwt.2.4.0.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Razor.Language/2.1.1": {
       "type": "package",
