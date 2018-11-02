@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Mvc;
 using SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Models;
+using SSKJ.RoadDesignCenter.API.Controllers;
 using SSKJ.RoadDesignCenter.IBusines.Project.RouteElement;
 using SSKJ.RoadDesignCenter.Models.ProjectModel;
 using SSKJ.RoadDesignCenter.Utility.Tools;
@@ -29,7 +30,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
         public async Task<IActionResult> Get(int pageSize, int pageIndex, string routeId)
         {
             var result = await FlatBus.GetListAsync(e => e.RouteId == routeId, e => e.FlatCurveId, true, pageSize,
-                pageIndex, GetConStr());
+                pageIndex, UserInfo.DataBaseName);
             return Json(new
             {
                 data = result.Item1,
@@ -45,12 +46,12 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                 {
                     input.FlatCurveId = Guid.NewGuid().ToString();
                     var entity = MapperUtils.MapTo<FlatCurveDto, FlatCurve>(input);
-                    var result = await FlatBus.CreateAsync(entity, GetConStr());
+                    var result = await FlatBus.CreateAsync(entity, UserInfo.DataBaseName);
                     return Ok(result);
                 }
                 else
                 {
-                    var entity = await FlatBus.GetEntityAsync(e => e.FlatCurveId == input.FlatCurveId, GetConStr());
+                    var entity = await FlatBus.GetEntityAsync(e => e.FlatCurveId == input.FlatCurveId, UserInfo.DataBaseName);
                     entity.FlatCurveType = input.FlatCurveType;
                     entity.IntersectionNumber = input.IntersectionNumber;
                     entity.CurveNumber = input.CurveNumber;
@@ -58,7 +59,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                     entity.BeginStake = input.BeginStake;
                     entity.EndStake = input.EndStake;
                     entity.Description = input.Description;
-                    var result = await FlatBus.UpdateAsync(entity, GetConStr());
+                    var result = await FlatBus.UpdateAsync(entity, UserInfo.DataBaseName);
                     return Ok(result);
                 }
             }
@@ -78,7 +79,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
         {
             if (list.Count > 0)
             {
-                var result = await FlatBus.DeleteAsync(list, GetConStr());
+                var result = await FlatBus.DeleteAsync(list, UserInfo.DataBaseName);
                 return Ok(result);
             }
 
@@ -90,7 +91,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
             if (!string.IsNullOrEmpty(routeId))
             {
                 var content = "";
-                var list = await FlatBus.GetListAsync(e => e.RouteId == routeId, GetConStr());
+                var list = await FlatBus.GetListAsync(e => e.RouteId == routeId, UserInfo.DataBaseName);
                 foreach (var item in list)
                 {
                     content += $"{item.FlatCurveType},{item.IntersectionNumber},{item.CurveNumber},{item.FlatCurveLength},{item.BeginStake},{item.EndStake},{item.Description},\n";
@@ -139,7 +140,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
                 else
                 {
                     var model = MapperUtils.MapTo<FlatCurveDto, FlatCurve>(entity);
-                    var result = await FlatBus.CreateAsync(model, GetConStr());
+                    var result = await FlatBus.CreateAsync(model, UserInfo.DataBaseName);
                     if (result)
                         success++;
                     else error++;
