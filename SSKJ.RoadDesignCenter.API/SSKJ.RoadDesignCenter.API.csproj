@@ -40,7 +40,6 @@
     <Folder Include="Areas\ProjectManage\Models\" />
     <Folder Include="Areas\ProjectManage\Views\" />
     <Folder Include="Areas\RouteManage_RouteElement\Data\" />
-    <Folder Include="Areas\RouteManage_RouteElement\Models\" />
     <Folder Include="Areas\RouteManage_RouteElement\Views\" />
     <Folder Include="Areas\RouteManage_RoutInfo\Data\" />
     <Folder Include="Areas\RouteManage_RoutInfo\Views\" />

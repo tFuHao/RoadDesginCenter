@@ -36,6 +36,8 @@ namespace SSKJ.RoadDesignCenter.DependencyInjection
             services.AddSingleton<ibProject.RouteElement.ISampleLineBusines, bProject.RouteElement.SampleLineBusines>();
             services.AddSingleton<ibProject.RouteElement.IStakeBusines, bProject.RouteElement.StakeBusines>();
             services.AddSingleton<ibProject.RouteElement.IRouteBusines, bProject.RouteElement.RouteBusines>();
+            services.AddSingleton<ibProject.RouteElement.IFlatCurveBusines, bProject.RouteElement.FlatCurveBusines>();
+            services.AddSingleton<ibProject.RouteElement.IVerticalCurveBusines, bProject.RouteElement.VerticalCurveBusines>();
             services.AddSingleton<ibProject.IRoleBusines, bProject.RoleBusines>();
             services.AddSingleton<ibProject.Authorize.IAuthorizeDataBusines, bProject.Authorize.AuthorizeDataBusines>();
             services.AddSingleton<ibProject.Authorize.IAuthorizeBusines, bProject.Authorize.AuthorizeBusines>();
