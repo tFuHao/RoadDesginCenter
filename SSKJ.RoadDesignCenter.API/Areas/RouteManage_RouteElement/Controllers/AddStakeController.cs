@@ -172,45 +172,43 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteManage_RouteElement.Controllers
             var file = Request.Form.Files;
             var success = 0;
             var error = 0;
-            if (file != null)
+            if (string.IsNullOrEmpty(routeId))
+                return BadRequest();
+            if (file == null)
+                return BadRequest();
+            var path = FileUtils.SaveFile(HostingEnvironmentost.WebRootPath, file[0]);
+            StreamReader reader = new StreamReader(path, Encoding.Default);
+            string line;
+            while ((line = reader.ReadLine()) != null)
             {
-                var path = FileUtils.SaveFile(HostingEnvironmentost.WebRootPath, file[0]);
-                StreamReader reader = new StreamReader(path, Encoding.Default);
-                string line;
-                while ((line = reader.ReadLine()) != null)
+                var tempList = line.Split(",");
+                var list = await AddStakeBus.GetListAsync(e => e.RouteId == routeId, GetConStr());
+                var temp = new AddStake()
                 {
-                    var tempList = line.Split(",");
-                    var list = await AddStakeBus.GetListAsync(e => e.RouteId == routeId, GetConStr());
-                    var temp = new AddStake()
-                    {
-                        AddStakeId = Guid.NewGuid().ToString(),
-                        RouteId = routeId,
-                        SerialNumber = list.Count() + 1,
-                        Stake = Convert.ToDouble(tempList[0]),
-                        Description = tempList[1]
-                    };
-                    var validate = TryValidateModel(temp);
-                    if (validate)
-                    {
-                        var result = await AddStakeBus.CreateAsync(temp, GetConStr());
-                        if (result)
-                            success++;
-                        else error++;
-                    }
-                    else
-                    {
-                        error++;
-                    }
-                    
+                    AddStakeId = Guid.NewGuid().ToString(),
+                    RouteId = routeId,
+                    SerialNumber = list.Count() + 1,
+                    Stake = Convert.ToDouble(tempList[0]),
+                    Description = tempList[1]
+                };
+                var validate = TryValidateModel(temp);
+                if (validate)
+                {
+                    var result = await AddStakeBus.CreateAsync(temp, GetConStr());
+                    if (result)
+                        success++;
+                    else error++;
                 }
-                reader.Close();
-                FileUtils.DeleteFile(path);
-                return Content($"加桩数据表导入数据成功{success}条，失败{error}条");
+                else
+                {
+                    error++;
+                }
+
             }
-            else
-            {
-                return null;
-            }
+            reader.Close();
+            FileUtils.DeleteFile(path);
+            return Content($"加桩数据表导入数据成功{success}条，失败{error}条");
+
         }
 
         /// <summary>
