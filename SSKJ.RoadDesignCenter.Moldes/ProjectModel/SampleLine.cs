@@ -7,6 +7,7 @@ namespace SSKJ.RoadDesignCenter.Models.ProjectModel
     public partial class SampleLine
     {
         public string SampleLineId { get; set; }
+        public string RouteId { get; set; }
         public int? SerialNumber { get; set; }
         [Required(ErrorMessage = "桩号不能为空")]
         public double? Stake { get; set; }

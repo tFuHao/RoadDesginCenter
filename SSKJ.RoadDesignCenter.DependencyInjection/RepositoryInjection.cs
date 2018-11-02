@@ -14,18 +14,9 @@ namespace SSKJ.RoadDesignCenter.DependencyInjection
         public static void ConfigureRepository(IServiceCollection services)
         {
             //system
-            services.AddSingleton<irSystem.IModuleRepository, rSystem.ModuleRepository>();
-            services.AddSingleton<irSystem.IButtonRepository, rSystem.ButtonRepository>();
-            services.AddSingleton<irSystem.IColumnRepository, rSystem.ColumnRepository>();
-            services.AddSingleton<irSystem.IUserRepository, rSystem.UserRepository>();
-            services.AddSingleton<irSystem.IUserProjectRepository, rSystem.UserProjectRepository>();
             services.AddSingleton<irSystem.IAreaRepository, rSystem.AreaRepository>();
 
             //project
-            services.AddSingleton<irProject.Authorize.IAuthorizeRepository, rProject.Authorize.AuthorizeRepository>();
-            services.AddSingleton<irProject.IUserRepository, rProject.UserRepository>();
-            services.AddSingleton<irProject.Authorize.IUserRelationRepository, rProject.Authorize.UserRelationRepository>();
-            services.AddSingleton<irProject.ProjectInfo.IPrjInfoRepository, rProject.ProjectInfo.PrjInfoRepository>();
             services.AddSingleton<irProject.RouteElement.IBrokenChainRepository, rProject.RouteElement.BrokenChainRepository>();
             services.AddSingleton<irProject.RouteElement.IFlatCurve_CurveElementRepository, rProject.RouteElement.FlatCurve_CurveElementRepository>();
             services.AddSingleton<irProject.RouteElement.IFlatCurve_IntersectionRepository, rProject.RouteElement.FlatCurve_IntersectionRepository>();
@@ -36,11 +27,7 @@ namespace SSKJ.RoadDesignCenter.DependencyInjection
             services.AddSingleton<irProject.RouteElement.IVerticalSectionGroundLineRepository, rProject.RouteElement.VerticalSectionGroundLineRepository>();
             services.AddSingleton<irProject.RouteElement.IStakeRepository, rProject.RouteElement.StakeRepository>();
             services.AddSingleton<irProject.RouteElement.IRouteRepository, rProject.RouteElement.RouteRepository>();
-            services.AddSingleton<irProject.RouteElement.IFlatCurveRepository, rProject.RouteElement.FlatCurveRepository>();
-            services.AddSingleton<irProject.RouteElement.IVerticalCurveRepository, rProject.RouteElement.VerticalCurveRepository>();
-            services.AddSingleton<irProject.IRoleRepository, rProject.RoleRepository>();
-            services.AddSingleton<irProject.Authorize.IAuthorizeDataRepository, rProject.Authorize.AuthorizeDataRepository>();
-            services.AddSingleton<irProject.Authorize.IAuthorizeRepository, rProject.Authorize.AuthorizeRepository>();
+            services.AddSingleton<irProject.IAuthorizeRepository, rProject.AuthorizeRepository>();
         }
     }
 }
