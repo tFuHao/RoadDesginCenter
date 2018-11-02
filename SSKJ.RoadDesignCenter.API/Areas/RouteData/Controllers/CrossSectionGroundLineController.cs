@@ -52,13 +52,14 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
         /// <param name="serialNumber">插入的序号，添加则为0</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Insert(CrossSectionGroundLine input)
+        public async Task<IActionResult> Insert(CrossSectionGroundLine input, string routeId)
         {
             try
             {
                 if (input.CrossSectionGroundLineId == null)
                 {
                     input.CrossSectionGroundLineId = Guid.NewGuid().ToString();
+                    input.RouteId = routeId;
                     var result = await SectionBus.CreateAsync(input, UserInfo.DataBaseName);
                     if (result)
                         return Success();
@@ -116,7 +117,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                 var error = 0;
                 if (file != null)
                 {
-                    var path = FileUtils.SaveFile(Hosting.WebRootPath, file[0]);
+                    var path = FileUtils.SaveFile(Hosting.WebRootPath, file[0], UserInfo.UserId);
                     StreamReader reader = new StreamReader(path, Encoding.Default);
                     string line;
                     while ((line = reader.ReadLine()) != null)

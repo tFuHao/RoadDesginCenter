@@ -27,11 +27,11 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
             HostingEnvironmentost = hostingEnvironmentost;
         }
 
-        public async Task<IActionResult> Get(int pageSize, int pageIndex)
+        public async Task<IActionResult> Get(int pageSize, int pageIndex, string routeId)
         {
             try
             {
-                var result = await StakeBus.GetListAsync(e => true, e => e.SerialNumber, true, pageSize, pageIndex, UserInfo.DataBaseName);
+                var result = await StakeBus.GetListAsync(e => e.RouteId == routeId, e => e.SerialNumber, true, pageSize, pageIndex, UserInfo.DataBaseName);
                 return Success(new
                 {
                     data = result.Item1,
@@ -51,7 +51,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
         /// <param name="serialNumber">插入的序号，添加则为0</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Insert(Stake input, int serialNumber)
+        public async Task<IActionResult> Insert(Stake input, int serialNumber, string routeId)
         {
             try
             {
@@ -59,13 +59,14 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                 {
                     if (input.StakeId == null)
                     {
-                        var allList = await StakeBus.GetListAsync(UserInfo.DataBaseName);
+                        var allList = await StakeBus.GetListAsync(e => e.RouteId == routeId, UserInfo.DataBaseName);
                         var count = allList.Count();
                         input.StakeId = Guid.NewGuid().ToString();
                         input.SerialNumber = count + 1;
+                        input.RouteId = routeId;
                         if (serialNumber != 0)
                         {
-                            var temp = await StakeBus.GetListAsync(e => e.SerialNumber >= serialNumber, UserInfo.DataBaseName);
+                            var temp = await StakeBus.GetListAsync(e => e.SerialNumber >= serialNumber && e.RouteId == routeId, UserInfo.DataBaseName);
                             var list = temp.ToList();
                             list.ForEach(async i =>
                             {
@@ -84,6 +85,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                         var entity = await StakeBus.GetEntityAsync(e => e.StakeId == input.StakeId, UserInfo.DataBaseName);
                         if (entity == null)
                             return null;
+                        entity.StakeName = input.StakeName;
                         entity.Offset = input.Offset;
                         entity.RightCorner = input.RightCorner;
                         var result = await StakeBus.UpdateAsync(entity, UserInfo.DataBaseName);
@@ -106,14 +108,14 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
         /// <param name="list">删除的实体对象列表</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Delete(List<Stake> list)
+        public async Task<IActionResult> Delete(List<Stake> list, string routeId)
         {
             try
             {
                 if (list.Any())
                 {
                     var result = await StakeBus.DeleteAsync(list, UserInfo.DataBaseName);
-                    var temp = await StakeBus.GetListAsync(UserInfo.DataBaseName);
+                    var temp = await StakeBus.GetListAsync(e => e.RouteId == routeId, UserInfo.DataBaseName);
                     var allItem = temp.OrderBy(e => e.SerialNumber).ToList();
                     if (allItem.Any())
                     {
@@ -122,8 +124,8 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                             allItem[i].SerialNumber = i + 1;
                             await StakeBus.UpdateAsync(allItem[i], UserInfo.DataBaseName);
                         }
-                        return Success();
                     }
+                    return Success();
                 }
                 return Fail();
             }
@@ -140,7 +142,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
         /// <param name="isUp">true为上移，false为下移</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Move(int serialNumber, bool isUp)
+        public async Task<IActionResult> Move(int serialNumber, bool isUp, string routeId)
         {
             try
             {
@@ -155,15 +157,15 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                 }
                 else
                 {
-                    var data = await StakeBus.GetListAsync(UserInfo.DataBaseName);
+                    var data = await StakeBus.GetListAsync(e => e.RouteId == routeId, UserInfo.DataBaseName);
                     if (serialNumber == data.Count())
                         return Fail("选项不能再下移");
                     topNumber = serialNumber;
                     bottomNumber = serialNumber + 1;
                 }
 
-                var top = await StakeBus.GetEntityAsync(e => e.SerialNumber == topNumber, UserInfo.DataBaseName);
-                var bottom = await StakeBus.GetEntityAsync(e => e.SerialNumber == bottomNumber, UserInfo.DataBaseName);
+                var top = await StakeBus.GetEntityAsync(e => e.SerialNumber == topNumber && e.RouteId == routeId, UserInfo.DataBaseName);
+                var bottom = await StakeBus.GetEntityAsync(e => e.SerialNumber == bottomNumber && e.RouteId == routeId, UserInfo.DataBaseName);
                 var temp = top.SerialNumber;
                 top.SerialNumber = bottom.SerialNumber;
                 bottom.SerialNumber = temp;
@@ -186,7 +188,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
         /// 从文件导入数据
         /// </summary>
         /// <returns></returns>
-        public async Task<IActionResult> Import()
+        public async Task<IActionResult> Import(string routeId)
         {
             try
             {
@@ -195,19 +197,21 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                 var error = 0;
                 if (file != null)
                 {
-                    var path = FileUtils.SaveFile(HostingEnvironmentost.WebRootPath, file[0]);
+                    var path = FileUtils.SaveFile(HostingEnvironmentost.WebRootPath, file[0], UserInfo.UserId);
                     StreamReader reader = new StreamReader(path, Encoding.Default);
                     string line;
                     while ((line = reader.ReadLine()) != null)
                     {
                         var tempList = line.Split(",");
-                        var list = await StakeBus.GetListAsync(UserInfo.DataBaseName);
+                        var list = await StakeBus.GetListAsync(e => e.RouteId == routeId, UserInfo.DataBaseName);
                         var temp = new Stake()
                         {
                             StakeId = Guid.NewGuid().ToString(),
                             SerialNumber = list.Count() + 1,
-                            Offset = Convert.ToDouble(tempList[0]),
-                            RightCorner = Convert.ToDouble(tempList[1])
+                            RouteId = routeId,
+                            StakeName = Convert.ToDouble(tempList[0]),
+                            Offset = Convert.ToDouble(tempList[1]),
+                            RightCorner = Convert.ToDouble(tempList[2])
                         };
                         var validate = TryValidateModel(temp);
                         if (validate)
@@ -239,17 +243,16 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
         /// 导出数据到文件
         /// </summary>
         /// <returns></returns>
-        public async Task<IActionResult> Export()
+        public async Task<IActionResult> Export(string routeId)
         {
             try
             {
                 var content = "";
-                var data = await StakeBus.GetListAsync(UserInfo.DataBaseName);
+                var data = await StakeBus.GetListAsync(e => e.RouteId == routeId, UserInfo.DataBaseName);
                 var tableData = data.OrderBy(e => e.SerialNumber).ToList();
                 tableData.ForEach(i =>
                 {
-                //content += (i.FrontStake.ToString() + "," + i.AfterStake + ",\n");
-                content += $"{i.Offset},{i.RightCorner},\n";
+                    content += $"{i.StakeName},{i.Offset},{i.RightCorner},\n";
                 });
                 content = content.Substring(0, content.Length - 2);
                 return Success(content);

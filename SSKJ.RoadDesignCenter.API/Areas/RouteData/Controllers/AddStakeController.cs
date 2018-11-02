@@ -123,8 +123,8 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                             allItem[i].SerialNumber = i + 1;
                             await AddStakeBus.UpdateAsync(allItem[i], UserInfo.DataBaseName);
                         }
-                        return Success();
                     }
+                    return Success();
                 }
                 return Fail();
             }
@@ -169,9 +169,9 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                 top.SerialNumber = bottom.SerialNumber;
                 bottom.SerialNumber = temp;
                 var update = new List<AddStake>()
-            {
-                top, bottom
-            };
+                {
+                    top, bottom
+                };
                 var result = await AddStakeBus.UpdateAsync(update, UserInfo.DataBaseName);
                 if (result)
                     return Success();
@@ -196,7 +196,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                 var error = 0;
                 if (file != null)
                 {
-                    var path = FileUtils.SaveFile(HostingEnvironmentost.WebRootPath, file[0]);
+                    var path = FileUtils.SaveFile(HostingEnvironmentost.WebRootPath, file[0], UserInfo.UserId);
                     StreamReader reader = new StreamReader(path, Encoding.Default);
                     string line;
                     while ((line = reader.ReadLine()) != null)
