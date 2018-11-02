@@ -124,8 +124,8 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                             allItem[i].SerialNumber = i + 1;
                             await SectionBus.UpdateAsync(allItem[i], UserInfo.DataBaseName);
                         }
-                        return Success();
                     }
+                    return Success();
                 }
                 return Fail();
             }
@@ -170,9 +170,9 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                 top.SerialNumber = bottom.SerialNumber;
                 bottom.SerialNumber = temp;
                 var update = new List<VerticalSectionGroundLine>()
-            {
-                top, bottom
-            };
+                {
+                    top, bottom
+                };
                 var result = await SectionBus.UpdateAsync(update, UserInfo.DataBaseName);
                 if (result)
                     return Success();
@@ -197,7 +197,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                 var error = 0;
                 if (file != null)
                 {
-                    var path = FileUtils.SaveFile(Hosting.WebRootPath, file[0]);
+                    var path = FileUtils.SaveFile(Hosting.WebRootPath, file[0], UserInfo.UserId);
                     StreamReader reader = new StreamReader(path, Encoding.Default);
                     string line;
                     while ((line = reader.ReadLine()) != null)
@@ -207,6 +207,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                         var temp = new VerticalSectionGroundLine()
                         {
                             Id = Guid.NewGuid().ToString(),
+                            RouteId = routeId,
                             SerialNumber = list.Count() + 1,
                             Stake = Convert.ToDouble(tempList[0]),
                             H = Convert.ToDouble(tempList[1]),
@@ -246,7 +247,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
             try
             {
                 var content = "";
-                var data = await SectionBus.GetListAsync(UserInfo.DataBaseName);
+                var data = await SectionBus.GetListAsync(e => e.RouteId == routeId, UserInfo.DataBaseName);
                 var tableData = data.OrderBy(e => e.SerialNumber).ToList();
                 tableData.ForEach(i =>
                 {

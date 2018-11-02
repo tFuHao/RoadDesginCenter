@@ -63,6 +63,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                         var count = allList.Count();
                         input.BrokenId = Guid.NewGuid().ToString();
                         input.SerialNumber = count + 1;
+                        input.RouteId = routeId;
                         if (serialNumber != 0)
                         {
                             var temp = await BrokenBus.GetListAsync(e => e.RouteId == routeId && e.SerialNumber >= serialNumber, UserInfo.DataBaseName);
@@ -122,8 +123,8 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                             allItem[i].SerialNumber = i + 1;
                             await BrokenBus.UpdateAsync(allItem[i], UserInfo.DataBaseName);
                         }
-                        return Success();
                     }
+                    return Success();
                 }
                 return Fail();
             }
@@ -195,7 +196,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                 var error = 0;
                 if (file != null)
                 {
-                    var path = FileUtils.SaveFile(HostingEnvironmentost.WebRootPath, file[0]);
+                    var path = FileUtils.SaveFile(HostingEnvironmentost.WebRootPath, file[0], UserInfo.UserId);
                     StreamReader reader = new StreamReader(path, Encoding.Default);
                     string line;
                     while ((line = reader.ReadLine()) != null)
