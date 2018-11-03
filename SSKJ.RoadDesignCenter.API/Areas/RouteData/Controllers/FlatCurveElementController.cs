@@ -129,14 +129,10 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                             allItem[i].SerialNumber = i + 1;
                             await FlatCurveBus.UpdateAsync(allItem[i], UserInfo.DataBaseName);
                         }
-
-                        return Success();
                     }
-                    else
-                        return Fail();
+                    return Success();
                 }
-                else
-                    return Fail();
+                return Fail();
             }
             catch (Exception ex)
             {
