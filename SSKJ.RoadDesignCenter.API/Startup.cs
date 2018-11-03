@@ -25,10 +25,7 @@ namespace SSKJ.RoadDesignCenter.API
 
             services.AddHttpContextAccessor();
             services.AddCors();
-            services.AddMvc().AddJsonOptions(config =>
-            {
-                config.SerializerSettings.ContractResolver = new DefaultContractResolver();
-            });
+            services.AddMvc();
             services.AddMemoryCache();
 
             services.AddSession();
@@ -37,8 +34,14 @@ namespace SSKJ.RoadDesignCenter.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseHsts();
+            }
 
             app.UseSession();
 

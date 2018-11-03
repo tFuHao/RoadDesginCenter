@@ -11,12 +11,12 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("SSKJ.RoadDesignCenter.Busines_")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("SSKJ.RoadDesignCenter.IBusines")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
-[assembly: System.Reflection.AssemblyProductAttribute("SSKJ.RoadDesignCenter.Busines_")]
-[assembly: System.Reflection.AssemblyTitleAttribute("SSKJ.RoadDesignCenter.Busines_")]
+[assembly: System.Reflection.AssemblyProductAttribute("SSKJ.RoadDesignCenter.IBusines")]
+[assembly: System.Reflection.AssemblyTitleAttribute("SSKJ.RoadDesignCenter.IBusines")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 
 // 由 MSBuild WriteCodeFragment 类生成。

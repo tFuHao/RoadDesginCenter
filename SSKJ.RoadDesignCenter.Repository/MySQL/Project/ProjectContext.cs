@@ -9,7 +9,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
         {
         }
         public virtual DbSet<AddStake> AddStake { get; set; }
-        public virtual DbSet<Models.ProjectModel.Authorize> Authorize { get; set; }
+        public virtual DbSet<Authorize> Authorize { get; set; }
         public virtual DbSet<BrokenChainage> BrokenChainage { get; set; }
         public virtual DbSet<CrossSectionGroundLine> CrossSectionGroundLine { get; set; }
         public virtual DbSet<CrossSectionGroundLineData> CrossSectionGroundLineData { get; set; }
@@ -41,7 +41,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
                 entity.Property(e => e.Stake).HasColumnType("double(18,4)");
             });
 
-            modelBuilder.Entity<Models.ProjectModel.Authorize>(entity =>
+            modelBuilder.Entity<Authorize>(entity =>
             {
                 entity.ToTable("authorize");
 
