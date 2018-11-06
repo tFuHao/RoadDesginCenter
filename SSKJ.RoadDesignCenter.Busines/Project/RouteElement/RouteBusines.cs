@@ -82,14 +82,14 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.RouteElement
             else if (objectId == "PrjAdmin")
             {
                 var routes = await RouteRepo.GetListAsync(dataBaseName);
-                return routes.OrderBy(o => o.CreateDate).ToList().RouteTreeJson();
+                return TreeData.RouteTreeJson(routes.OrderBy(o => o.CreateDate).ToList());
             }
             else
             {
                 var routes = await RouteRepo.GetListAsync(dataBaseName);
                 var authorizes = await authorizeRepo.GetListAsync(a => a.Category == category && a.ObjectId == objectId && a.ItemType == 4, dataBaseName);
                 var _routes = routes.ToList().FindAll(m => authorizes.Any(a => a.ItemId == m.RouteId));
-                return _routes.OrderBy(o => o.CreateDate).ToList().RouteTreeJson();
+                return TreeData.RouteTreeJson(_routes.OrderBy(o => o.CreateDate).ToList());
             }
         }
 

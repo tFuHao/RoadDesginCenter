@@ -33,7 +33,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
             try
             {
                 var result = await VerticalBus.GetListAsync(e => e.RouteId == routeId, e => e.VerticalCurveId, true, pageSize, pageIndex, UserInfo.DataBaseName);
-                return Success(new
+                return SuccessData(new
                 {
                     data = result.Item1,
                     count = result.Item2
@@ -56,7 +56,9 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                     input.RouteId = routeId;
                     var entity = MapperUtils.MapTo<VerticalCurveInputDto, VerticalCurve>(input);
                     var result = await VerticalBus.CreateAsync(entity, UserInfo.DataBaseName);
-                    return Success(result);
+                    if (result)
+                        return SuccessMes();
+                    return Fail();
                 }
                 else
                 {
@@ -69,7 +71,9 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                     entity.EndStake = input.EndStake;
                     entity.Description = input.Description;
                     var result = await VerticalBus.UpdateAsync(entity, UserInfo.DataBaseName);
-                    return Success(result);
+                    if (result)
+                        return SuccessMes();
+                    return Fail();
                 }
             }
             catch (Exception ex)
@@ -86,7 +90,9 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                 if (!list.Any())
                     return Fail();
                 var result = await VerticalBus.DeleteAsync(list, UserInfo.DataBaseName);
-                return Success(result);
+                if (result)
+                    return SuccessMes();
+                return Fail();
             }
             catch (Exception ex)
             {
@@ -109,7 +115,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                 if (content == "")
                     return Error("当前没有数据");
                 content = content.Substring(0, content.Length - 2);
-                return Success(content);
+                return SuccessMes(content);
             }
             catch (Exception ex)
             {
@@ -154,7 +160,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                         error++;
                     read.Close();
                     FileUtils.DeleteFile(path);
-                    return Success($"导入成功{success}条，失败{error}条");
+                    return SuccessMes($"导入成功{success}条，失败{error}条");
                 }
                 return Fail();
             }
