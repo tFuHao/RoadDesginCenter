@@ -7,7 +7,7 @@ namespace SSKJ.RoadDesignCenter.Models.ProjectModel
     public partial class FlatCurve_Intersection
     {
         public string IntersectionPointId { get; set; }
-        public string FlatCurveId { get; set; }
+        public string RouteId { get; set; }
         public int? SerialNumber { get; set; }
         [Required(ErrorMessage = "交点名不能为空")]
         public string IntersectionName { get; set; }

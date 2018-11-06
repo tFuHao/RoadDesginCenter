@@ -35,11 +35,11 @@ namespace SSKJ.RoadDesignCenter.API.Controllers
         }
 
         //成功
-        public IActionResult Success(object data)
+        public IActionResult SuccessData(object data)
         {
             return Ok(new { type = 1, data });
         }
-        public IActionResult Success(string message = "")
+        public IActionResult SuccessMes(string message = "")
         {
             if (string.IsNullOrEmpty(message))
                 return Ok(new { type = 1, message = "操作成功!" });

@@ -6,7 +6,7 @@ namespace SSKJ.RoadDesignCenter.Models.ProjectModel
     public partial class VerticalCurve_CurveElement
     {
         public string CurveElementId { get; set; }
-        public string VerticalCurveId { get; set; }
+        public string RouteId { get; set; }
         public int? SerialNumber { get; set; }
         public double? Stake { get; set; }
         public double? H { get; set; }
