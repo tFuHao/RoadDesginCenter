@@ -8,15 +8,19 @@
     <Compile Remove="Areas\RouteData\Data\**" />
     <Compile Remove="Areas\RouteData\Views\**" />
     <Compile Remove="Areas\RouteManageInfo\**" />
+    <Compile Remove="wwwroot\upload\import\15fde320-430c-45ad-bf7e-626f2ca2fd55\**" />
     <Content Remove="Areas\RouteData\Data\**" />
     <Content Remove="Areas\RouteData\Views\**" />
     <Content Remove="Areas\RouteManageInfo\**" />
+    <Content Remove="wwwroot\upload\import\15fde320-430c-45ad-bf7e-626f2ca2fd55\**" />
     <EmbeddedResource Remove="Areas\RouteData\Data\**" />
     <EmbeddedResource Remove="Areas\RouteData\Views\**" />
     <EmbeddedResource Remove="Areas\RouteManageInfo\**" />
+    <EmbeddedResource Remove="wwwroot\upload\import\15fde320-430c-45ad-bf7e-626f2ca2fd55\**" />
     <None Remove="Areas\RouteData\Data\**" />
     <None Remove="Areas\RouteData\Views\**" />
     <None Remove="Areas\RouteManageInfo\**" />
+    <None Remove="wwwroot\upload\import\15fde320-430c-45ad-bf7e-626f2ca2fd55\**" />
   </ItemGroup>
 
   <ItemGroup>
