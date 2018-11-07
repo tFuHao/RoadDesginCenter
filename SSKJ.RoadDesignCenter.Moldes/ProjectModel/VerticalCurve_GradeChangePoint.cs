@@ -13,7 +13,6 @@ namespace SSKJ.RoadDesignCenter.Models.ProjectModel
         public double? Stake { get; set; }
         [Required(ErrorMessage = "变坡点高程不能为空")]
         public double? H { get; set; }
-        [Required(ErrorMessage = "竖曲线半径不能为空")]
         public double? R { get; set; }
     }
 }

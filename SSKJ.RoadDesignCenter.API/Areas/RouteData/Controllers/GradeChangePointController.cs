@@ -27,11 +27,11 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
             Hosting = hosting;
         }
 
-        public async Task<IActionResult> Get(int pageSize, int pageIndex)
+        public async Task<IActionResult> Get(int pageSize, int pageIndex, string routeId)
         {
             try
             {
-                var result = await GradeBus.GetListAsync(e => true, e => e.SerialNumber, true, pageSize, pageIndex, UserInfo.DataBaseName);
+                var result = await GradeBus.GetListAsync(e => e.RouteId == routeId, e => e.SerialNumber, true, pageSize, pageIndex, UserInfo.DataBaseName);
                 return SuccessData(new
                 {
                     data = result.Item1,
@@ -51,7 +51,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
         /// <param name="serialNumber">插入的序号，添加则为0</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Insert(VerticalCurve_GradeChangePoint input, int serialNumber)
+        public async Task<IActionResult> Insert(VerticalCurve_GradeChangePoint input, int serialNumber, string routeId)
         {
             try
             {
@@ -59,13 +59,14 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                 {
                     if (input.GradeChangePointId == null)
                     {
-                        var allList = await GradeBus.GetListAsync(UserInfo.DataBaseName);
+                        var allList = await GradeBus.GetListAsync(e => e.RouteId == routeId, UserInfo.DataBaseName);
                         var count = allList.Count();
                         input.GradeChangePointId = Guid.NewGuid().ToString();
                         input.SerialNumber = count + 1;
+                        input.RouteId = routeId;
                         if (serialNumber != 0)
                         {
-                            var temp = await GradeBus.GetListAsync(e => e.SerialNumber >= serialNumber, UserInfo.DataBaseName);
+                            var temp = await GradeBus.GetListAsync(e => e.SerialNumber >= serialNumber && e.RouteId == routeId, UserInfo.DataBaseName);
                             var list = temp.ToList();
                             list.ForEach(async i =>
                             {
@@ -75,7 +76,9 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                             input.SerialNumber = serialNumber;
                         }
                         var result = await GradeBus.CreateAsync(input, UserInfo.DataBaseName);
-                        return Json(result);
+                        if (result)
+                            return SuccessMes();
+                        else return Fail();
                     }
                     else
                     {
@@ -93,8 +96,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                         return Fail();
                     }
                 }
-                else
-                    return Fail();
+                return Fail();
             }
             catch (Exception ex)
             {
@@ -108,14 +110,14 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
         /// <param name="list">删除的实体对象列表</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Delete(List<VerticalCurve_GradeChangePoint> list)
+        public async Task<IActionResult> Delete(List<VerticalCurve_GradeChangePoint> list, string routeId)
         {
             try
             {
                 if (list.Any())
                 {
                     var result = await GradeBus.DeleteAsync(list, UserInfo.DataBaseName);
-                    var temp = await GradeBus.GetListAsync(UserInfo.DataBaseName);
+                    var temp = await GradeBus.GetListAsync(e => e.RouteId == routeId, UserInfo.DataBaseName);
                     var allItem = temp.OrderBy(e => e.SerialNumber).ToList();
                     if (allItem.Any())
                     {
@@ -124,10 +126,8 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                             allItem[i].SerialNumber = i + 1;
                             await GradeBus.UpdateAsync(allItem[i], UserInfo.DataBaseName);
                         }
-                        return SuccessMes();
                     }
-                    else
-                        return Fail();
+                    return SuccessMes();
                 }
                 return Fail();
             }
@@ -144,7 +144,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
         /// <param name="isUp">true为上移，false为下移</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Move(int serialNumber, bool isUp)
+        public async Task<IActionResult> Move(int serialNumber, bool isUp, string routeId)
         {
             try
             {
@@ -159,15 +159,15 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                 }
                 else
                 {
-                    var data = await GradeBus.GetListAsync(UserInfo.DataBaseName);
+                    var data = await GradeBus.GetListAsync(e => e.RouteId == routeId, UserInfo.DataBaseName);
                     if (serialNumber == data.Count())
                         return Fail("选项不能再下移");
                     topNumber = serialNumber;
                     bottomNumber = serialNumber + 1;
                 }
 
-                var top = await GradeBus.GetEntityAsync(e => e.SerialNumber == topNumber, UserInfo.DataBaseName);
-                var bottom = await GradeBus.GetEntityAsync(e => e.SerialNumber == bottomNumber, UserInfo.DataBaseName);
+                var top = await GradeBus.GetEntityAsync(e => e.SerialNumber == topNumber && e.RouteId == routeId, UserInfo.DataBaseName);
+                var bottom = await GradeBus.GetEntityAsync(e => e.SerialNumber == bottomNumber && e.RouteId == routeId, UserInfo.DataBaseName);
                 var temp = top.SerialNumber;
                 top.SerialNumber = bottom.SerialNumber;
                 bottom.SerialNumber = temp;
@@ -190,7 +190,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
         /// 从文件导入数据
         /// </summary>
         /// <returns></returns>
-        public async Task<IActionResult> Import()
+        public async Task<IActionResult> Import(string routeId)
         {
             try
             {
@@ -205,19 +205,31 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                     while ((line = reader.ReadLine()) != null)
                     {
                         var tempList = line.Split(",");
-                        var list = await GradeBus.GetListAsync(UserInfo.DataBaseName);
+                        var list = await GradeBus.GetListAsync(e => e.RouteId == routeId, UserInfo.DataBaseName);
                         var temp = new VerticalCurve_GradeChangePoint()
                         {
                             GradeChangePointId = Guid.NewGuid().ToString(),
+                            RouteId = routeId,
                             SerialNumber = list.Count() + 1,
-                            Stake = Convert.ToDouble(tempList[0]),
-                            H = Convert.ToDouble(tempList[1]),
-                            R = Convert.ToDouble(tempList[2])
                         };
-                        var result = await GradeBus.CreateAsync(temp, UserInfo.DataBaseName);
-                        if (result)
-                            success++;
-                        else error++;
+                        if (!string.IsNullOrEmpty(tempList[0]))
+                            temp.Stake = Convert.ToDouble(tempList[0]);
+                        if (!string.IsNullOrEmpty(tempList[1]))
+                            temp.H = Convert.ToDouble(tempList[1]);
+                        if (!string.IsNullOrEmpty(tempList[2]))
+                            temp.R = Convert.ToDouble(tempList[2]);
+                        var valid = TryValidateModel(temp);
+                        if (valid)
+                        {
+                            var result = await GradeBus.CreateAsync(temp, UserInfo.DataBaseName);
+                            if (result)
+                                success++;
+                            else error++;
+                        }
+                        else
+                        {
+                            error++;
+                        }
                     }
                     reader.Close();
                     FileUtils.DeleteFile(path);
@@ -235,12 +247,12 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
         /// 导出数据到文件
         /// </summary>
         /// <returns></returns>
-        public async Task<IActionResult> Export()
+        public async Task<IActionResult> Export(string routeId)
         {
             try
             {
                 var content = "";
-                var data = await GradeBus.GetListAsync(UserInfo.DataBaseName);
+                var data = await GradeBus.GetListAsync(e => e.RouteId == routeId, UserInfo.DataBaseName);
                 var tableData = data.OrderBy(e => e.SerialNumber).ToList();
                 tableData.ForEach(i =>
                 {

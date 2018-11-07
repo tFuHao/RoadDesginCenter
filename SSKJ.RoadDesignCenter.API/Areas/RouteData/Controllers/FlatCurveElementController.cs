@@ -27,11 +27,11 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
             Hosting = hosting;
         }
 
-        public async Task<IActionResult> Get(int pageSize, int pageIndex)
+        public async Task<IActionResult> Get(int pageSize, int pageIndex, string routeId)
         {
             try
             {
-                var result = await FlatCurveBus.GetListAsync(e => true, e => e.SerialNumber, true, pageSize, pageIndex, UserInfo.DataBaseName);
+                var result = await FlatCurveBus.GetListAsync(e => e.RouteId == routeId, e => e.SerialNumber, true, pageSize, pageIndex, UserInfo.DataBaseName);
                 return SuccessData(new
                 {
                     data = result.Item1,
@@ -51,7 +51,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
         /// <param name="serialNumber">插入的序号，添加则为0</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Insert(FlatCurve_CurveElement input, int serialNumber)
+        public async Task<IActionResult> Insert(FlatCurve_CurveElement input, int serialNumber, string routeId)
         {
             try
             {
@@ -59,13 +59,14 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                 {
                     if (input.CurveElementId == null)
                     {
-                        var allList = await FlatCurveBus.GetListAsync(UserInfo.DataBaseName);
+                        var allList = await FlatCurveBus.GetListAsync(e => e.RouteId == routeId, UserInfo.DataBaseName);
                         var count = allList.Count();
                         input.CurveElementId = Guid.NewGuid().ToString();
                         input.SerialNumber = count + 1;
+                        input.RouteId = routeId;
                         if (serialNumber != 0)
                         {
-                            var temp = await FlatCurveBus.GetListAsync(e => e.SerialNumber >= serialNumber, UserInfo.DataBaseName);
+                            var temp = await FlatCurveBus.GetListAsync(e => e.SerialNumber >= serialNumber && e.RouteId == routeId, UserInfo.DataBaseName);
                             var list = temp.ToList();
                             list.ForEach(async i =>
                             {
@@ -113,14 +114,14 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
         /// <param name="list">删除的实体对象列表</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Delete(List<FlatCurve_CurveElement> list)
+        public async Task<IActionResult> Delete(List<FlatCurve_CurveElement> list, string routeId)
         {
             try
             {
                 if (list.Any())
                 {
                     var result = await FlatCurveBus.DeleteAsync(list, UserInfo.DataBaseName);
-                    var temp = await FlatCurveBus.GetListAsync(UserInfo.DataBaseName);
+                    var temp = await FlatCurveBus.GetListAsync(e => e.RouteId == routeId, UserInfo.DataBaseName);
                     var allItem = temp.OrderBy(e => e.SerialNumber).ToList();
                     if (allItem.Any())
                     {
@@ -129,14 +130,10 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                             allItem[i].SerialNumber = i + 1;
                             await FlatCurveBus.UpdateAsync(allItem[i], UserInfo.DataBaseName);
                         }
-
-                        return SuccessMes();
                     }
-                    else
-                        return Fail();
+                    return SuccessMes();
                 }
-                else
-                    return Fail();
+                return Fail();
             }
             catch (Exception ex)
             {
@@ -151,7 +148,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
         /// <param name="isUp">true为上移，false为下移</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Move(int serialNumber, bool isUp)
+        public async Task<IActionResult> Move(int serialNumber, bool isUp, string routeId)
         {
             try
             {
@@ -166,15 +163,15 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                 }
                 else
                 {
-                    var data = await FlatCurveBus.GetListAsync(UserInfo.DataBaseName);
+                    var data = await FlatCurveBus.GetListAsync(e => e.RouteId == routeId, UserInfo.DataBaseName);
                     if (serialNumber == data.Count())
                         return Fail("选项不能再下移");
                     topNumber = serialNumber;
                     bottomNumber = serialNumber + 1;
                 }
 
-                var top = await FlatCurveBus.GetEntityAsync(e => e.SerialNumber == topNumber, UserInfo.DataBaseName);
-                var bottom = await FlatCurveBus.GetEntityAsync(e => e.SerialNumber == bottomNumber, UserInfo.DataBaseName);
+                var top = await FlatCurveBus.GetEntityAsync(e => e.SerialNumber == topNumber && e.RouteId == routeId, UserInfo.DataBaseName);
+                var bottom = await FlatCurveBus.GetEntityAsync(e => e.SerialNumber == bottomNumber && e.RouteId == routeId, UserInfo.DataBaseName);
                 var temp = top.SerialNumber;
                 top.SerialNumber = bottom.SerialNumber;
                 bottom.SerialNumber = temp;
@@ -197,7 +194,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
         /// 从文件导入数据
         /// </summary>
         /// <returns></returns>
-        public async Task<IActionResult> Import()
+        public async Task<IActionResult> Import(string routeId)
         {
             try
             {
@@ -212,19 +209,28 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                     while ((line = reader.ReadLine()) != null)
                     {
                         var tempList = line.Split(",");
-                        var list = await FlatCurveBus.GetListAsync(UserInfo.DataBaseName);
+                        var list = await FlatCurveBus.GetListAsync(e => e.RouteId == routeId, UserInfo.DataBaseName);
                         var temp = new FlatCurve_CurveElement()
                         {
                             CurveElementId = Guid.NewGuid().ToString(),
+                            RouteId = routeId,
                             SerialNumber = list.Count() + 1,
-                            Stake = Convert.ToDouble(tempList[0]),
-                            X = Convert.ToDouble(tempList[1]),
-                            Y = Convert.ToDouble(tempList[2]),
-                            Azimuth = Convert.ToDouble(tempList[3]),
-                            TurnTo = Convert.ToInt32(tempList[4]),
-                            R = Convert.ToDouble(tempList[5]),
-                            Description = tempList[6]
                         };
+                        if (!string.IsNullOrEmpty(tempList[0]))
+                            temp.Stake = Convert.ToDouble(tempList[0]);
+                        if (!string.IsNullOrEmpty(tempList[1]))
+                            temp.X = Convert.ToDouble(tempList[1]);
+                        if (!string.IsNullOrEmpty(tempList[2]))
+                            temp.Y = Convert.ToDouble(tempList[2]);
+                        if (!string.IsNullOrEmpty(tempList[3]))
+                            temp.Azimuth = Convert.ToDouble(tempList[3]);
+                        if (!string.IsNullOrEmpty(tempList[4]))
+                            temp.TurnTo = Convert.ToInt32(tempList[4]);
+                        if (!string.IsNullOrEmpty(tempList[5]))
+                            temp.R = Convert.ToDouble(tempList[5]);
+                        //if (!string.IsNullOrEmpty(tempList[6]))
+                        //    temp.Description = tempList[6];
+
                         var validate = TryValidateModel(temp);
                         if (validate)
                         {
@@ -254,16 +260,16 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
         /// 导出数据到文件
         /// </summary>
         /// <returns></returns>
-        public async Task<IActionResult> Export()
+        public async Task<IActionResult> Export(string routeId)
         {
             try
             {
                 var content = "";
-                var data = await FlatCurveBus.GetListAsync(UserInfo.DataBaseName);
+                var data = await FlatCurveBus.GetListAsync(e => e.RouteId == routeId, UserInfo.DataBaseName);
                 var tableData = data.OrderBy(e => e.SerialNumber).ToList();
                 tableData.ForEach(i =>
                 {
-                    content += $"{i.Stake},{i.X},{i.Y},{i.Azimuth},{i.TurnTo},{i.R},{i.Description},\n";
+                    content += $"{i.Stake},{i.X},{i.Y},{i.Azimuth},{i.TurnTo},{i.R},\n";
                 });
                 content = content.Substring(0, content.Length - 2);
                 return SuccessMes(content);
