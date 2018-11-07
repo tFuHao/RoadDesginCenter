@@ -169,9 +169,9 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                 top.SerialNumber = bottom.SerialNumber;
                 bottom.SerialNumber = temp;
                 var update = new List<BrokenChainage>()
-            {
-                top, bottom
-            };
+                {
+                    top, bottom
+                };
                 var result = await BrokenBus.UpdateAsync(update, UserInfo.DataBaseName);
                 if (result)
                     return SuccessMes();
@@ -207,10 +207,12 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                         {
                             BrokenId = Guid.NewGuid().ToString(),
                             RouteId = routeId,
-                            SerialNumber = list.Count() + 1,
-                            FrontStake = Convert.ToDouble(tempList[0]),
-                            AfterStake = Convert.ToDouble(tempList[1])
+                            SerialNumber = list.Count() + 1
                         };
+                        if (!string.IsNullOrEmpty(tempList[0]))
+                            temp.FrontStake = Convert.ToDouble(tempList[0]);
+                        if (!string.IsNullOrEmpty(tempList[1]))
+                            temp.AfterStake = Convert.ToDouble(tempList[1]);
                         var validate = TryValidateModel(temp);
                         if (validate)
                         {
