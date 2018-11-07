@@ -52,7 +52,13 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                 }
                 else
                 {
-                    result = await routeBll.UpdateAsync(entity, UserInfo.DataBaseName);
+                    var model = await routeBll.GetEntityAsync(entity.RouteId, UserInfo.DataBaseName);
+                    model.ParentId = entity.ParentId;
+                    model.RouteName = entity.RouteName;
+                    model.RouteType = entity.RouteType;
+                    model.DesignSpeed = entity.DesignSpeed;
+                    model.Description = entity.Description;
+                    result = await routeBll.UpdateAsync(model, UserInfo.DataBaseName);
                 }
                 if (result)
                     return SuccessMes();

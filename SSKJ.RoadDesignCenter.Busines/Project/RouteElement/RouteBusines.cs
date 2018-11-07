@@ -13,12 +13,18 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.RouteElement
     public class RouteBusines : IRouteBusines
     {
         public IRouteRepository RouteRepo;
+        public IFlatCurve_IntersectionRepository intersectionRepo;
+        public IFlatCurve_CurveElementRepository cureveRepo;
+        public IVerticalCurve_GradeChangePointRepository gradeRepo;
         public IAuthorizeRepository authorizeRepo;
 
-        public RouteBusines(IRouteRepository routeRepo, IAuthorizeRepository authorizeRepo)
+        public RouteBusines(IRouteRepository routeRepo, IAuthorizeRepository authorizeRepo, IFlatCurve_IntersectionRepository intersectionRepo, IFlatCurve_CurveElementRepository cureveRepo, IVerticalCurve_GradeChangePointRepository gradeRepo)
         {
             RouteRepo = routeRepo;
             this.authorizeRepo = authorizeRepo;
+            this.intersectionRepo = intersectionRepo;
+            this.cureveRepo = cureveRepo;
+            this.gradeRepo = gradeRepo;
         }
 
         public async Task<bool> CreateAsync(Route entity, string dataBaseName = null)
@@ -81,15 +87,51 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.RouteElement
                 return null;
             else if (objectId == "PrjAdmin")
             {
+                var grades = await gradeRepo.GetListAsync(dataBaseName);
+                var intersections = await intersectionRepo.GetListAsync(dataBaseName);
+                var cures = await cureveRepo.GetListAsync(dataBaseName);
                 var routes = await RouteRepo.GetListAsync(dataBaseName);
-                return TreeData.RouteTreeJson(routes.OrderBy(o => o.CreateDate).ToList());
+                return TreeData.RouteTreeJson(routes.ToList().Select(route => new Route
+                {
+                    RouteId = route.RouteId,
+                    ParentId = route.ParentId,
+                    RouteType = route.RouteType,
+                    StartStake = route.StartStake,
+                    EndStake = route.EndStake,
+                    RouteLength = route.RouteLength,
+                    DesignSpeed = route.DesignSpeed,
+                    CreateDate = route.CreateDate,
+                    Description = route.Description,
+                    RouteName = route.RouteName,
+                    GradeChangeNumber = grades.ToList().FindAll(g => g.RouteId == route.RouteId).Count(),
+                    IntersectionNumber = route.RouteType == 0 ? intersections.ToList().FindAll(i => i.RouteId == route.RouteId).Count() : route.IntersectionNumber,
+                    CureNumber = route.RouteType == 1 ? cures.ToList().FindAll(c => c.RouteId == route.RouteId).Count() : route.CureNumber
+                }).OrderBy(o => o.CreateDate).ToList());
             }
             else
             {
+                var grades = await gradeRepo.GetListAsync(dataBaseName);
+                var intersections = await intersectionRepo.GetListAsync(dataBaseName);
+                var cures = await cureveRepo.GetListAsync(dataBaseName);
                 var routes = await RouteRepo.GetListAsync(dataBaseName);
                 var authorizes = await authorizeRepo.GetListAsync(a => a.Category == category && a.ObjectId == objectId && a.ItemType == 4, dataBaseName);
                 var _routes = routes.ToList().FindAll(m => authorizes.Any(a => a.ItemId == m.RouteId));
-                return TreeData.RouteTreeJson(_routes.OrderBy(o => o.CreateDate).ToList());
+                return TreeData.RouteTreeJson(_routes.ToList().Select(route => new Route
+                {
+                    RouteId = route.RouteId,
+                    ParentId = route.ParentId,
+                    RouteType = route.RouteType,
+                    StartStake = route.StartStake,
+                    EndStake = route.EndStake,
+                    RouteLength = route.RouteLength,
+                    DesignSpeed = route.DesignSpeed,
+                    CreateDate = route.CreateDate,
+                    Description = route.Description,
+                    RouteName = route.RouteName,
+                    GradeChangeNumber = grades.ToList().FindAll(g => g.RouteId == route.RouteId).Count(),
+                    IntersectionNumber = route.RouteType == 0 ? intersections.ToList().FindAll(i => i.RouteId == route.RouteId).Count() : route.IntersectionNumber,
+                    CureNumber = route.RouteType == 1 ? cures.ToList().FindAll(c => c.RouteId == route.RouteId).Count() : route.CureNumber
+                }).OrderBy(o => o.CreateDate).ToList());
             }
         }
 
