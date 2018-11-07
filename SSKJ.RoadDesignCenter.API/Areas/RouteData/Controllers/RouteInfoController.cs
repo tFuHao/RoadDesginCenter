@@ -27,7 +27,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
             try
             {
                 var data = await routeBll.GetRouteAuthorizes(2, UserInfo.RoleId, UserInfo.DataBaseName);
-                return Success(data);
+                return SuccessData(data);
             }
             catch (Exception ex)
             {
@@ -55,7 +55,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                     result = await routeBll.UpdateAsync(entity, UserInfo.DataBaseName);
                 }
                 if (result)
-                    return Success();
+                    return SuccessMes();
                 return Fail();
             }
             catch (Exception ex)
@@ -75,7 +75,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
 
                 var result = await routeBll.DeleteAsync(routes, UserInfo.DataBaseName);
                 if (result)
-                    return Success();
+                    return SuccessMes();
                 return Fail();
             }
             catch (Exception ex)

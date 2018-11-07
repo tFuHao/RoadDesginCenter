@@ -17,5 +17,8 @@ namespace SSKJ.RoadDesignCenter.Models.ProjectModel
         public string DesignSpeed { get; set; }
         public DateTime? CreateDate { get; set; }
         public string CreateUserId { get; set; }
+        public int? IntersectionNumber { get; set; }
+        public int? CureNumber { get; set; }
+        public int? GradeChangeNumber { get; set; }
     }
 }

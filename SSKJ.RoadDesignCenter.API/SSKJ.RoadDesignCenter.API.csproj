@@ -41,9 +41,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\RouteCalculation\Controllers\" />
-    <Folder Include="Areas\RouteCalculation\Data\" />
-    <Folder Include="Areas\RouteCalculation\Models\" />
+    <Folder Include="Areas\RouteCalculate\Data\" />
+    <Folder Include="Areas\RouteCalculate\Models\" />
+    <Folder Include="Areas\RouteCalculate\Views\" />
     <Folder Include="wwwroot\image\head\" />
     <Folder Include="wwwroot\upload\import\" />
   </ItemGroup>

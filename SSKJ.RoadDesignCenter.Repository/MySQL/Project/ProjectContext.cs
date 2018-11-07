@@ -150,7 +150,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
                 entity.Property(e => e.Description).HasColumnType("varchar(200)");
 
-                entity.Property(e => e.FlatCurveId).HasColumnType("varchar(50)");
+                entity.Property(e => e.RouteId).HasColumnType("varchar(50)");
 
                 entity.Property(e => e.R).HasColumnType("double(18,4)");
 
@@ -173,7 +173,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
                 entity.Property(e => e.IntersectionPointId).HasColumnType("varchar(50)");
 
-                entity.Property(e => e.FlatCurveId).HasColumnType("varchar(50)");
+                entity.Property(e => e.RouteId).HasColumnType("varchar(50)");
 
                 entity.Property(e => e.IntersectionName).HasColumnType("varchar(50)");
 
@@ -215,6 +215,12 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
                 entity.Property(e => e.RouteName).HasColumnType("varchar(50)");
 
                 entity.Property(e => e.RouteType).HasColumnType("int(11)");
+
+                entity.Property(e => e.IntersectionNumber).HasColumnType("int(11)");
+
+                entity.Property(e => e.CureNumber).HasColumnType("int(11)");
+
+                entity.Property(e => e.GradeChangeNumber).HasColumnType("int(11)");
 
                 entity.Property(e => e.StartStake).HasColumnType("double(18,4)");
 
@@ -300,7 +306,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
                 entity.Property(e => e.Stake).HasColumnType("double(18,4)");
 
-                entity.Property(e => e.VerticalCurveId).HasColumnType("varchar(50)");
+                entity.Property(e => e.RouteId).HasColumnType("varchar(50)");
             });
 
             modelBuilder.Entity<VerticalCurve_GradeChangePoint>(entity =>
@@ -319,7 +325,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
                 entity.Property(e => e.Stake).HasColumnType("double(18,4)");
 
-                entity.Property(e => e.VerticalCurveId).HasColumnType("varchar(50)");
+                entity.Property(e => e.RouteId).HasColumnType("varchar(50)");
             });
 
             modelBuilder.Entity<VerticalSectionGroundLine>(entity =>

@@ -32,7 +32,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
             try
             {
                 var result = await BrokenBus.GetListAsync(e => e.RouteId == routeId, e => e.SerialNumber, true, pageSize, pageIndex, UserInfo.DataBaseName);
-                return Success(new
+                return SuccessData(new
                 {
                     data = result.Item1,
                     count = result.Item2
@@ -77,7 +77,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                         }
                         var result = await BrokenBus.CreateAsync(input, UserInfo.DataBaseName);
                         if (result)
-                            return Success();
+                            return SuccessMes();
                         return Fail();
                     }
                     else
@@ -89,7 +89,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                         entity.AfterStake = input.AfterStake;
                         var result = await BrokenBus.UpdateAsync(entity, UserInfo.DataBaseName);
                         if (result)
-                            return Success();
+                            return SuccessMes();
                         return Fail();
                     }
                 }
@@ -124,7 +124,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                             await BrokenBus.UpdateAsync(allItem[i], UserInfo.DataBaseName);
                         }
                     }
-                    return Success();
+                    return SuccessMes();
                 }
                 return Fail();
             }
@@ -174,7 +174,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
             };
                 var result = await BrokenBus.UpdateAsync(update, UserInfo.DataBaseName);
                 if (result)
-                    return Success();
+                    return SuccessMes();
                 return Fail();
             }
             catch (Exception ex)
@@ -226,7 +226,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                     }
                     reader.Close();
                     FileUtils.DeleteFile(path);
-                    return Success($"断链要素表导入数据成功{success}条，失败{error}条");
+                    return SuccessMes($"断链要素表导入数据成功{success}条，失败{error}条");
                 }
                 return Fail();
             }
@@ -252,7 +252,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                     content += $"{i.FrontStake},{i.AfterStake},\n";
                 });
                 content = content.Substring(0, content.Length - 2);
-                return Success(content);
+                return SuccessMes(content);
             }
             catch (Exception ex)
             {

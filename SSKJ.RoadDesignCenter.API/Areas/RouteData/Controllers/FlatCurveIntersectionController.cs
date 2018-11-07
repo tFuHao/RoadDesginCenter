@@ -32,7 +32,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
             try
             {
                 var result = await FlatCurveBus.GetListAsync(e => true, e => e.SerialNumber, true, pageSize, pageIndex, UserInfo.DataBaseName);
-                return Success(new
+                return SuccessData(new
                 {
                     data = result.Item1,
                     count = result.Item2
@@ -77,7 +77,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
 
                         var result = await FlatCurveBus.CreateAsync(input, UserInfo.DataBaseName);
                         if (result)
-                            return Success();
+                            return SuccessMes();
                         return Fail();
                     }
                     else
@@ -96,7 +96,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                         entity.Ls2R = input.Ls2R;
                         var result = await FlatCurveBus.UpdateAsync(entity, UserInfo.DataBaseName);
                         if (result)
-                            return Success();
+                            return SuccessMes();
                         return Fail();
                     }
                 }
@@ -131,10 +131,13 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                             allItem[i].SerialNumber = i + 1;
                             await FlatCurveBus.UpdateAsync(allItem[i], UserInfo.DataBaseName);
                         }
+                        return SuccessMes();
                     }
-                    return Success();
+                    else
+                        return Fail();
                 }
-                return Fail();
+                else
+                    return Fail();
             }
             catch (Exception ex)
             {
@@ -182,7 +185,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
             };
                 var result = await FlatCurveBus.UpdateAsync(update, UserInfo.DataBaseName);
                 if (result)
-                    return Success();
+                    return SuccessMes();
                 return Fail();
             }
             catch (Exception ex)
@@ -240,7 +243,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                     }
                     reader.Close();
                     FileUtils.DeleteFile(path);
-                    return Success($"平曲线表交点法导入数据成功{success}条，失败{error}条");
+                    return SuccessMes($"平曲线表交点法导入数据成功{success}条，失败{error}条");
                 }
                 else
                     return Fail();
@@ -267,7 +270,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                     content += $"{i.IntersectionName},{i.Stake},{i.X},{i.Y},{i.R},{i.Ls1},{i.Ls2},{i.Ls1R},{i.Ls2R},\n";
                 });
                 content = content.Substring(0, content.Length - 2);
-                return Success(content);
+                return SuccessMes(content);
             }
             catch (Exception ex)
             {
