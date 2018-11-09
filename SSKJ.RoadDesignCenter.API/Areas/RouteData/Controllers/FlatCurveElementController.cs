@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Mvc;
+using SSKJ.RoadDesignCenter.API.Areas.RouteData.Models;
 using SSKJ.RoadDesignCenter.API.Controllers;
 using SSKJ.RoadDesignCenter.IBusines.Project.RouteElement;
 using SSKJ.RoadDesignCenter.Models.ProjectModel;
@@ -34,7 +35,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                 var result = await FlatCurveBus.GetListAsync(e => e.RouteId == routeId, e => e.SerialNumber, true, pageSize, pageIndex, UserInfo.DataBaseName);
                 return SuccessData(new
                 {
-                    data = result.Item1,
+                    data = result.Item1.MapToList<FlatCurve_CurveElement, FlatCurveCurveElementDto>(),
                     count = result.Item2
                 });
             }
@@ -51,7 +52,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
         /// <param name="serialNumber">插入的序号，添加则为0</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Insert(FlatCurve_CurveElement input, int serialNumber, string routeId)
+        public async Task<IActionResult> Insert(FlatCurveCurveElementDto input, int serialNumber, string routeId)
         {
             try
             {
@@ -76,7 +77,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                             input.SerialNumber = serialNumber;
                         }
 
-                        var result = await FlatCurveBus.CreateAsync(input, UserInfo.DataBaseName);
+                        var result = await FlatCurveBus.CreateAsync(input.MapTo<FlatCurveCurveElementDto, FlatCurve_CurveElement>(), UserInfo.DataBaseName);
                         if (result)
                             return SuccessMes();
                         return Fail();
@@ -210,7 +211,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                     {
                         var tempList = line.Split(",");
                         var list = await FlatCurveBus.GetListAsync(e => e.RouteId == routeId, UserInfo.DataBaseName);
-                        var temp = new FlatCurve_CurveElement()
+                        var temp = new FlatCurveCurveElementDto()
                         {
                             CurveElementId = Guid.NewGuid().ToString(),
                             RouteId = routeId,
@@ -234,7 +235,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                         var validate = TryValidateModel(temp);
                         if (validate)
                         {
-                            var result = await FlatCurveBus.CreateAsync(temp, UserInfo.DataBaseName);
+                            var result = await FlatCurveBus.CreateAsync(temp.MapTo<FlatCurveCurveElementDto, FlatCurve_CurveElement>(), UserInfo.DataBaseName);
                             if (result)
                                 success++;
                             else error++;
@@ -248,7 +249,8 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                     FileUtils.DeleteFile(path);
                     return SuccessMes($"平曲线表曲线要素法导入数据成功{success}条，失败{error}条");
                 }
-                return Fail();
+                else
+                    return Fail();
             }
             catch (Exception ex)
             {

@@ -9,12 +9,9 @@ namespace SSKJ.RoadDesignCenter.Models.ProjectModel
         public string IntersectionPointId { get; set; }
         public string RouteId { get; set; }
         public int? SerialNumber { get; set; }
-        [Required(ErrorMessage = "交点名不能为空")]
         public string IntersectionName { get; set; }
         public double? Stake { get; set; }
-        [Required(ErrorMessage = "X坐标不能为空")]
         public double? X { get; set; }
-        [Required(ErrorMessage = "Y坐标不能为空")]
         public double? Y { get; set; }
         public double? R { get; set; }
         public double? Ls1 { get; set; }
