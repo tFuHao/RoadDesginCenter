@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Mvc;
+using SSKJ.RoadDesignCenter.API.Areas.RouteData.Models;
 using SSKJ.RoadDesignCenter.API.Controllers;
 using SSKJ.RoadDesignCenter.IBusines.Project.RouteElement;
 using SSKJ.RoadDesignCenter.Models.ProjectModel;
@@ -34,7 +35,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                 var result = await FlatCurveBus.GetListAsync(e => e.RouteId == routeId, e => e.SerialNumber, true, pageSize, pageIndex, UserInfo.DataBaseName);
                 return SuccessData(new
                 {
-                    data = result.Item1,
+                    data = result.Item1.MapToList<FlatCurve_Intersection, FlatCurveIntersectionDto>(),
                     count = result.Item2
                 });
             }
@@ -51,7 +52,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
         /// <param name="serialNumber">插入的序号，添加则为0</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Insert(FlatCurve_Intersection input, int serialNumber, string routeId)
+        public async Task<IActionResult> Insert(FlatCurveIntersectionDto input, int serialNumber, string routeId)
         {
             try
             {
@@ -76,7 +77,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                             input.SerialNumber = serialNumber;
                         }
 
-                        var result = await FlatCurveBus.CreateAsync(input, UserInfo.DataBaseName);
+                        var result = await FlatCurveBus.CreateAsync(input.MapTo<FlatCurveIntersectionDto, FlatCurve_Intersection>(), UserInfo.DataBaseName);
                         if (result)
                             return SuccessMes();
                         return Fail();
@@ -101,8 +102,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                         return Fail();
                     }
                 }
-                else
-                    return Fail();
+                return Fail();
             }
             catch (Exception ex)
             {
@@ -212,7 +212,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                     {
                         var tempList = line.Split(",");
                         var list = await FlatCurveBus.GetListAsync(e => e.RouteId == routeId, UserInfo.DataBaseName);
-                        var temp = new FlatCurve_Intersection()
+                        var temp = new FlatCurveIntersectionDto()
                         {
                             IntersectionPointId = Guid.NewGuid().ToString(),
                             SerialNumber = list.Count() + 1,
@@ -239,7 +239,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                         var validate = TryValidateModel(temp);
                         if (validate)
                         {
-                            var result = await FlatCurveBus.CreateAsync(temp, UserInfo.DataBaseName);
+                            var result = await FlatCurveBus.CreateAsync(temp.MapTo<FlatCurveIntersectionDto, FlatCurve_Intersection>(), UserInfo.DataBaseName);
                             if (result)
                                 success++;
                             else error++;

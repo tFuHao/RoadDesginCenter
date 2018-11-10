@@ -146,7 +146,7 @@ namespace SSKJ.RoadDesignCenter.Repository.MySQL.Project
 
                 entity.Property(e => e.CurveElementId).HasColumnType("varchar(50)");
 
-                entity.Property(e => e.Azimuth).HasColumnType("double(18,4)");
+                entity.Property(e => e.Azimuth).HasColumnType("double(18,6)");
 
                 entity.Property(e => e.Description).HasColumnType("varchar(200)");
 

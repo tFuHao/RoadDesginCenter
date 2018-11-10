@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Mvc;
+using SSKJ.RoadDesignCenter.API.Areas.RouteData.Models;
 using SSKJ.RoadDesignCenter.API.Controllers;
 using SSKJ.RoadDesignCenter.IBusines.Project.RouteElement;
 using SSKJ.RoadDesignCenter.Models.ProjectModel;
@@ -51,7 +52,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
         /// <param name="serialNumber">插入的序号，添加则为0</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Insert(VerticalCurve_GradeChangePoint input, int serialNumber, string routeId)
+        public async Task<IActionResult> Insert(GradeChangePointDto input, int serialNumber, string routeId)
         {
             try
             {
@@ -75,7 +76,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                             });
                             input.SerialNumber = serialNumber;
                         }
-                        var result = await GradeBus.CreateAsync(input, UserInfo.DataBaseName);
+                        var result = await GradeBus.CreateAsync(input.MapTo<GradeChangePointDto, VerticalCurve_GradeChangePoint>(), UserInfo.DataBaseName);
                         if (result)
                             return SuccessMes();
                         else return Fail();
@@ -206,7 +207,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                     {
                         var tempList = line.Split(",");
                         var list = await GradeBus.GetListAsync(e => e.RouteId == routeId, UserInfo.DataBaseName);
-                        var temp = new VerticalCurve_GradeChangePoint()
+                        var temp = new GradeChangePointDto()
                         {
                             GradeChangePointId = Guid.NewGuid().ToString(),
                             RouteId = routeId,
@@ -221,7 +222,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                         var valid = TryValidateModel(temp);
                         if (valid)
                         {
-                            var result = await GradeBus.CreateAsync(temp, UserInfo.DataBaseName);
+                            var result = await GradeBus.CreateAsync(temp.MapTo<GradeChangePointDto, VerticalCurve_GradeChangePoint>(), UserInfo.DataBaseName);
                             if (result)
                                 success++;
                             else error++;

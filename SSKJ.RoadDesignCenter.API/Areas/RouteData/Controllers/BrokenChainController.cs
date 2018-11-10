@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Mvc;
+using SSKJ.RoadDesignCenter.API.Areas.RouteData.Models;
 using SSKJ.RoadDesignCenter.API.Controllers;
 using SSKJ.RoadDesignCenter.IBusines.Project.RouteElement;
 using SSKJ.RoadDesignCenter.Models.ProjectModel;
@@ -34,7 +35,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                 var result = await BrokenBus.GetListAsync(e => e.RouteId == routeId, e => e.SerialNumber, true, pageSize, pageIndex, UserInfo.DataBaseName);
                 return SuccessData(new
                 {
-                    data = result.Item1,
+                    data = MapperUtils.MapToList<BrokenChainage, BrokenInputDto>(result.Item1),
                     count = result.Item2
                 });
             }
@@ -51,7 +52,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
         /// <param name="serialNumber">插入的序号，添加则为0</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Insert(BrokenChainage input, int serialNumber, string routeId)
+        public async Task<IActionResult> Insert(BrokenInputDto input, int serialNumber, string routeId)
         {
             try
             {
@@ -61,6 +62,11 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                     {
                         var allList = await BrokenBus.GetListAsync(e => e.RouteId == routeId, UserInfo.DataBaseName);
                         var count = allList.Count();
+                        var lastEntity = allList.OrderBy(e => e.SerialNumber).LastOrDefault();
+                        if (input.FrontStake < lastEntity?.AfterStake && lastEntity != null)
+                        {
+                            return Error("来向桩号必须大于上一个去向桩号");
+                        }
                         input.BrokenId = Guid.NewGuid().ToString();
                         input.SerialNumber = count + 1;
                         input.RouteId = routeId;
@@ -75,7 +81,8 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                             });
                             input.SerialNumber = serialNumber;
                         }
-                        var result = await BrokenBus.CreateAsync(input, UserInfo.DataBaseName);
+                        var entity = MapperUtils.MapTo<BrokenInputDto, BrokenChainage>(input);
+                        var result = await BrokenBus.CreateAsync(entity, UserInfo.DataBaseName);
                         if (result)
                             return SuccessMes();
                         return Fail();
@@ -203,7 +210,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                     {
                         var tempList = line.Split(",");
                         var list = await BrokenBus.GetListAsync(e => e.RouteId == routeId, UserInfo.DataBaseName);
-                        var temp = new BrokenChainage()
+                        var temp = new BrokenInputDto()
                         {
                             BrokenId = Guid.NewGuid().ToString(),
                             RouteId = routeId,
@@ -213,10 +220,17 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                             temp.FrontStake = Convert.ToDouble(tempList[0]);
                         if (!string.IsNullOrEmpty(tempList[1]))
                             temp.AfterStake = Convert.ToDouble(tempList[1]);
+                        var lastEntity = list.OrderBy(e => e.SerialNumber).LastOrDefault();
+                        if (temp.FrontStake < lastEntity?.AfterStake && lastEntity != null)
+                        {
+                            reader.Close();
+                            FileUtils.DeleteFile(path);
+                            return Error("");
+                        }
                         var validate = TryValidateModel(temp);
                         if (validate)
                         {
-                            var result = await BrokenBus.CreateAsync(temp, UserInfo.DataBaseName);
+                            var result = await BrokenBus.CreateAsync(temp.MapTo<BrokenInputDto, BrokenChainage>(), UserInfo.DataBaseName);
                             if (result)
                                 success++;
                             else error++;
