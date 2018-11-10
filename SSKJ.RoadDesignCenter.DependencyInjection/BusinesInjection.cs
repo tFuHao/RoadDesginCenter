@@ -29,6 +29,8 @@ namespace SSKJ.RoadDesignCenter.DependencyInjection
             services.AddSingleton<ibProject.RouteElement.IRouteBusines, bProject.RouteElement.RouteBusines>();
             services.AddSingleton<ibProject.RouteElement.IFlatCurveBusines, bProject.RouteElement.FlatCurveBusines>();
             services.AddSingleton<ibProject.RouteElement.IVerticalCurveBusines, bProject.RouteElement.VerticalCurveBusines>();
+
+            services.AddSingleton<ibProject.RouteCalculate.ICalculateBusines, bProject.RouteCalculate.CalculateBusines>();
         }
     }
 }
