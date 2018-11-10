@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <Platforms>AnyCPU;x86</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -46,6 +47,12 @@
     <Folder Include="Areas\RouteCalculate\Views\" />
     <Folder Include="wwwroot\image\head\" />
     <Folder Include="wwwroot\upload\import\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Interop.RoadStoneLib">
+      <HintPath>..\RouteDLL\Interop.RoadStoneLib.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

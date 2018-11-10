@@ -1,4 +1,4 @@
-﻿//using RoadStoneLib;
+﻿///using RoadStoneLib;
 using SSKJ.RoadDesignCenter.IRepository.Project.RouteElement;
 using SSKJ.RoadDesignCenter.Models.ProjectModel;
 using SSKJ.RoadDesignCenter.Models.ProjectModel.Calculate;
@@ -9,17 +9,18 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
+using SSKJ.RoadDesignCenter.IBusines.Project.RouteCalculate;
 
 namespace SSKJ.RoadDesignCenter.Busines.Project.RouteCalculate
 {
-    public class CalculateBusines
+    public class CalculateBusines: ICalculateBusines
     {
         public IFlatCurve_IntersectionRepository intersectionRepo;
         public IVerticalCurve_GradeChangePointRepository gradeRepo;
         public IBrokenChainRepository brokenRepo;
 
         // 实例
-        //private Alignment am = new Alignment();
+       //private Alignment am;
 
         // 实例一个datatable
         DataTable dt = new DataTable();
@@ -50,76 +51,76 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.RouteCalculate
         /// 加载平曲线
         /// </summary>
         /// <param name="routeid">线路ID</param>
-        //private async Task LoadFlatCurve(string routeId, string dbName)
-        //{
-        //    var list = await intersectionRepo.GetListAsync(i => i.RouteId == routeId, dbName);
-        //    foreach (var item in list)
-        //    {
-        //        string jdbh = item.IntersectionName.ToString().Trim();
-        //        double x = Convert.ToDouble(item.X);
-        //        double y = Convert.ToDouble(item.Y);
-        //        double r = Convert.ToDouble(item.R);
-        //        double ls1 = Convert.ToDouble(item.Ls1);
-        //        double ls2 = Convert.ToDouble(item.Ls2);
-        //        double ls1r = Convert.ToDouble(item.Ls1R);
-        //        double ls2r = Convert.ToDouble(item.Ls2R);
-        //        am.AppendIntersectPoint(jdbh, x, y, r, ls1, ls2, ls1r, ls2r);
-        //    }
-        //}
+        public async Task LoadFlatCurve(string routeId, string dbName)
+        {
+            var list = await intersectionRepo.GetListAsync(i => i.RouteId == routeId, dbName);
+            foreach (var item in list)
+            {
+                string jdbh = item.IntersectionName.ToString().Trim();
+                double x = Convert.ToDouble(item.X);
+                double y = Convert.ToDouble(item.Y);
+                double r = Convert.ToDouble(item.R);
+                double ls1 = Convert.ToDouble(item.Ls1);
+                double ls2 = Convert.ToDouble(item.Ls2);
+                double ls1r = Convert.ToDouble(item.Ls1R);
+                double ls2r = Convert.ToDouble(item.Ls2R);
+                //am.AppendIntersectPoint(jdbh, x, y, r, ls1, ls2, ls1r, ls2r);
+            }
+        }
 
         /// <summary>
         /// 加载竖曲线
         /// </summary>
         /// <param name="routeid">线路ID</param>
-        //private async Task LoadVerticalCurve(string routeId, string dbName)
-        //{
+        public async Task LoadVerticalCurve(string routeId, string dbName)
+        {
 
-        //    var list = await gradeRepo.GetListAsync(g => g.RouteId == routeId, dbName);
-        //    foreach (var item in list)
-        //    {
-        //        string stake = item.Stake.ToString().Trim();
-        //        double h = Convert.ToDouble(item.H);
-        //        double r = Convert.ToDouble(item.R);
-        //        //double i1 = Convert.ToDouble(item.i1);
-        //        //double i2 = Convert.ToDouble(item.i2);
+            var list = await gradeRepo.GetListAsync(g => g.RouteId == routeId, dbName);
+            foreach (var item in list)
+            {
+                string stake = item.Stake.ToString().Trim();
+                double h = Convert.ToDouble(item.H);
+                double r = Convert.ToDouble(item.R);
+                //double i1 = Convert.ToDouble(item.i1);
+                //double i2 = Convert.ToDouble(item.i2);
 
-        //        am.AppendGradePoint(stake, h, r);
-        //    }
-        //}
+                //am.AppendGradePoint(stake, h, r);
+            }
+        }
 
         /// <summary>
         /// 加载断链
         /// </summary>
         /// <param name="routeid">线路ID</param>
-        //private async Task LoadBrokenChainage(string routeId, string dbName)
-        //{
-        //    var list = await brokenRepo.GetListAsync(b => b.RouteId == routeId, dbName);
-        //    foreach (var item in list)
-        //    {
-        //        double fStake = Convert.ToDouble(item.FrontStake);
-        //        double aStake = Convert.ToDouble(item.AfterStake);
-        //        am.AppendBroken(fStake, aStake);
-        //    }
-        //}
+        public async Task LoadBrokenChainage(string routeId, string dbName)
+        {
+            var list = await brokenRepo.GetListAsync(b => b.RouteId == routeId, dbName);
+            foreach (var item in list)
+            {
+                double fStake = Convert.ToDouble(item.FrontStake);
+                double aStake = Convert.ToDouble(item.AfterStake);
+                //am.AppendBroken(fStake, aStake);
+            }
+        }
 
         /// <summary>
         /// 创建一条线路
         /// </summary>
         /// <param name="routeid">线路ID</param>
-        //private async Task CreatRoute(string routeId, double starStake, string dbName)
-        //{
-        //    //调用方法
-        //    await LoadBrokenChainage(routeId, dbName);
-        //    await LoadFlatCurve(routeId, dbName);
+        public async Task CreatRoute(string routeId, double starStake, string dbName)
+        {
+            //调用方法
+            await LoadBrokenChainage(routeId, dbName);
+            await LoadFlatCurve(routeId, dbName);
 
-        //    await LoadVerticalCurve(routeId, dbName);
-        //    //设置桩号前缀
-        //    //rd.SetStartingStake(0, "");
-        //    am.SetStartingStake(starStake, "");
-        //    //调用方法创建一条线路
-        //    //rd.GenerateRoute();
-        //    am.ReGenerate();
-        //}
+            await LoadVerticalCurve(routeId, dbName);
+            //设置桩号前缀
+            //rd.SetStartingStake(0, "");
+            //am.SetStartingStake(starStake, "");
+            //调用方法创建一条线路
+            //rd.GenerateRoute();
+            //am.ReGenerate();
+        }
 
         /// <summary>
         /// 计算中桩坐标
@@ -127,70 +128,70 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.RouteCalculate
         /// <param name="beginStake">开始桩号</param>
         /// <param name="endStake">结束桩号</param>
         /// <param name="routeid">线路ID</param>
-        //public async Task<List<CenterCoord>> CalcCenterCoord(string beginStake, string endStake, int interval, string routeId, double starStake,string dbName, double[] stkes = null)
-        //{
+        public async Task<List<CenterCoord>> CalcCenterCoord(string beginStake, string endStake, int interval, string routeId, double starStake, string dbName, double[] stkes = null)
+        {
+            //am = new Alignment();
+            //创建一条线路
+            await CreatRoute(routeId, starStake, dbName);
 
-        //    //创建一条线路
-        //    await CreatRoute(routeId, starStake, dbName);
+            //增加datatable字段
+            DataColumn dc1 = new DataColumn("Stake", Type.GetType("System.String"));
+            DataColumn dc2 = new DataColumn("X", Type.GetType("System.Double"));
+            DataColumn dc3 = new DataColumn("Y", Type.GetType("System.Double"));
+            dt.Columns.Add(dc1);
+            dt.Columns.Add(dc2);
+            dt.Columns.Add(dc3);
 
-        //    //增加datatable字段
-        //    DataColumn dc1 = new DataColumn("Stake", Type.GetType("System.String"));
-        //    DataColumn dc2 = new DataColumn("X", Type.GetType("System.Double"));
-        //    DataColumn dc3 = new DataColumn("Y", Type.GetType("System.Double"));
-        //    dt.Columns.Add(dc1);
-        //    dt.Columns.Add(dc2);
-        //    dt.Columns.Add(dc3);
-
-        //    am.SetStakeParameter(true, true, false, true);
-        //    int j = 0;
-        //    if (stkes.Length > 0)
-        //    {
-        //        for (j = 0; j < stkes.Length; j++)
-        //        {
-        //            am.AppendAddiontalStake(stkes[j].ToString());
-        //        }
-        //    }
-        //    if (Convert.ToDouble(beginStake) > Convert.ToDouble(endStake))
-        //    {
-        //        Stake end = am.Stake2Mileage(Convert.ToDouble(endStake));
-        //        for (Stake sk = am.Stake2Mileage(Convert.ToDouble(beginStake)); sk.M >= end.M; sk = am.GetPreviousStake(sk, interval))
-        //        {
-        //            //rd.CalcCenterCoord(i.ToString(), out x_z, out y_z);
-        //            am.CalcCenterCoord(sk.S.ToString(), out x_z, out y_z);
-        //            DataRow dr = dt.NewRow();
-        //            dr["Stake"] = am.GetKString(sk.S, 3);
-        //            dr["X"] = x_z.ToString("F4");
-        //            dr["Y"] = y_z.ToString("F4");
-        //            dt.Rows.Add(dr);
-        //            //sk.S = Begin_End_Stake_Set(beginStake, endStake, interval, sk.S);
-        //            if (sk.S == Convert.ToDouble(endStake))
-        //            {
-        //                break;
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        Stake end = am.Stake2Mileage(Convert.ToDouble(endStake));
-        //        for (Stake sk = am.Stake2Mileage(Convert.ToDouble(beginStake)); sk.M <= end.M; sk = am.GetNextStake(sk, interval))
-        //        {
-        //            string s = sk.S.ToString();
-        //            am.CalcCenterCoord(sk.S.ToString(), out x_z, out y_z);
-        //            DataRow dr = dt.NewRow();
-        //            dr["Stake"] = am.GetKString(sk.S, 3);
-        //            dr["X"] = x_z.ToString("F4");
-        //            dr["Y"] = y_z.ToString("F4");
-        //            dt.Rows.Add(dr);
-        //            if (sk.S == Convert.ToDouble(endStake))
-        //            {
-        //                break;
-        //            }
-        //        }
-        //    }
-        //    List<CenterCoord> list = new List<CenterCoord>();
-        //    list = ToList<CenterCoord>(dt);
-        //    return list;
-        //}
+            //am.SetStakeParameter(true, true, false, true);
+            //int j = 0;
+            //if (stkes.Length > 0)
+            //{
+            //    for (j = 0; j < stkes.Length; j++)
+            //    {
+            //        am.AppendAddiontalStake(stkes[j].ToString());
+            //    }
+            //}
+            //if (Convert.ToDouble(beginStake) > Convert.ToDouble(endStake))
+            //{
+            //    RoadStoneLib.Stake end = am.Stake2Mileage(Convert.ToDouble(endStake));
+            //    for (RoadStoneLib.Stake sk = am.Stake2Mileage(Convert.ToDouble(beginStake)); sk.M >= end.M; sk = am.GetPreviousStake(sk, interval))
+            //    {
+            //        //rd.CalcCenterCoord(i.ToString(), out x_z, out y_z);
+            //        am.CalcCenterCoord(sk.S.ToString(), out x_z, out y_z);
+            //        DataRow dr = dt.NewRow();
+            //        dr["Stake"] = am.GetKString(sk.S, 3);
+            //        dr["X"] = x_z.ToString("F4");
+            //        dr["Y"] = y_z.ToString("F4");
+            //        dt.Rows.Add(dr);
+            //        //sk.S = Begin_End_Stake_Set(beginStake, endStake, interval, sk.S);
+            //        if (sk.S == Convert.ToDouble(endStake))
+            //        {
+            //            break;
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    RoadStoneLib.Stake end = am.Stake2Mileage(Convert.ToDouble(endStake));
+            //    for (RoadStoneLib.Stake sk = am.Stake2Mileage(Convert.ToDouble(beginStake)); sk.M <= end.M; sk = am.GetNextStake(sk, interval))
+            //    {
+            //        string s = sk.S.ToString();
+            //        am.CalcCenterCoord(sk.S.ToString(), out x_z, out y_z);
+            //        DataRow dr = dt.NewRow();
+            //        dr["Stake"] = am.GetKString(sk.S, 3);
+            //        dr["X"] = x_z.ToString("F4");
+            //        dr["Y"] = y_z.ToString("F4");
+            //        dt.Rows.Add(dr);
+            //        if (sk.S == Convert.ToDouble(endStake))
+            //        {
+            //            break;
+            //        }
+            //    }
+            //}
+            List<CenterCoord> list = new List<CenterCoord>();
+            list = ToList<CenterCoord>(dt);
+            return list;
+        }
 
         /// <summary>
         /// 计算边桩坐标
@@ -369,7 +370,7 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.RouteCalculate
                     {
                         Stake = dr["Stake"].ToString().Trim(),
                         //Stake = Int32.Parse(dr["Stake"].ToString()),
-                        Side = Convert.ToDouble(dr["Dist"]),
+                        Dist = Convert.ToDouble(dr["Dist"]),
                         X = Convert.ToDouble(dr["X"]),
                         Y = Convert.ToDouble(dr["Y"])
                     }).ToList();

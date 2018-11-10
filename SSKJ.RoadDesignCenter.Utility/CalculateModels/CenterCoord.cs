@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SSKJ.RoadDesignCenter.Models.ProjectModel.Calculate
+namespace SSKJ.RoadDesignCenter.Utility.CalculateModels
 {
-    public class SideCoord
+    public class CenterCoord
     {
         public string Stake { get; set; }
-        public double Dist { get; set; }
 
         public double X { get; set; }
 
