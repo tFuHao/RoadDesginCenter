@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Microsoft.AspNetCore.Http;
 
@@ -15,7 +16,7 @@ namespace SSKJ.RoadDesignCenter.Utility.Tools
                 Directory.CreateDirectory(path);
             }
 
-            var fullPath = path + '/' + file.FileName;
+            var fullPath = $"{path}/{Guid.NewGuid().ToString()}{file.FileName}";
             fullPath = fullPath.Replace("\\", "/");
             using (FileStream fs = new FileStream(fullPath, FileMode.Create))
             {
