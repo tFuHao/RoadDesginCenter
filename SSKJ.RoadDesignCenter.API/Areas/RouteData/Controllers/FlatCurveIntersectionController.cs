@@ -203,58 +203,72 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                 var file = Request.Form.Files;
                 var success = 0;
                 var error = 0;
+                var successList = new List<FlatCurve_Intersection>();
                 if (file != null)
                 {
                     var path = FileUtils.SaveFile(Hosting.WebRootPath, file[0], UserInfo.UserId);
                     StreamReader reader = new StreamReader(path, Encoding.Default);
                     string line;
-                    while ((line = reader.ReadLine()) != null)
+                    try
                     {
-                        var tempList = line.Split(",");
-                        var list = await FlatCurveBus.GetListAsync(e => e.RouteId == routeId, UserInfo.DataBaseName);
-                        var temp = new FlatCurveIntersectionDto()
+                        while ((line = reader.ReadLine()) != null)
                         {
-                            IntersectionPointId = Guid.NewGuid().ToString(),
-                            SerialNumber = list.Count() + 1,
-                            RouteId = routeId,
-                        };
-                        if (!string.IsNullOrEmpty(tempList[0]))
-                            temp.IntersectionName = tempList[0];
-                        if (!string.IsNullOrEmpty(tempList[1]))
-                            temp.Stake = Convert.ToDouble(tempList[1]);
-                        if (!string.IsNullOrEmpty(tempList[2]))
-                            temp.X = Convert.ToDouble(tempList[2]);
-                        if (!string.IsNullOrEmpty(tempList[3]))
-                            temp.Y = Convert.ToDouble(tempList[3]);
-                        if (!string.IsNullOrEmpty(tempList[4]))
-                            temp.R = Convert.ToDouble(tempList[4]);
-                        if (!string.IsNullOrEmpty(tempList[5]))
-                            temp.Ls1 = Convert.ToDouble(tempList[5]);
-                        if (!string.IsNullOrEmpty(tempList[6]))
-                            temp.Ls2 = Convert.ToDouble(tempList[6]);
-                        if (!string.IsNullOrEmpty(tempList[7]))
-                            temp.Ls1R = Convert.ToDouble(tempList[7]);
-                        if (!string.IsNullOrEmpty(tempList[8]))
-                            temp.Ls2R = Convert.ToDouble(tempList[8]);
-                        var validate = TryValidateModel(temp);
-                        if (validate)
-                        {
-                            var result = await FlatCurveBus.CreateAsync(temp.MapTo<FlatCurveIntersectionDto, FlatCurve_Intersection>(), UserInfo.DataBaseName);
-                            if (result)
-                                success++;
-                            else error++;
+                            var tempList = line.Split(",");
+                            var list = await FlatCurveBus.GetListAsync(e => e.RouteId == routeId, UserInfo.DataBaseName);
+                            var temp = new FlatCurveIntersectionDto()
+                            {
+                                IntersectionPointId = Guid.NewGuid().ToString(),
+                                SerialNumber = list.Count() + 1,
+                                RouteId = routeId,
+                            };
+                            if (!string.IsNullOrEmpty(tempList[0]))
+                                temp.IntersectionName = tempList[0];
+                            if (!string.IsNullOrEmpty(tempList[1]))
+                                temp.Stake = Convert.ToDouble(tempList[1]);
+                            if (!string.IsNullOrEmpty(tempList[2]))
+                                temp.X = Convert.ToDouble(tempList[2]);
+                            if (!string.IsNullOrEmpty(tempList[3]))
+                                temp.Y = Convert.ToDouble(tempList[3]);
+                            if (!string.IsNullOrEmpty(tempList[4]))
+                                temp.R = Convert.ToDouble(tempList[4]);
+                            if (!string.IsNullOrEmpty(tempList[5]))
+                                temp.Ls1 = Convert.ToDouble(tempList[5]);
+                            if (!string.IsNullOrEmpty(tempList[6]))
+                                temp.Ls2 = Convert.ToDouble(tempList[6]);
+                            if (!string.IsNullOrEmpty(tempList[7]))
+                                temp.Ls1R = Convert.ToDouble(tempList[7]);
+                            if (!string.IsNullOrEmpty(tempList[8]))
+                                temp.Ls2R = Convert.ToDouble(tempList[8]);
+                            var validate = TryValidateModel(temp);
+                            if (validate)
+                            {
+                                var entity = temp.MapTo<FlatCurveIntersectionDto, FlatCurve_Intersection>();
+                                var result = await FlatCurveBus.CreateAsync(entity, UserInfo.DataBaseName);
+                                if (result)
+                                {
+                                    successList.Add(entity);
+                                    success++;
+                                }
+                                else error++;
+                            }
+                            else
+                            {
+                                error++;
+                            }
                         }
-                        else
-                        {
-                            error++;
-                        }
+                    }
+                    catch (Exception e)
+                    {
+                        await FlatCurveBus.DeleteAsync(successList, UserInfo.DataBaseName);
+                        reader.Close();
+                        FileUtils.DeleteFile(path);
+                        return Error(e.Message);
                     }
                     reader.Close();
                     FileUtils.DeleteFile(path);
                     return SuccessMes($"平曲线表交点法导入数据成功{success}条，失败{error}条");
                 }
-                else
-                    return Fail();
+                return Fail();
             }
             catch (Exception ex)
             {

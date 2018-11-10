@@ -49,6 +49,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
         /// </summary>
         /// <param name="input">添加 或 插入 的数据</param>
         /// <param name="serialNumber">插入的序号，添加则为0</param>
+        /// <param name="routeId"></param>
         /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Insert(AddStake input, int serialNumber, string routeId)
@@ -105,6 +106,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
         /// 删除断链数据
         /// </summary>
         /// <param name="list">删除的实体对象列表</param>
+        /// <param name="routeId"></param>
         /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Delete(List<AddStake> list, string routeId)
@@ -139,6 +141,7 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
         /// </summary>
         /// <param name="serialNumber">需要移动的序号</param>
         /// <param name="isUp">true为上移，false为下移</param>
+        /// <param name="routeId"></param>
         /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Move(int serialNumber, bool isUp, string routeId)
@@ -223,7 +226,6 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                         {
                             error++;
                         }
-
                     }
                     reader.Close();
                     FileUtils.DeleteFile(path);

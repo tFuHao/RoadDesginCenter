@@ -198,40 +198,65 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                 var file = Request.Form.Files;
                 var success = 0;
                 var error = 0;
+                var successList = new List<VerticalCurve_GradeChangePoint>();
                 if (file != null)
                 {
                     var path = FileUtils.SaveFile(Hosting.WebRootPath, file[0], UserInfo.UserId);
                     StreamReader reader = new StreamReader(path, Encoding.Default);
                     string line;
-                    while ((line = reader.ReadLine()) != null)
+                    try
                     {
-                        var tempList = line.Split(",");
-                        var list = await GradeBus.GetListAsync(e => e.RouteId == routeId, UserInfo.DataBaseName);
-                        var temp = new GradeChangePointDto()
+                        while ((line = reader.ReadLine()) != null)
                         {
-                            GradeChangePointId = Guid.NewGuid().ToString(),
-                            RouteId = routeId,
-                            SerialNumber = list.Count() + 1,
-                        };
-                        if (!string.IsNullOrEmpty(tempList[0]))
-                            temp.Stake = Convert.ToDouble(tempList[0]);
-                        if (!string.IsNullOrEmpty(tempList[1]))
-                            temp.H = Convert.ToDouble(tempList[1]);
-                        if (!string.IsNullOrEmpty(tempList[2]))
-                            temp.R = Convert.ToDouble(tempList[2]);
-                        var valid = TryValidateModel(temp);
-                        if (valid)
-                        {
-                            var result = await GradeBus.CreateAsync(temp.MapTo<GradeChangePointDto, VerticalCurve_GradeChangePoint>(), UserInfo.DataBaseName);
-                            if (result)
-                                success++;
-                            else error++;
-                        }
-                        else
-                        {
-                            error++;
+                            var tempList = line.Split(",");
+                            var list = await GradeBus.GetListAsync(e => e.RouteId == routeId, UserInfo.DataBaseName);
+                            var temp = new GradeChangePointDto()
+                            {
+                                GradeChangePointId = Guid.NewGuid().ToString(),
+                                RouteId = routeId,
+                                SerialNumber = list.Count() + 1,
+                            };
+                            if (!string.IsNullOrEmpty(tempList[0]))
+                                temp.Stake = Convert.ToDouble(tempList[0]);
+
+                            var lastEntity = list.OrderBy(e => e.SerialNumber).LastOrDefault();
+                            if (temp.Stake < lastEntity?.Stake)
+                            {
+                                await GradeBus.DeleteAsync(successList, UserInfo.DataBaseName);
+                                reader.Close();
+                                FileUtils.DeleteFile(path);
+                                return Error("");
+                            }
+                            if (!string.IsNullOrEmpty(tempList[1]))
+                                temp.H = Convert.ToDouble(tempList[1]);
+                            if (!string.IsNullOrEmpty(tempList[2]))
+                                temp.R = Convert.ToDouble(tempList[2]);
+                            var valid = TryValidateModel(temp);
+                            if (valid)
+                            {
+                                var entity = temp.MapTo<GradeChangePointDto, VerticalCurve_GradeChangePoint>();
+                                var result = await GradeBus.CreateAsync(entity, UserInfo.DataBaseName);
+                                if (result)
+                                {
+                                    success++;
+                                    successList.Add(entity);
+                                }
+                                else error++;
+                            }
+                            else
+                            {
+                                error++;
+                            }
                         }
                     }
+                    catch (Exception e)
+                    {
+                        await GradeBus.DeleteAsync(successList, UserInfo.DataBaseName);
+                        reader.Close();
+                        FileUtils.DeleteFile(path);
+                        return Error(e.Message);
+                    }
+
                     reader.Close();
                     FileUtils.DeleteFile(path);
                     return SuccessMes($"竖曲线表交点法导入数据成功{success}条，失败{error}条");
