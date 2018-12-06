@@ -39,6 +39,7 @@
     <ProjectReference Include="..\SSKJ.RoadDesignCenter.DependencyInjection\SSKJ.RoadDesignCenter.DependencyInjection.csproj" />
     <ProjectReference Include="..\SSKJ.RoadDesignCenter.Moldes\SSKJ.RoadDesignCenter.Models.csproj" />
     <ProjectReference Include="..\SSKJ.RoadDesignCenter.Utility\SSKJ.RoadDesignCenter.Utility.csproj" />
+    <ProjectReference Include="..\SSKJ.RouteCalculate\SSKJ.RouteCalculate.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -47,12 +48,6 @@
     <Folder Include="Areas\RouteCalculate\Views\" />
     <Folder Include="wwwroot\image\head\" />
     <Folder Include="wwwroot\upload\import\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Interop.RoadStoneLib">
-      <HintPath>..\RouteDLL\Interop.RoadStoneLib.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

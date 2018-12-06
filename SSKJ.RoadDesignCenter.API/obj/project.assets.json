@@ -5780,6 +5780,16 @@
         "runtime": {
           "bin/placeholder/SSKJ.RoadDesignCenter.Utility.dll": {}
         }
+      },
+      "SSKJ.RouteCalculate/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.1",
+        "compile": {
+          "bin/placeholder/SSKJ.RouteCalculate.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/SSKJ.RouteCalculate.dll": {}
+        }
       }
     }
   },
@@ -14662,6 +14672,11 @@
       "type": "project",
       "path": "../SSKJ.RoadDesignCenter.Utility/SSKJ.RoadDesignCenter.Utility.csproj",
       "msbuildProject": "../SSKJ.RoadDesignCenter.Utility/SSKJ.RoadDesignCenter.Utility.csproj"
+    },
+    "SSKJ.RouteCalculate/1.0.0": {
+      "type": "project",
+      "path": "../SSKJ.RouteCalculate/SSKJ.RouteCalculate.csproj",
+      "msbuildProject": "../SSKJ.RouteCalculate/SSKJ.RouteCalculate.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -14673,6 +14688,7 @@
       "SSKJ.RoadDesignCenter.DependencyInjection >= 1.0.0",
       "SSKJ.RoadDesignCenter.Models >= 1.0.0",
       "SSKJ.RoadDesignCenter.Utility >= 1.0.0",
+      "SSKJ.RouteCalculate >= 1.0.0",
       "Swashbuckle.AspNetCore >= 2.4.0"
     ]
   },
@@ -14717,6 +14733,9 @@
             },
             "D:\\Source\\Repos\\BIMCenter\\API\\SSKJ.RoadDesignCenter.Utility\\SSKJ.RoadDesignCenter.Utility.csproj": {
               "projectPath": "D:\\Source\\Repos\\BIMCenter\\API\\SSKJ.RoadDesignCenter.Utility\\SSKJ.RoadDesignCenter.Utility.csproj"
+            },
+            "D:\\Source\\Repos\\BIMCenter\\API\\SSKJ.RouteCalculate\\SSKJ.RouteCalculate.csproj": {
+              "projectPath": "D:\\Source\\Repos\\BIMCenter\\API\\SSKJ.RouteCalculate\\SSKJ.RouteCalculate.csproj"
             }
           }
         }

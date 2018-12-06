@@ -18,17 +18,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <COMReference Include="RoadStoneLib.dll">
-      <Guid>b08be3ff-5900-4a0e-85a8-d3fda17b9c14</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>false</Isolated>
-    </COMReference>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="7.0.1" />
     <PackageReference Include="jose-jwt" Version="2.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.1.0" />

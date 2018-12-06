@@ -1,7 +1,5 @@
 ﻿///using RoadStoneLib;
 using SSKJ.RoadDesignCenter.IRepository.Project.RouteElement;
-using SSKJ.RoadDesignCenter.Models.ProjectModel;
-using SSKJ.RoadDesignCenter.Models.ProjectModel.Calculate;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -128,70 +126,70 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.RouteCalculate
         /// <param name="beginStake">开始桩号</param>
         /// <param name="endStake">结束桩号</param>
         /// <param name="routeid">线路ID</param>
-        public async Task<List<CenterCoord>> CalcCenterCoord(string beginStake, string endStake, int interval, string routeId, double starStake, string dbName, double[] stkes = null)
-        {
-            //am = new Alignment();
-            //创建一条线路
-            await CreatRoute(routeId, starStake, dbName);
+        //public async Task<List<CenterCoord>> CalcCenterCoord(string beginStake, string endStake, int interval, string routeId, double starStake, string dbName, double[] stkes = null)
+        //{
+        //    //am = new Alignment();
+        //    //创建一条线路
+        //    await CreatRoute(routeId, starStake, dbName);
 
-            //增加datatable字段
-            DataColumn dc1 = new DataColumn("Stake", Type.GetType("System.String"));
-            DataColumn dc2 = new DataColumn("X", Type.GetType("System.Double"));
-            DataColumn dc3 = new DataColumn("Y", Type.GetType("System.Double"));
-            dt.Columns.Add(dc1);
-            dt.Columns.Add(dc2);
-            dt.Columns.Add(dc3);
+        //    //增加datatable字段
+        //    DataColumn dc1 = new DataColumn("Stake", Type.GetType("System.String"));
+        //    DataColumn dc2 = new DataColumn("X", Type.GetType("System.Double"));
+        //    DataColumn dc3 = new DataColumn("Y", Type.GetType("System.Double"));
+        //    dt.Columns.Add(dc1);
+        //    dt.Columns.Add(dc2);
+        //    dt.Columns.Add(dc3);
 
-            //am.SetStakeParameter(true, true, false, true);
-            //int j = 0;
-            //if (stkes.Length > 0)
-            //{
-            //    for (j = 0; j < stkes.Length; j++)
-            //    {
-            //        am.AppendAddiontalStake(stkes[j].ToString());
-            //    }
-            //}
-            //if (Convert.ToDouble(beginStake) > Convert.ToDouble(endStake))
-            //{
-            //    RoadStoneLib.Stake end = am.Stake2Mileage(Convert.ToDouble(endStake));
-            //    for (RoadStoneLib.Stake sk = am.Stake2Mileage(Convert.ToDouble(beginStake)); sk.M >= end.M; sk = am.GetPreviousStake(sk, interval))
-            //    {
-            //        //rd.CalcCenterCoord(i.ToString(), out x_z, out y_z);
-            //        am.CalcCenterCoord(sk.S.ToString(), out x_z, out y_z);
-            //        DataRow dr = dt.NewRow();
-            //        dr["Stake"] = am.GetKString(sk.S, 3);
-            //        dr["X"] = x_z.ToString("F4");
-            //        dr["Y"] = y_z.ToString("F4");
-            //        dt.Rows.Add(dr);
-            //        //sk.S = Begin_End_Stake_Set(beginStake, endStake, interval, sk.S);
-            //        if (sk.S == Convert.ToDouble(endStake))
-            //        {
-            //            break;
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    RoadStoneLib.Stake end = am.Stake2Mileage(Convert.ToDouble(endStake));
-            //    for (RoadStoneLib.Stake sk = am.Stake2Mileage(Convert.ToDouble(beginStake)); sk.M <= end.M; sk = am.GetNextStake(sk, interval))
-            //    {
-            //        string s = sk.S.ToString();
-            //        am.CalcCenterCoord(sk.S.ToString(), out x_z, out y_z);
-            //        DataRow dr = dt.NewRow();
-            //        dr["Stake"] = am.GetKString(sk.S, 3);
-            //        dr["X"] = x_z.ToString("F4");
-            //        dr["Y"] = y_z.ToString("F4");
-            //        dt.Rows.Add(dr);
-            //        if (sk.S == Convert.ToDouble(endStake))
-            //        {
-            //            break;
-            //        }
-            //    }
-            //}
-            List<CenterCoord> list = new List<CenterCoord>();
-            list = ToList<CenterCoord>(dt);
-            return list;
-        }
+        //    //am.SetStakeParameter(true, true, false, true);
+        //    //int j = 0;
+        //    //if (stkes.Length > 0)
+        //    //{
+        //    //    for (j = 0; j < stkes.Length; j++)
+        //    //    {
+        //    //        am.AppendAddiontalStake(stkes[j].ToString());
+        //    //    }
+        //    //}
+        //    //if (Convert.ToDouble(beginStake) > Convert.ToDouble(endStake))
+        //    //{
+        //    //    RoadStoneLib.Stake end = am.Stake2Mileage(Convert.ToDouble(endStake));
+        //    //    for (RoadStoneLib.Stake sk = am.Stake2Mileage(Convert.ToDouble(beginStake)); sk.M >= end.M; sk = am.GetPreviousStake(sk, interval))
+        //    //    {
+        //    //        //rd.CalcCenterCoord(i.ToString(), out x_z, out y_z);
+        //    //        am.CalcCenterCoord(sk.S.ToString(), out x_z, out y_z);
+        //    //        DataRow dr = dt.NewRow();
+        //    //        dr["Stake"] = am.GetKString(sk.S, 3);
+        //    //        dr["X"] = x_z.ToString("F4");
+        //    //        dr["Y"] = y_z.ToString("F4");
+        //    //        dt.Rows.Add(dr);
+        //    //        //sk.S = Begin_End_Stake_Set(beginStake, endStake, interval, sk.S);
+        //    //        if (sk.S == Convert.ToDouble(endStake))
+        //    //        {
+        //    //            break;
+        //    //        }
+        //    //    }
+        //    //}
+        //    //else
+        //    //{
+        //    //    RoadStoneLib.Stake end = am.Stake2Mileage(Convert.ToDouble(endStake));
+        //    //    for (RoadStoneLib.Stake sk = am.Stake2Mileage(Convert.ToDouble(beginStake)); sk.M <= end.M; sk = am.GetNextStake(sk, interval))
+        //    //    {
+        //    //        string s = sk.S.ToString();
+        //    //        am.CalcCenterCoord(sk.S.ToString(), out x_z, out y_z);
+        //    //        DataRow dr = dt.NewRow();
+        //    //        dr["Stake"] = am.GetKString(sk.S, 3);
+        //    //        dr["X"] = x_z.ToString("F4");
+        //    //        dr["Y"] = y_z.ToString("F4");
+        //    //        dt.Rows.Add(dr);
+        //    //        if (sk.S == Convert.ToDouble(endStake))
+        //    //        {
+        //    //            break;
+        //    //        }
+        //    //    }
+        //    //}
+        //    List<CenterCoord> list = new List<CenterCoord>();
+        //    list = ToList<CenterCoord>(dt);
+        //    return list;
+        //}
 
         /// <summary>
         /// 计算边桩坐标
@@ -359,22 +357,22 @@ namespace SSKJ.RoadDesignCenter.Busines.Project.RouteCalculate
             return list;
         }
 
-        public static List<SideCoord> ConvertTo(DataTable dt)
-        {
-            if (dt == null) return null;
-            if (dt.Rows.Count <= 0) return null;
+        //public static List<SideCoord> ConvertTo(DataTable dt)
+        //{
+        //    if (dt == null) return null;
+        //    if (dt.Rows.Count <= 0) return null;
 
-            List<SideCoord> list = new List<SideCoord>();
-            list = (from DataRow dr in dt.Rows
-                    select new SideCoord
-                    {
-                        Stake = dr["Stake"].ToString().Trim(),
-                        //Stake = Int32.Parse(dr["Stake"].ToString()),
-                        Dist = Convert.ToDouble(dr["Dist"]),
-                        X = Convert.ToDouble(dr["X"]),
-                        Y = Convert.ToDouble(dr["Y"])
-                    }).ToList();
-            return list;
-        }
+        //    List<SideCoord> list = new List<SideCoord>();
+        //    list = (from DataRow dr in dt.Rows
+        //            select new SideCoord
+        //            {
+        //                Stake = dr["Stake"].ToString().Trim(),
+        //                //Stake = Int32.Parse(dr["Stake"].ToString()),
+        //                Dist = Convert.ToDouble(dr["Dist"]),
+        //                X = Convert.ToDouble(dr["X"]),
+        //                Y = Convert.ToDouble(dr["Y"])
+        //            }).ToList();
+        //    return list;
+        //}
     }
 }

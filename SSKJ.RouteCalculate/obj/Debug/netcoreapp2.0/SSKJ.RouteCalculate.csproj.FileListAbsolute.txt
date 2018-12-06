@@ -1,0 +1,12 @@
+D:\Source\Repos\BIMCenter\API\SSKJ.RouteCalculate\bin\Debug\netcoreapp2.0\SSKJ.RouteCalculate.deps.json
+D:\Source\Repos\BIMCenter\API\SSKJ.RouteCalculate\bin\Debug\netcoreapp2.0\SSKJ.RouteCalculate.dll
+D:\Source\Repos\BIMCenter\API\SSKJ.RouteCalculate\bin\Debug\netcoreapp2.0\SSKJ.RouteCalculate.pdb
+D:\Source\Repos\BIMCenter\API\SSKJ.RouteCalculate\bin\Debug\netcoreapp2.0\Interop.RoadStoneLib.dll
+D:\Source\Repos\BIMCenter\API\SSKJ.RouteCalculate\obj\Debug\netcoreapp2.0\SSKJ.RouteCalculate.csprojAssemblyReference.cache
+D:\Source\Repos\BIMCenter\API\SSKJ.RouteCalculate\obj\Debug\netcoreapp2.0\Interop.RoadStoneLib.dll
+D:\Source\Repos\BIMCenter\API\SSKJ.RouteCalculate\obj\Debug\netcoreapp2.0\SSKJ.RouteCalculate.csproj.ResolveComReference.cache
+D:\Source\Repos\BIMCenter\API\SSKJ.RouteCalculate\obj\Debug\netcoreapp2.0\SSKJ.RouteCalculate.csproj.CoreCompileInputs.cache
+D:\Source\Repos\BIMCenter\API\SSKJ.RouteCalculate\obj\Debug\netcoreapp2.0\SSKJ.RouteCalculate.AssemblyInfoInputs.cache
+D:\Source\Repos\BIMCenter\API\SSKJ.RouteCalculate\obj\Debug\netcoreapp2.0\SSKJ.RouteCalculate.AssemblyInfo.cs
+D:\Source\Repos\BIMCenter\API\SSKJ.RouteCalculate\obj\Debug\netcoreapp2.0\SSKJ.RouteCalculate.dll
+D:\Source\Repos\BIMCenter\API\SSKJ.RouteCalculate\obj\Debug\netcoreapp2.0\SSKJ.RouteCalculate.pdb
