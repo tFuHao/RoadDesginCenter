@@ -23,5 +23,8 @@
     <ProjectReference Include="..\SSKJ.RoadDesignCenter.IRepository\SSKJ.RoadDesignCenter.IRepository.csproj" />
     <ProjectReference Include="..\SSKJ.RoadDesignCenter.Moldes\SSKJ.RoadDesignCenter.Models.csproj" />
     <ProjectReference Include="..\SSKJ.RoadDesignCenter.Utility\SSKJ.RoadDesignCenter.Utility.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
   </ItemGroup> 
 </Project>

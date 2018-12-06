@@ -201,44 +201,60 @@ namespace SSKJ.RoadDesignCenter.API.Areas.RouteData.Controllers
                 var file = Request.Form.Files;
                 var success = 0;
                 var error = 0;
+                var successList = new List<BrokenChainage>();
                 if (file != null)
                 {
                     var path = FileUtils.SaveFile(HostingEnvironmentost.WebRootPath, file[0], UserInfo.UserId);
                     StreamReader reader = new StreamReader(path, Encoding.Default);
                     string line;
-                    while ((line = reader.ReadLine()) != null)
+                    try
                     {
-                        var tempList = line.Split(",");
-                        var list = await BrokenBus.GetListAsync(e => e.RouteId == routeId, UserInfo.DataBaseName);
-                        var temp = new BrokenInputDto()
+                        while ((line = reader.ReadLine()) != null)
                         {
-                            BrokenId = Guid.NewGuid().ToString(),
-                            RouteId = routeId,
-                            SerialNumber = list.Count() + 1
-                        };
-                        if (!string.IsNullOrEmpty(tempList[0]))
-                            temp.FrontStake = Convert.ToDouble(tempList[0]);
-                        if (!string.IsNullOrEmpty(tempList[1]))
-                            temp.AfterStake = Convert.ToDouble(tempList[1]);
-                        var lastEntity = list.OrderBy(e => e.SerialNumber).LastOrDefault();
-                        if (temp.FrontStake < lastEntity?.AfterStake && lastEntity != null)
-                        {
-                            reader.Close();
-                            FileUtils.DeleteFile(path);
-                            return Error("");
+                            var tempList = line.Split(",");
+                            var list = await BrokenBus.GetListAsync(e => e.RouteId == routeId, UserInfo.DataBaseName);
+                            var temp = new BrokenInputDto()
+                            {
+                                BrokenId = Guid.NewGuid().ToString(),
+                                RouteId = routeId,
+                                SerialNumber = list.Count() + 1
+                            };
+                            if (!string.IsNullOrEmpty(tempList[0]))
+                                temp.FrontStake = Convert.ToDouble(tempList[0]);
+                            if (!string.IsNullOrEmpty(tempList[1]))
+                                temp.AfterStake = Convert.ToDouble(tempList[1]);
+                            var lastEntity = list.OrderBy(e => e.SerialNumber).LastOrDefault();
+                            if (temp.FrontStake < lastEntity?.AfterStake && lastEntity != null)
+                            {
+                                await BrokenBus.DeleteAsync(successList, UserInfo.DataBaseName);
+                                reader.Close();
+                                FileUtils.DeleteFile(path);
+                                return Error("");
+                            }
+                            var validate = TryValidateModel(temp);
+                            if (validate)
+                            {
+                                var entity = temp.MapTo<BrokenInputDto, BrokenChainage>();
+                                var result = await BrokenBus.CreateAsync(entity, UserInfo.DataBaseName);
+                                if (result)
+                                {
+                                    successList.Add(entity);
+                                    success++;
+                                }
+                                else error++;
+                            }
+                            else
+                            {
+                                error++;
+                            }
                         }
-                        var validate = TryValidateModel(temp);
-                        if (validate)
-                        {
-                            var result = await BrokenBus.CreateAsync(temp.MapTo<BrokenInputDto, BrokenChainage>(), UserInfo.DataBaseName);
-                            if (result)
-                                success++;
-                            else error++;
-                        }
-                        else
-                        {
-                            error++;
-                        }
+                    }
+                    catch (Exception e)
+                    {
+                        await BrokenBus.DeleteAsync(successList, UserInfo.DataBaseName);
+                        reader.Close();
+                        FileUtils.DeleteFile(path);
+                        return Error(e.Message);
                     }
                     reader.Close();
                     FileUtils.DeleteFile(path);
